@@ -74,7 +74,15 @@ export class Hub {
     });
 
     this.sync(store.getState(), true);
-    store.onChange((state) => this.sync(state, false));
+    store.onChange((state) => {
+      this.sync(state, false);
+      // Paint events don't always report off-screen cards: once the browser has
+      // re-snapshotted the new HTML, re-upload them all.
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        surfaces.invalidate?.();
+        (stage.canvas as HTMLCanvasElement & { requestPaint?(): void }).requestPaint?.();
+      }));
+    });
     this.rig.setTarget(this.currentX(store.getState()), true);
 
     // The developer tray at the start of the line: the opening shot.

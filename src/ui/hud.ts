@@ -23,10 +23,11 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
   const meter = createGauge('Silver and progress to the next rank');
   const albumCount = h('span', { class: 'hud-album-count' });
   // Same as visiting with ?unlock=all: every roll (and its lab) opens at once.
+  // Toggles back to the player's own progress, which unlocking never erases.
   const unlockButton = h('button', {
-    class: 'hud-album hud-unlock', type: 'button', title: 'Open every roll and lab, skipping the trials',
-    onclick: () => store.dispatch({ type: 'unlock-all' }),
-  }, 'Open all labs');
+    class: 'hud-album hud-unlock', type: 'button',
+    onclick: () => store.dispatch({ type: store.getState().unlockAll ? 'relock' : 'unlock-all' }),
+  });
 
   const modeInfo = h('div', { class: 'hud-mode-info', id: 'mode-info', hidden: true },
     h('p', {}, caps.mode === 'native'
@@ -80,7 +81,10 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
     const progress = next ? (state.silver - rank.minSilver) / (next.minSilver - rank.minSilver) : 1;
     meter.update(progress, `${state.silver} silver`,
       next ? `${rank.title}, ${next.minSilver - state.silver} to ${next.title}` : rank.title);
-    unlockButton.hidden = state.unlockAll;
+    unlockButton.textContent = state.unlockAll ? 'Back to my progress' : 'Open all labs';
+    unlockButton.title = state.unlockAll
+      ? 'Lock the rolls again where your own progress left off'
+      : 'Open every roll and lab, skipping the trials';
     albumCount.textContent = `${state.negatives.length}/${NEGATIVES.length}`;
   };
   render(store.getState());

@@ -51,6 +51,7 @@ export type Action =
   | { type: 'earn-stamp'; id: string }
   | { type: 'solve-exercise'; id: string; revealed: boolean }
   | { type: 'unlock-all' }
+  | { type: 'relock' }
   | { type: 'set-name'; name: string }
   | { type: 'reset' };
 
@@ -113,6 +114,9 @@ export function reduce(state: GameState, action: Action): Transition {
     }
     case 'unlock-all':
       return { state: { ...state, unlockAll: true }, rewards: [] };
+    // Progress is never touched by unlock-all, so dropping the flag restores it.
+    case 'relock':
+      return { state: { ...state, unlockAll: false }, rewards: [] };
     case 'reset':
       return { state: initialState(), rewards: [] };
   }
