@@ -93,6 +93,25 @@ At 4× CPU on the tray view: **72% idle, p95 frame 10.1 ms, 0 long frames**. Col
 Only the hero card is uploaded on that first frame, because the prints on the line are off screen.
 The liquid samples 8 ripples × 3 heights per pixel, a fixed cost bounded by the tray's screen area.
 
+## The line as a map (prints, loupe, turn-over, X-ray)
+
+Measured on the production build at 4× CPU, line view, 1440×900 at DPR 2:
+
+| State | Idle % | p95 frame | Long frames |
+| --- | --- | --- | --- |
+| Line, photos on every print | 76.7 | 10.0 ms | 0 |
+| A print turned over (back uploaded, line dimmed) | 72.4 | 10.0 ms | 0 |
+| X-ray on, first try (`outline` on the drawable root) | **41.0** | 10.1 ms | 0 |
+| X-ray on, inset `box-shadow` instead | **75.7** | 10.0 ms | 0 |
+
+The first X-ray version re-uploaded every visible print 30 times a second: counting
+`changedElements` showed each card changing on every frame, and switching rules off one at a
+time isolated the root's `outline`. Descendant outlines are fine. The loupe and the dimming
+are shader uniforms, so they never cause an upload. The back of a print is one shared
+510×690 element, uploaded only while it faces the camera. JS heap on the line is now about
+48–55 MB (13 SVG pictures, the shared back and the hero tray); it was 21–25 MB before the
+opening shot. Darkroom entry JS: 38.5 kB gzip of a 40 kB budget.
+
 ## Known limits
 
 - The entry bundle is dominated by three.js (≈150 kB gz); its WebGL renderer

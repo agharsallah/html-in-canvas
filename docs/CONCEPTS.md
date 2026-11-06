@@ -65,6 +65,36 @@ Code: `src/world/hero/` (`hero-spot.ts`, `developer-tray.ts`, `liquid-material.t
 safelight shafts (`world/light-shafts.ts`), a soft shadow behind every print, and prints that
 lift toward you on hover (the DOM geometry follows, so the button stays under the pointer).
 
+## 2c. The line as a map of the API
+
+Before you start a roll, the line already teaches. Every print is drawable HTML, and four
+things make that visible:
+
+- **A photograph per roll.** Each print carries a picture of its chapter (the Smudge's pixels,
+  fog banks, a bell, a lens, gears...), drawn as plain SVG in the roll's process colours. No
+  `<use>`, `<pattern>` or `<feImage>`: snapshots leave those out (read-back-allowed rendering).
+  Code: `src/ui/print-art/`.
+- **Latent prints and the safelight loupe.** Locked prints carry their full content, but the
+  shader keeps it faint. Hover one and a magnifying disc of red safelight develops what is
+  under the pointer. The pointer position comes from the card's own `offsetX`/`offsetY`
+  through the 3D transform. Code: `print-material.ts` (`uLoupe`), `hub-input.ts` (`cardPoint`).
+- **Turn a print over.** Click any print, or its *Notes* button, and it comes off the wall and
+  flips. The back is a second drawable shared by every print: one line per concept, the four
+  frames as a contact sheet, what you'll build, and *Start roll* when the roll is open. The face
+  turned away becomes `inert`, like the official WebGL flip-card demo; the rest of the line
+  dims; ← → turn over the neighbours; Esc or a click on the wall hangs it back. Back faces are
+  culled from hit testing (`facesCamera` in `native-surfaces.ts`). Code: `world/inspector.ts`,
+  `ui/print-verso.ts`, notes in `story/roll-notes.ts`.
+- **X-ray (button or `X`).** Outlines and tags every element inside the prints, the back and
+  the hero card. The CSS change makes the canvas fire `paint` and the snapshots re-upload,
+  which is the point. A tooltip names the element the browser hit, in its own pixels, through
+  the 3D transform. Code: `ui/xray.ts`, `styles/xray.css`.
+
+Finding worth keeping: in Chrome 157 an `outline` on the drawable element *itself* marks its
+snapshot changed on every geometry update, so the print re-uploads every frame (X-ray first
+cost 35 points of idle time). Outlines on descendants don't. X-ray uses an inset `box-shadow`
+on the drawable root instead.
+
 ## 3. The journey: rolls, processes and foes
 
 Each chapter is a **roll of film**, printed with a different historical
