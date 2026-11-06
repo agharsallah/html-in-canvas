@@ -1,0 +1,239 @@
+/* Roll 11: albumen print. Warm brass on egg-white paper, teal for the paint gear. */
+.clock-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- lab */
+.clock-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  min-width: 0;
+}
+.clock-main,
+.clock-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-width: 0;
+}
+.clock-scene-host {
+  height: 260px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, color-mix(in srgb, var(--glow) 50%, var(--paper)), var(--paper) 80%);
+}
+.clock-transport {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.clock-narration {
+  margin: 0;
+  min-height: 3em;
+  padding: var(--space-2) var(--space-3);
+  border-left: 4px solid var(--accent);
+  background: var(--surface);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.clock-summary {
+  margin: 0;
+  padding-left: var(--space-5);
+  font-size: var(--step--1);
+}
+.clock-summary:empty {
+  display: none;
+}
+.clock-model-note {
+  margin: 0;
+  font-size: 0.75rem;
+  color: color-mix(in srgb, var(--ink) 70%, var(--paper));
+}
+.clock-controls .ui-segmented {
+  flex-wrap: wrap;
+}
+.clock-amode {
+  display: grid;
+  gap: var(--space-2);
+}
+.clock-injects {
+  display: grid;
+  gap: var(--space-2);
+}
+.clock-probe {
+  display: grid;
+  gap: var(--space-2);
+}
+.clock-probe-canvas {
+  width: 120px;
+  height: 40px;
+  border: var(--line-soft);
+}
+.clock-probe-chip {
+  padding: 4px 8px;
+  background: #fff8ec;
+  color: var(--ink);
+  font: 600 14px var(--font-mono);
+}
+.clock-probe-log {
+  background: #2b1d14;
+  color: #f6dfbd;
+}
+.clock-probe-log:empty {
+  display: none;
+}
+
+/* -------------------------------------------------------- frame ledger */
+.ledger-scroll {
+  overflow-x: auto;
+}
+.ledger-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-family: var(--font-body);
+}
+.ledger .legend-item[data-kind='step'] { --series: var(--ink); }
+.ledger .legend-item[data-kind='handler'] { --series: var(--second); }
+.ledger .legend-item[data-kind='loop'] { --series: var(--accent); }
+.ledger .legend-item[data-kind='quiet'] { --series: color-mix(in srgb, var(--ink) 25%, var(--paper)); }
+.ledger .legend-item[data-kind='jam'] { --series: var(--error); }
+.ledger-band rect { fill: color-mix(in srgb, var(--accent) 6%, transparent); }
+.ledger-band[data-odd='0'] rect { fill: color-mix(in srgb, var(--second) 7%, transparent); }
+.ledger-frame { font: 600 12px var(--font-mono); fill: var(--ink); }
+.ledger-badge { font-size: 11px; fill: var(--accent); }
+.ledger-row { font-size: 11px; fill: var(--ink); }
+.ledger-guide { stroke: color-mix(in srgb, var(--ink) 12%, transparent); stroke-width: 1; }
+.ledger-path { fill: none; stroke: color-mix(in srgb, var(--ink) 55%, transparent); stroke-width: 1.5; stroke-linejoin: round; }
+.ledger-dot circle { fill: var(--ink); stroke: var(--paper); stroke-width: 1.5; }
+.ledger-handler circle { fill: var(--second); }
+.ledger-loop circle { fill: var(--accent); }
+.ledger-quiet circle { fill: var(--paper); stroke: color-mix(in srgb, var(--ink) 45%, transparent); }
+.ledger-partial circle { fill: var(--paper); stroke: var(--ink); stroke-dasharray: 2 2; }
+.ledger-jam circle { fill: var(--error); }
+.ledger-current circle { stroke: var(--glow); stroke-width: 3; }
+.ledger-flag { font: 600 11px var(--font-mono); }
+.ledger-flag-this { fill: var(--second); }
+.ledger-flag-next { fill: var(--accent); }
+.ledger-flag-jam { fill: var(--error); }
+
+/* -------------------------------------------------------------- figures */
+.clock-figure .clock-fig-row rect { fill: var(--surface, white); stroke: var(--ink); stroke-width: 1.2; }
+.clock-figure .clock-fig-row text { font-size: 12px; fill: var(--ink); }
+.clock-figure .clock-fig-opt rect { stroke-dasharray: 4 3; }
+.clock-figure .clock-fig-opt-C rect { fill: var(--second, #2a9d8f); stroke-dasharray: none; }
+.clock-figure .clock-fig-opt-C text { fill: white; font-weight: 700; }
+.clock-figure .clock-fig-loop { fill: none; stroke-width: 2; stroke-dasharray: 5 4; }
+.clock-figure .clock-fig-loop-A { stroke: var(--accent); }
+.clock-figure .clock-fig-loop-B { stroke: color-mix(in srgb, var(--accent) 60%, var(--ink)); }
+.clock-figure .clock-fig-head { fill: var(--ink); }
+.clock-figure .clock-fig-note { font-size: 11px; fill: var(--ink); }
+.clock-figure rect { fill: none; stroke: var(--ink); stroke-width: 1.2; }
+.clock-figure .clock-fig-frame rect { stroke-dasharray: 5 3; }
+.clock-figure .clock-fig-canvas rect { fill: color-mix(in srgb, var(--accent) 12%, white); }
+.clock-figure .clock-fig-inner rect { fill: color-mix(in srgb, var(--second) 18%, white); }
+.clock-figure .clock-fig-label { font: 12px var(--font-mono); fill: var(--ink); }
+.clock-figure .clock-fig-badge circle { fill: var(--accent); }
+.clock-figure .clock-fig-badge text { fill: white; font-weight: 700; font-size: 12px; }
+
+/* ---------------------------------------------------------------- trial */
+.clock-trial {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 46rem;
+}
+.clock-phase {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.clock-phase1 {
+  display: grid;
+  gap: var(--space-3);
+}
+.clock-order {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: gear;
+}
+.clock-gear-card {
+  counter-increment: gear;
+  display: grid;
+  grid-template-columns: auto auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border: var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  box-shadow: var(--lift-1, 2px 2px 0 var(--ink));
+}
+.clock-gear-card::before {
+  content: counter(gear);
+  font: 600 var(--step--1) var(--font-mono);
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
+.clock-gear-card[data-step='paint-event'] .clock-gear-glyph {
+  color: var(--second);
+}
+.clock-gear-glyph {
+  font-size: 1.4rem;
+  color: var(--accent);
+}
+.clock-gear-name {
+  overflow-wrap: anywhere;
+}
+.clock-moves {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+.clock-move {
+  min-width: 2.4rem;
+  min-height: 2.4rem;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  background: var(--paper);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.clock-move:hover:not([disabled]) {
+  background: color-mix(in srgb, var(--accent) 18%, var(--paper));
+}
+.clock-move:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+.clock-move[disabled] {
+  opacity: 0.35;
+  cursor: default;
+}
+
+@media (max-width: 1080px) {
+  .clock-lab {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .clock-scene-host {
+    height: 200px;
+  }
+  .clock-gear-card {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+  }
+  .clock-gear-glyph {
+    display: none;
+  }
+}
