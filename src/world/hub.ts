@@ -140,7 +140,7 @@ export class Hub {
     this.hanging.forEach(({ roll, print, card }, index) => {
       const view = viewOf(state, roll, index);
       renderPrintCard(card, roll, view);
-      print.setDevelopTarget(view.status === 'locked' ? 0.2 : 1, instant);
+      print.setDevelopTarget(view.status === 'locked' ? 0.4 : 1, instant);
     });
     this.inspector?.refresh();
   }

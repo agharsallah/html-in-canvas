@@ -197,11 +197,11 @@
   filter: none;
 }
 .css3d-layer .print-card[data-status='locked'] > * {
-  opacity: 0.2;
+  opacity: 0.45;
   transition: opacity 0.4s var(--ease-develop);
 }
 .css3d-layer .print-card[data-status='locked']:hover > * {
-  opacity: 0.7;
+  opacity: 1;
 }
 
 .print-card svg {
