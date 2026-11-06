@@ -1,0 +1,160 @@
+/* Roll 01: platinum print. Soft greys, drifting fog, ghosted outlines. */
+.fog-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.fog-lab {
+  display: grid;
+  grid-template-columns: minmax(15rem, 20rem) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.fog-row {
+  display: grid;
+  gap: 2px;
+}
+.fog-status {
+  padding-left: calc(44px + 0.75em);
+  font-size: var(--step--1);
+  color: color-mix(in srgb, var(--ink) 65%, var(--paper));
+}
+.fog-status[data-state='drawn'] { color: var(--success); font-weight: 700; }
+.fog-status[data-state='error'] { color: var(--error); font-weight: 700; }
+
+.fog-stage {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.fog-views {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+}
+.view {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.view figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.view-scene {
+  height: 300px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+}
+@media (max-width: 1280px) {
+  .fog-views {
+    grid-template-columns: 1fr;
+  }
+}
+.lab-surface[data-content='fallback'] {
+  background:
+    repeating-linear-gradient(135deg, transparent 0 10px, color-mix(in srgb, var(--ink) 5%, transparent) 10px 11px),
+    color-mix(in srgb, var(--paper) 85%, var(--ink));
+}
+.fog-child {
+  display: block;
+  width: 320px;
+  margin: 0;
+  padding: 8px 12px;
+  background: white;
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+  font-family: var(--font-body);
+}
+h3.fog-child {
+  font-family: var(--font-display);
+  font-size: 24px;
+}
+
+/* Trial */
+.poem-trial {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.poem-build {
+  display: grid;
+  gap: var(--space-3);
+}
+.poem-prints {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-4);
+  align-content: start;
+}
+.poem-prints figure {
+  margin: 0;
+}
+.poem-prints figcaption {
+  margin-top: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.poem-prints .console {
+  grid-column: 1 / -1;
+}
+.poem-print {
+  min-height: 12rem;
+  padding: var(--space-4) var(--space-5);
+  background: white;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  box-shadow: var(--lift-2);
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.poem-print[data-goal='true'] {
+  border-style: dashed;
+  box-shadow: none;
+}
+.poem-lines p {
+  margin: 0;
+}
+.poem-empty {
+  margin: 0;
+  color: color-mix(in srgb, var(--ink) 40%, white);
+  font-style: italic;
+}
+.poem-you[data-state='missing'] {
+  outline: 1.5px dashed var(--error);
+  outline-offset: 2px;
+}
+.poem-you[data-sparkle='true'] {
+  font-weight: 700;
+  background:
+    radial-gradient(circle at 20% 30%, #fff 0 1.5px, transparent 2px),
+    radial-gradient(circle at 70% 60%, #fff 0 1px, transparent 2px),
+    radial-gradient(circle at 45% 80%, #fff 0 1.5px, transparent 2px),
+    #2f3538;
+  color: white;
+  padding: 0 4px;
+}
+.poem-advert {
+  margin: var(--space-3) 0 0;
+  padding: var(--space-2);
+  background: #ffe95a;
+  font-family: var(--font-body);
+  font-weight: 700;
+}
+
+@media (max-width: 1080px) {
+  .fog-lab,
+  .poem-trial {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 560px) {
+  .poem-prints {
+    grid-template-columns: 1fr;
+  }
+}
