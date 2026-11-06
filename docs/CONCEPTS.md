@@ -74,9 +74,11 @@ things make that visible:
   fog banks, a bell, a lens, gears...), drawn as plain SVG in the roll's process colours. No
   `<use>`, `<pattern>` or `<feImage>`: snapshots leave those out (read-back-allowed rendering).
   Code: `src/ui/print-art/`.
-- **Latent prints and the safelight loupe.** Locked prints carry their full content, but the
-  shader keeps it faint. Hover one and a magnifying disc of red safelight develops what is
-  under the pointer. The pointer position comes from the card's own `offsetX`/`offsetY`
+- **Latent prints and the safelight loupe.** Locked prints carry their full content, half
+  developed: readable, but muted. What stands out most from the paper develops first, so dark
+  ink on light paper and light ink on the tintype and cyanotype papers read equally well.
+  Hover one and a glass loupe with a safelight rim shows that spot fully developed, crisp and
+  in true colours. The pointer position comes from the card's own `offsetX`/`offsetY`
   through the 3D transform. Code: `print-material.ts` (`uLoupe`), `hub-input.ts` (`cardPoint`).
 - **Turn a print over.** Click any print, or its *Notes* button, and it comes off the wall and
   flips. The back is a second drawable shared by every print: one line per concept, the four
