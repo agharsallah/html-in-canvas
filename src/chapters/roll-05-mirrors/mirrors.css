@@ -1,0 +1,232 @@
+/* Roll 05: tintype. A dark lacquered plate, warm highlights, cold blue ghosts. */
+.chapter[data-roll='mirrors'] {
+  /* A dark paper: lift surfaces from the plate instead of toward white. */
+  --surface: color-mix(in srgb, var(--paper) 84%, #f1e9db);
+  --ghost: #4091d4;
+  --hit: #bf8a2e;
+  --missed: #e0517c;
+  --empty: #a39d93;
+  color-scheme: dark;
+}
+.chapter[data-roll='mirrors']::before {
+  mix-blend-mode: screen;
+  opacity: 0.06;
+}
+.chapter[data-roll='mirrors'] .ui-objective-box {
+  background: var(--paper);
+}
+.mirror-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* --------------------------------------------------------------- figures */
+.chapter[data-roll='mirrors'] .figure-svg { width: 100%; height: auto; }
+.mfig-canvas { fill: color-mix(in srgb, var(--paper) 70%, black); stroke: var(--ink); stroke-opacity: 0.3; }
+.mfig-drawn { fill: var(--accent); }
+.mfig-ghost { fill: color-mix(in srgb, var(--ghost) 18%, transparent); stroke: var(--ghost); stroke-width: 2; stroke-dasharray: 6 4; }
+.mfig-label { font: 600 13px var(--font-body); fill: #2d2a27; }
+.mfig-card .mfig-label { fill: var(--ink); }
+.mfig-note { font: 11px var(--font-mono); fill: var(--ghost); }
+.mfig-caption { font: 12px var(--font-mono); fill: var(--ink); }
+.mfig-hit { fill: var(--hit); stroke: var(--ink); }
+.mfig-miss { fill: var(--missed); stroke: var(--ink); }
+.mfig-ghost-click { fill: none; stroke: var(--ghost); stroke-width: 3; }
+.mfig-card { fill: color-mix(in srgb, var(--paper) 80%, white); stroke: var(--ink); stroke-opacity: 0.4; }
+.mfig-card-lifted { fill: color-mix(in srgb, var(--accent) 45%, var(--paper)); stroke: var(--accent); stroke-opacity: 1; }
+.mfig-ray { stroke: var(--glow); stroke-width: 3; stroke-dasharray: 4 3; }
+
+/* ------------------------------------------------------------------ lab */
+.mirror-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(15rem, 20rem);
+  gap: var(--space-5);
+  align-items: start;
+}
+.mirror-main { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-4); min-width: 0; }
+.mirror-stage .lab-surface { min-height: 320px; background: color-mix(in srgb, var(--paper) 70%, black); }
+.mirror-lab .lab-sim-layer,
+.mirror-lab .lab-sim-layer > * { pointer-events: none; }
+.mirror-target {
+  display: block;
+  width: 130px;
+  padding: 10px 14px;
+  margin: 0;
+  border: 2px solid #2d2a27;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #2d2a27;
+  font: 700 16px var(--font-body);
+  box-shadow: 0 3px 0 #2d2a27;
+}
+.ghost-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: visible;
+}
+.ghost-area {
+  fill: color-mix(in srgb, var(--ghost) 16%, transparent);
+  stroke: var(--ghost);
+  stroke-width: 2;
+  stroke-dasharray: 7 5;
+}
+.ghost-ripple { fill: none; stroke-width: 3; opacity: 0; }
+.ghost-ripple[data-kind='hit'] { stroke: var(--hit); }
+.ghost-ripple[data-kind='missed'] { stroke: var(--missed); }
+.ghost-ripple[data-kind='ghost'] { stroke: var(--ghost); }
+.ghost-ripple[data-kind='empty'] { stroke: var(--empty); }
+.ghost-ripple-go { animation: ghost-ripple 700ms ease-out both; }
+@keyframes ghost-ripple {
+  from { r: 4px; opacity: 1; }
+  to { r: 34px; opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ghost-ripple-go { animation: none; opacity: 1; r: 10px; }
+}
+
+.matrix-readout { display: grid; gap: var(--space-2); min-width: 0; overflow-x: auto; }
+.matrix-table {
+  width: 100%;
+  border-collapse: collapse;
+  font: var(--step--1) / 1.4 var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.matrix-table caption { text-align: left; font-family: var(--font-display); font-size: var(--step-1); margin-bottom: var(--space-2); }
+.matrix-table th, .matrix-table td { padding: 4px 6px; border-bottom: var(--line-soft); text-align: right; }
+.matrix-table tbody th { text-align: left; font-weight: 400; white-space: nowrap; }
+.matrix-table td[data-off='true'] { background: color-mix(in srgb, var(--missed) 30%, transparent); color: var(--ink); font-weight: 700; }
+.matrix-status { margin: 0; font-size: var(--step--1); padding-left: var(--space-3); border-left: 3px solid var(--empty); }
+.matrix-status[data-state='ok'] { border-color: var(--hit); }
+.matrix-status[data-state='off'] { border-color: var(--missed); }
+.matrix-status[data-state='none'] { border-color: var(--ghost); }
+
+.hit-scatter .scatter-svg { display: block; width: 100%; height: auto; max-height: 260px; }
+.scatter-frame { fill: color-mix(in srgb, var(--paper) 75%, black); stroke: var(--ink); stroke-opacity: 0.2; }
+.scatter-drawn { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 1.5; }
+.scatter-hit-area { fill: none; stroke: var(--ghost); stroke-width: 2; stroke-dasharray: 7 5; }
+.scatter-mark { stroke: var(--paper); stroke-width: 2; }
+.scatter-mark[data-kind='hit'] { fill: var(--hit); }
+.scatter-mark[data-kind='missed'] { fill: none; stroke: var(--missed); stroke-width: 3; stroke-linecap: round; }
+.scatter-mark[data-kind='ghost'] { fill: var(--ghost); }
+.scatter-mark[data-kind='empty'] { fill: none; stroke: var(--empty); stroke-width: 1.5; }
+.scatter-legend .legend-item { gap: 0.4em; }
+.scatter-key i { width: 18px; height: 10px; border-radius: 2px; }
+.scatter-key .scatter-key-drawn { background: color-mix(in srgb, var(--accent) 40%, transparent); border: 1.5px solid var(--accent); }
+.scatter-key .scatter-key-hit { border: 2px dashed var(--ghost); }
+
+.mirror-controls .console { min-height: 6rem; }
+.mirror-tilt { grid-column: 1 / -1; }
+.mirror-tilt-host { height: 280px; border: var(--line); border-radius: var(--radius-card); overflow: hidden; box-shadow: var(--lift-second); }
+.mirror-tilt-target {
+  display: block;
+  width: 240px;
+  height: 100px;
+  margin: 0;
+  border: 3px solid #2d2a27;
+  border-radius: 10px;
+  background: #f6ead2;
+  color: #2d2a27;
+  font: 700 24px var(--font-display);
+}
+.mirror-tilt-target:focus-visible { outline: 4px solid var(--ghost); }
+.tilt-overlay { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.tilt-drawn { fill: none; stroke: var(--accent); stroke-width: 1.5; stroke-opacity: 0.6; }
+.tilt-hit { fill: color-mix(in srgb, var(--ghost) 14%, transparent); stroke: var(--ghost); stroke-width: 2; stroke-dasharray: 7 5; }
+.tilt-status {
+  position: absolute;
+  left: var(--space-2);
+  bottom: var(--space-2);
+  margin: 0;
+  padding: 2px var(--space-2);
+  font-size: 0.72rem;
+  border: var(--line-soft);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+}
+
+/* ---------------------------------------------------------------- trial */
+.maze-trial { display: grid; gap: var(--space-3); max-width: 72rem; }
+.maze-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--space-2) var(--space-5); }
+.maze-title { margin: 0; font-family: var(--font-display); font-size: var(--step-3); }
+.maze-progress, .maze-brief { margin: 0; }
+.maze-progress { font-family: var(--font-mono); font-size: var(--step--1); }
+.maze-grid { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.maze-play, .maze-side { display: grid; gap: var(--space-3); min-width: 0; }
+.maze-fire { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.maze-fire .ui-button[data-done='true'] { border-color: var(--hit); box-shadow: 2px 2px 0 0 var(--hit); }
+.maze-feedback:empty { display: none; }
+.maze-side .tree-line .ui-segmented { font-size: 0.85em; }
+
+.board-frame {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 480 / 300;
+  overflow: hidden;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+  background: color-mix(in srgb, var(--paper) 70%, black);
+  cursor: crosshair;
+}
+.board { position: absolute; left: 0; top: 0; width: 480px; height: 300px; transform-origin: 0 0; }
+.board-piece {
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  transform-origin: 0 0;
+  border: 2px solid #2d2a27;
+  border-radius: 8px;
+  background: var(--accent);
+  color: #2d2a27;
+  font: 700 15px var(--font-body);
+}
+.board-piece[data-scenery='true'] {
+  border: 0;
+  border-radius: 0;
+  background:
+    repeating-linear-gradient(115deg, transparent 0 38px, rgb(241 233 219 / 0.06) 38px 40px),
+    linear-gradient(160deg, #5a554e, #34302c);
+}
+.board-piece[data-done='true'] { box-shadow: 0 0 0 4px var(--hit); }
+.board-floor {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.board-floor::before {
+  content: '';
+  position: absolute;
+  left: -16px;
+  top: -16px;
+  width: 32px;
+  height: 32px;
+  border: 2px dashed var(--empty);
+  border-radius: 50%;
+}
+.board-floor[data-done='true']::before { border: 3px solid var(--hit); }
+.board-floor span { position: absolute; left: 22px; top: -9px; white-space: nowrap; font: 12px var(--font-mono); color: var(--ink); }
+.board-svg { position: absolute; inset: 0; width: 480px; height: 300px; pointer-events: none; overflow: visible; }
+.board-ghost { fill: color-mix(in srgb, var(--ghost) 22%, transparent); stroke: var(--ghost); stroke-width: 2; stroke-dasharray: 7 5; }
+.board-ghost[data-scenery='true'] { fill: color-mix(in srgb, var(--ghost) 8%, transparent); }
+.board-rank circle { fill: var(--ghost); }
+.board-rank text { font: 700 12px var(--font-mono); fill: #10202c; }
+.board-mark { fill: none; stroke-width: 3; }
+.board-mark[data-ok='true'] { stroke: var(--hit); }
+.board-mark[data-ok='false'] { stroke: var(--missed); }
+
+@media (max-width: 1080px) {
+  .mirror-lab, .maze-grid { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 560px) {
+  .matrix-table th, .matrix-table td { padding: 3px 3px; }
+  .mirror-stage .lab-surface { min-height: 280px; }
+}
