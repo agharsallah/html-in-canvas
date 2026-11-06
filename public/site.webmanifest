@@ -1,0 +1,10 @@
+{
+  "name": "Drawable: a darkroom adventure through HTML-in-Canvas",
+  "short_name": "Drawable",
+  "description": "Learn the HTML-in-Canvas API by developing HTML into canvas prints in a 3D darkroom.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1b120e",
+  "theme_color": "#1b120e",
+  "icons": [{ "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }]
+}

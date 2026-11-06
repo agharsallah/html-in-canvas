@@ -1,5 +1,7 @@
 # Drawable
 
+**Live:** [htmlincanvas.vercel.app](https://htmlincanvas.vercel.app) · [the field guide](https://htmlincanvas.vercel.app/guide)
+
 **A darkroom adventure through HTML-in-Canvas.**
 
 Drawable teaches the [WICG HTML-in-Canvas proposal](https://github.com/WICG/html-in-canvas) by using it everywhere. You walk through a 3D darkroom where every chapter hangs on a wire as a photographic print, and every print is real HTML drawn into WebGL. You can select its words, Tab to its buttons, and click them on a tilted 3D surface. Thirteen chapters take you from "why can't canvas text be read?" to workers, WebGPU, accessibility and the rendering update, each with a story, a hands-on lab, exercises you write by hand, and a trial.
