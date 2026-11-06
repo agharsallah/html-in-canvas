@@ -44,3 +44,7 @@ dist-perf/
 
 .vercel
 vercel.json
+
+# Media sources and the social video (large; regenerate from the recordings)
+docs/media/raw/
+docs/media/*.mp4

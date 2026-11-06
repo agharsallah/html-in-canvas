@@ -1,33 +1,86 @@
+<div align="center">
+
+<a href="https://htmlincanvas.vercel.app"><img src="docs/media/hero.gif" width="680" alt="A card of real HTML develops out of blank paper in a tray of rippling developer, and a name is typed into it through the liquid."></a>
+
 # Drawable
 
-**Live:** [htmlincanvas.vercel.app](https://htmlincanvas.vercel.app) · [the field guide](https://htmlincanvas.vercel.app/guide)
+**Learn HTML-in-Canvas by developing it in a darkroom.**
 
-**A darkroom adventure through HTML-in-Canvas.**
+A 3D, story-driven course where every page is real HTML drawn into a canvas,<br>
+and you can still click it, select it, Tab to it, and type into it.
 
-Drawable teaches the [WICG HTML-in-Canvas proposal](https://github.com/WICG/html-in-canvas) by using it everywhere. You walk through a 3D darkroom where every chapter hangs on a wire as a photographic print, and every print is real HTML drawn into WebGL. You can select its words, Tab to its buttons, and click them on a tilted 3D surface. Thirteen chapters take you from "why can't canvas text be read?" to workers, WebGPU, accessibility and the rendering update, each with a story, a hands-on lab, exercises you write by hand, and a trial.
+[**Play it live**](https://htmlincanvas.vercel.app) · [**The field guide**](https://htmlincanvas.vercel.app/guide) · [How it works](#under-the-hood) · [Run it locally](#run-it-locally)
 
-There is also a [one-page field guide](guide.html) with every concept and a live figure for each.
+![Chrome 157+ native](https://img.shields.io/badge/Chrome_157+-native_API-2ee6c0?style=flat-square&labelColor=1d0f1f)
+![Other browsers simulated](https://img.shields.io/badge/other_browsers-simulated-ffb547?style=flat-square&labelColor=1d0f1f)
+![TypeScript strict](https://img.shields.io/badge/TypeScript-strict-ff5a36?style=flat-square&labelColor=1d0f1f)
+![three.js](https://img.shields.io/badge/three.js-r187-ff4fa3?style=flat-square&labelColor=1d0f1f)
+![No UI framework](https://img.shields.io/badge/UI_framework-none-d7c3cf?style=flat-square&labelColor=1d0f1f)
 
-> Open it in **Chrome 157 or later** to see the real API. Other browsers get a faithful simulation, and the top bar tells you which mode you're in.
+</div>
 
-## Contents
+---
 
-- [What you'll learn](#what-youll-learn)
-- [How a chapter works](#how-a-chapter-works)
-- [The darkroom](#the-darkroom)
-- [Getting started](#getting-started)
-- [Browser support](#browser-support)
-- [Project structure](#project-structure)
-- [How it's built](#how-its-built)
-- [Adding or changing a chapter](#adding-or-changing-a-chapter)
-- [Quality checks](#quality-checks)
-- [Documentation](#documentation)
+## Canvas has always eaten your text
 
-## What you'll learn
+Put words into a `<canvas>` and they stop being words. Screen readers can't read them, you can't select them, translation tools skip them, and buttons have to be faked with hit-boxes and prayers.
 
-Each chapter is a "roll of film" printed with a different historical photographic process, which gives it its own palette, textures and sound.
+The [WICG HTML-in-Canvas proposal](https://github.com/WICG/html-in-canvas) fixes that. A canvas can now **draw real HTML elements** while the browser keeps them alive: laid out, accessible, focusable and clickable, even on a tilted 3D surface.
 
-| # | Chapter | You face | Concepts |
+```html
+<canvas id="darkroom" content="drawable">
+  <form drawable>
+    <label>Your name <input></label>
+    <button>Develop</button>
+  </form>
+</canvas>
+
+<script>
+  const ctx = darkroom.getContext('2d');
+  const form = darkroom.querySelector('form');
+  darkroom.onpaint = () => {
+    ctx.reset();
+    ctx.drawElementImage(form, 40, 40); // a live form, drawn into pixels
+  };
+</script>
+```
+
+**Drawable** teaches the whole API by using it everywhere. You walk through a darkroom, each chapter hangs on the wire as a photographic print, and every print is real HTML rendered by WebGL. Start with "why can't canvas text be read?" and end up fluent in `paint` events, 3D hit testing, workers, WebGPU, accessibility and the rendering update.
+
+> 🎞️ **Open it in Chrome 157 or later** to see the real API at work. Every other browser gets a faithful simulation with the same rules and goals, and the top bar tells you which mode you're in.
+
+## The 30-second tour
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+**Peek at what's coming.** Locked chapters hang as latent images. Hover one and a safelight loupe develops the spot under your pointer.
+
+<img src="docs/media/loupe.gif" alt="A loupe with a red safelight rim moves over a faint locked print and develops its picture, title and code chips." width="100%">
+
+</td>
+<td width="50%" valign="top">
+
+**Turn any print over.** The back is HTML too: what you'll learn, the four frames, what you'll build. Use ← and → to browse, and Esc to hang it back.
+
+<img src="docs/media/turn.gif" alt="A print lifts off the wire and flips to show notes on its back, then the next print turns over." width="100%">
+
+</td>
+</tr>
+</table>
+
+**Press X to see the DOM.** X-ray outlines every element inside the 3D prints. The tooltip names the element your pointer is on, in that element's own pixels, after the browser hit-tested it through the 3D transform. No raycasting involved.
+
+<img src="docs/media/xray.jpg" alt="Prints on the wire covered in dashed outlines and tag labels such as h2, ul and button, with a tooltip reading: h2.print-title inside article.print-card, at 170, 226 in its own pixels, hit-tested through a 3D canvasTransform." width="100%">
+
+## Thirteen rolls of film
+
+Each chapter is a roll printed with a different historical photographic process (platinum, cyanotype, tintype, lith…), which gives it its own palette, picture, textures and sounds.
+
+<img src="docs/media/contact.jpg" alt="A contact sheet of all thirteen chapter prints, each with its own illustration and colours." width="100%">
+
+| # | Chapter | You face | You learn |
 | --- | --- | --- | --- |
 | 00 | The blank canvas | The Smudge | Why HTML-in-Canvas, use cases |
 | 01 | The fallback fog | The Fog | `content="drawable"`, `drawable`, nested drawables |
@@ -43,32 +96,49 @@ Each chapter is a "roll of film" printed with a different historical photographi
 | 11 | The clockwork heart | The Deadlock | update the rendering, paint timing options A, B and C |
 | 12 | The endless reel | The future | the auto-updating canvas, threaded effects |
 
-Chapters unlock in order: finishing a chapter's trial develops the next print.
+Finishing a chapter's trial develops the next print.
 
-## How a chapter works
+## How a chapter plays
 
 Every chapter has four frames, shown as a filmstrip at the top of the screen.
 
-1. **Story.** A short scene with a 3D diorama that reacts to each line. Each concept is introduced on a card, and the card goes into your **notebook**, which you can reopen at any time.
-2. **Lab.** A playground built on the real API, with a list of goals: switch attributes, drag rects, slow a worker down, click a button on a spinning globe. In Chrome 157 the exceptions, `paint` events and hit tests you see are the browser's own.
-3. **Practice.** Short exercises you write by hand in a code editor. Requirements are listed up front and checked as you type. Help comes in steps: a hint, a second hint, then the solution. Solving one opens **"Your code, running"**, a live scene that acts out what your code does (a bell that rings on every `paint`, snapshots riding a railway, a pie chart whose focused wedge gets a real focus ring). Your code is saved per exercise, and *Reset code* can be undone.
-4. **Trial.** A challenge that checks you understood it: predict when the bell rings, fix a broken timetable, aim through a projection.
+1. **📖 Story.** A short scene beside a 3D diorama that reacts to each line. Every concept lands on a card in your **notebook**, which you can reopen at any time.
+2. **🧪 Lab.** A playground built on the real API, with goals to tick off. In Chrome 157, the exceptions, `paint` events and hit tests you see are the browser's own, not a mock.
+3. **⌨️ Practice.** Short exercises you write by hand. Requirements are listed up front and checked as you type, and help comes in steps: a hint, another hint, then the solution. Your code is saved per exercise, and *Reset* can be undone.
+4. **🎯 Trial.** Prove it: predict when the bell rings, fix a broken timetable, aim through a projection.
 
-**Progress and rewards.** Frames and hand-written exercises earn silver, and silver raises your rank from Apprentice to Darkroom master. Stamps reward clean runs and discoveries. 52 collectible negatives hide in the labs and trials, and the Album shows your collection. Progress is saved in your browser.
+<table>
+<tr>
+<td width="50%"><img src="docs/media/lab-observatory.jpg" alt="The orbit observatory lab: a live form called Ground control rides a satellite around a globe, next to upload controls and goals." width="100%"></td>
+<td width="50%"><img src="docs/media/lab-foundry.jpg" alt="The GPU foundry lab: a card with Pour and Cool buttons is melted and rippled by a shader, next to heat, grain, ripple and melt dials." width="100%"></td>
+</tr>
+<tr>
+<td align="center"><sub>A form you can type into, riding a satellite. Clicks land on the moving face.</sub></td>
+<td align="center"><sub>HTML poured through a melt shader, and the buttons still work.</sub></td>
+</tr>
+</table>
 
-**Feedback.** Correct answers and finished goals throw confetti made of real HTML: code chips, stars and paper squares, all drawn into one canvas. Sound is **off by default**. Turn it on with the *Sound* button and each lab sounds like its place: a foghorn, a struck bell, a film projector's clatter, a steam whistle, a clock's tick-tock. Sounds play only on meaningful moments, never on plain clicks, and back off when they repeat.
+### Your code, running
 
-## The darkroom
+Solve an exercise and the page cheers with **confetti made of HTML** (code chips, stars and paper squares, all drawn into one canvas). Then a live scene opens under it and **acts out what your code does**. Answer the bell, and a bell rings on every `paint` while the readout lists `changedElements`.
 
-The home page is the darkroom.
+<img src="docs/media/solve.gif" alt="An exercise passes its checks, HTML confetti bursts from the success message, and a live scene shows a bell ringing each time the card changes." width="100%">
 
-- **The opening shot.** On a first visit, a card develops out of blank paper in a tray of developer. The card is live HTML refracted through a rippling liquid shader. You can type your name into it, watch its clock tick, and press its *Begin* button under the water.
-- **The line.** Each chapter hangs on the wire as a print with its own picture. Scroll, drag or use the arrow keys to walk along it; Tab visits the prints.
-- **Latent prints.** Locked chapters hang as half-developed images. Hover one and a safelight loupe develops the spot under your pointer.
-- **Turn a print over.** Click any print, locked or not, to take it off the wire. Its back lists what the chapter teaches, its four frames, and what you'll build. Use ← and → to turn the neighbouring prints, and Esc to hang it back.
-- **X-ray.** Press **X**, or the *X-ray* button, to outline every real HTML element inside the 3D scene. A tooltip names the element under your pointer, in that element's own pixels, through the 3D transform.
+All 38 exercises have one. Some of them:
+- captured snapshots ride a railway as frozen carriages, each showing a different time;
+- a tilting button you can actually catch;
+- a pie chart whose focused wedge gets a real `drawFocusIfNeeded` ring;
+- a vault that reads back real pixels and exports a real PNG.
 
-## Getting started
+## Small things we're proud of
+
+- **🔊 The labs sound like their places.** Sound is off until you turn it on. Then the fog has a foghorn, the bell tower a struck bell (only on *real* changes), the projector a clattering film gate, the railway a whistle for late trains, and the clockwork a tick-tock. Plain clicks stay silent, and a sound that keeps firing backs off instead of droning. All of it is synthesized, with no audio files.
+- **🏆 Progress worth collecting.** Silver, ranks from Apprentice to Darkroom master, stamps for clean runs, and 52 negatives hidden in the labs and trials for your album.
+- **🌊 A first impression with a ripple.** The opening card is real HTML lying in developer: type your name and the liquid ripples out from the field you're typing in.
+- **♿ Accessible by construction.** Prints are real DOM, so they're in the accessibility tree; turned-away faces become `inert`; everything works by keyboard; and `prefers-reduced-motion` turns off camera glides, swaying and confetti.
+- **⚡ Fast for what it is.** The frame rate is capped at 60 fps (30 when idle), the world stops drawing when a chapter covers it, only prints on screen upload, and sound, confetti and proof scenes load when first needed. [The numbers are here.](perf/README.md)
+
+## Run it locally
 
 You need **Node.js 20.19+ or 22.12+** (Vite 8's requirement) and **pnpm**.
 
@@ -77,98 +147,99 @@ pnpm install
 pnpm dev
 ```
 
-Open the address Vite prints (usually <http://localhost:5173>). The darkroom is at `/`, and the field guide at `/guide.html`.
+Open the address Vite prints (usually <http://localhost:5173>). The darkroom is at `/` and the field guide at `/guide.html`.
 
 | Command | What it does |
 | --- | --- |
 | `pnpm dev` | Start the dev server with hot reload |
 | `pnpm build` | Typecheck, build both pages, and enforce the bundle budget |
 | `pnpm preview` | Serve the production build locally |
-| `pnpm test` | Run the unit tests once |
-| `pnpm test:watch` | Run the unit tests in watch mode |
+| `pnpm test` | Run the unit tests once (`pnpm test:watch` to keep watching) |
 | `pnpm typecheck` | Typecheck without building |
 | `pnpm perf:budget` | Check the bundle budget of the last build |
 
-### URL switches
+### Shortcuts for exploring
 
-Handy while developing or demoing. They combine: `?reset&unlock=all` gives a fresh save with every chapter open.
+URL switches combine: `?reset&unlock=all` gives a fresh save with every chapter open.
 
 | Switch | Effect |
 | --- | --- |
 | `?unlock=all` | Open every chapter |
 | `?reset` | Wipe saved progress and saved exercise code |
 | `?sim` | Force the simulated fallback, even when the API exists |
-| `#/roll/<id>` | Open a chapter, e.g. `#/roll/bells` |
-| `#/roll/<id>/<frame>` | Open a frame directly: `story`, `lab`, `practice` or `trial` |
+| `#/roll/<id>` | Jump to a chapter, e.g. `#/roll/bells` |
+| `#/roll/<id>/<frame>` | Jump to a frame: `story`, `lab`, `practice` or `trial` |
 
 Chapter ids are `prologue`, `fog`, `bells`, `lens`, `projector`, `mirrors`, `observatory`, `foundry`, `railway`, `lighthouse`, `vault`, `clockwork` and `epilogue`.
 
+In the darkroom:
+- **Scroll, drag or use ← →** to walk the line, and **Tab** to visit the prints.
+- **Click** a print to turn it over, and **Esc** to hang it back.
+- **X** toggles X-ray.
+
 ## Browser support
 
-| Browser | Experience |
+| Browser | What you get |
 | --- | --- |
-| Chrome 157+ | **Native.** Prints, labs and figures use the real API: `drawable` children of WebGL and 2D canvases, real `paint` events, real exceptions, browser hit testing through 3D transforms, WebGPU where available. |
-| Others | **Simulated.** Prints are placed with CSS 3D transforms, and labs run a simulation with the same rules and the same goals. The top bar says *Simulated*. Every chapter can be completed. |
+| **Chrome 157+** | **Native.** Prints, labs and figures use the real API: `drawable` children of WebGL and 2D canvases, real `paint` events, real exceptions, browser hit testing through 3D transforms, and WebGPU where available. |
+| **Everything else** | **Simulated.** Prints are placed with CSS 3D transforms, and labs run a simulation with the same rules and goals. The top bar says *Simulated*, and every chapter can be completed. |
 
-The site respects `prefers-reduced-motion`: no camera glides, swaying or confetti.
+## Under the hood
 
-## Project structure
+- **Vanilla TypeScript, strict, no UI framework.** Small modules throughout, with no 400-line scripts.
+- **One WebGL canvas with `content="drawable"`.** Each print's HTML is a `drawable` child of the three.js canvas. It is uploaded with `texElementSubImage2D` only when the `paint` event lists it in `changedElements`.
+- **The browser does the hit testing.** Each frame, the print's model-view-projection becomes a `DOMMatrix` sent with `updateElementGeometry`, so hover, focus and clicks land on the real elements. Faces turned away from the camera are taken out of hit testing and made `inert`.
+- **One interface, two backends.** World code never branches on mode: `NativeSurfaces` uses the API, and `Css3dSurfaces` places the same elements with CSS 3D transforms.
+- **A pure reducer for the game.** Progress lives in `src/game/state.ts` behind a small persisted store. Exercise drafts live in a separate debounced store, so typing never re-renders the darkroom.
 
-| Path | Contents |
+| Path | What's inside |
 | --- | --- |
 | `src/hic/` | Reusable HTML-in-Canvas helpers: typings, canvas sizing, the paint-driven frame loop, WebGL element textures, projective geometry for 3D hit testing |
-| `src/world/` | The 3D darkroom (three.js): the camera rig, prints, the developer tray, the inspector that turns prints over, and the native and CSS3D surface backends |
-| `src/chapters/` | One folder per chapter (story, lab, exercises, trial, diorama, backdrop), plus `shared/` for the chapter shell, editor and practice flow, and the "Your code, running" scenes in `shared/proof/` |
-| `src/scenes/` | The 3D scenes used by stories and labs |
-| `src/game/` | Progress, silver, ranks, unlocks and stamps as a pure reducer, a persisted store, and saved exercise drafts |
-| `src/story/` | The chapters' data (`rolls.ts`), the notes on the back of each print, and the collectible negatives |
-| `src/ui/` | The HUD, album, dialogue, X-ray, components, charts, the code editor, print art, sound and confetti (`fx/`) |
+| `src/world/` | The 3D darkroom: camera rig, prints, the developer tray, the inspector that turns prints over, native and CSS3D surfaces |
+| `src/chapters/` | One folder per chapter (story, lab, exercises, trial, diorama, backdrop), plus `shared/` for the shell, editor, practice flow, and the "Your code, running" scenes |
+| `src/scenes/` | The 3D scenes behind stories and labs |
+| `src/game/` | Progress, silver, ranks, unlocks and stamps (a pure reducer), plus saved drafts |
+| `src/story/` | Chapter data (`rolls.ts`), the notes on the back of each print, and the collectible negatives |
+| `src/ui/` | HUD, album, dialogue, X-ray, components, charts, the code editor, print art, sound and confetti (`fx/`) |
 | `src/guide/` | The one-page field guide and its live figures |
-| `src/styles/` | Design tokens and styles |
-| `tests/` | Unit tests (Vitest) |
-| `perf/` | The runtime probe, the layout overflow scan, and the measured results |
-| `scripts/` | The bundle budget check |
-| `docs/` | The concept document and research notes |
+| `tests/` · `perf/` · `scripts/` | Unit tests, the runtime probe and layout scan, the bundle budget |
 
-## How it's built
+### Two things we learned the hard way
 
-- **Vanilla TypeScript**, strict, with no UI framework. Modules are kept small: no file is a 400-line script.
-- **three.js** for the darkroom and dioramas, on one WebGL canvas with `content="drawable"`. Each print's HTML is a `drawable` child of that canvas, uploaded with `texElementSubImage2D` only when the `paint` event lists it in `changedElements`.
-- **Hit testing is the browser's.** There is no raycasting for the prints: each frame, the plane's model-view-projection is turned into a DOM matrix and sent with `updateElementGeometry`, so hover, focus and clicks land on the real elements. Faces turned away from the camera are excluded and made `inert`.
-- **One backend interface, two implementations.** World code never branches on mode: `NativeSurfaces` uses the API, and `Css3dSurfaces` places the same elements with CSS 3D transforms.
-- **The game is a pure reducer** (`src/game/state.ts`) behind a small persisted store. Saved exercise code lives in a separate debounced store, so typing never re-renders the darkroom.
-- **Performance.** The frame rate is capped at 60 fps (30 when idle), and the world stops drawing while a chapter covers it. Only prints on screen upload or sync geometry. 3D scenes render on demand. Sound, confetti and the proof scenes load only when first needed. Method and numbers are in [`perf/README.md`](perf/README.md).
+- **Never put an `outline` on a drawable element itself.** In Chrome 157 it marks the snapshot as changed on every geometry update, so the element re-uploads every frame. Use an inset `box-shadow` instead. Outlines on its children are fine.
+- **Snapshots only cover the element's border box**, so outer shadows get clipped to a sliver. Put visual weight inside the box.
 
-## Adding or changing a chapter
+## Adding a chapter
 
-1. **Create** `src/chapters/<folder>/index.ts`, exporting a `ChapterModule` (see `src/chapters/shared/chapter.ts`). It holds:
-   - `story` and its concept cards;
-   - `lab`, `exercises` and `trial`, each with a one-line brief;
-   - optionally, a `diorama` (3D story scene) and a `backdrop` (decorative layer).
-2. **Register it** in `src/story/rolls.ts`: title, foe, logline, concepts, a print process (palette), and a lazy `load`.
-3. **Add the print's picture** in `src/ui/print-art/`, and its notes in `src/story/roll-notes.ts`. A test checks that every concept on the print has a note.
-4. **Give every exercise a proof scene** in `src/chapters/shared/proof/registry.ts`, and add its id to `PROOF_IDS` in `index.ts`. A test checks both lists against the exercises.
-5. **Optionally, add themed sounds:** call `sfx('<cue>')` from `src/ui/fx/lab-sfx.ts` at the lab's meaningful moments.
+1. **Create** `src/chapters/<folder>/index.ts`, exporting a `ChapterModule` (see `src/chapters/shared/chapter.ts`). It holds a `story`, a `lab`, `exercises` and a `trial`, each with a one-line brief, plus an optional `diorama` and `backdrop`.
+2. **Register it** in `src/story/rolls.ts` with a title, foe, logline, concepts, a print process (its palette), and a lazy `load`.
+3. **Give its print a picture** in `src/ui/print-art/`, and write the notes for its back in `src/story/roll-notes.ts`.
+4. **Give every exercise a proof scene** in `src/chapters/shared/proof/registry.ts`, and list its id in `PROOF_IDS`.
+5. **Optionally, make it sound like its place:** call `sfx('<cue>')` from `src/ui/fx/lab-sfx.ts` at meaningful moments.
 
-Notes for chapter code:
-- Use `createLabCanvas()` from `src/chapters/shared/lab-canvas.ts` for 2D labs. It gives you the real API in Chrome 157 and the simulation elsewhere, through one interface.
-- Don't put an `outline` on a drawable element itself. In Chrome 157 it marks the snapshot as changed on every geometry update, so the element re-uploads every frame. Use an inset `box-shadow` instead.
-- Snapshots only cover the element's border box, so outer shadows are clipped.
+Tests check steps 3 and 4 for you. For 2D labs, use `createLabCanvas()` from `src/chapters/shared/lab-canvas.ts`: you write against one interface and get the real API in Chrome 157 and the simulation elsewhere.
 
 ## Quality checks
 
-- **Unit tests.** `pnpm test` covers the game reducer, chapter rules, exercise checks, content integrity, the frame driver, projective geometry, drafts, and the sound gate.
-- **Bundle budget.** `pnpm build` fails if a chunk exceeds its gzip budget (`scripts/check-budget.mjs`).
-- **Runtime probe.** `perf/probe.js` measures main-thread idle time, frame times, long frames and DOM mutations. Paste it into DevTools.
-- **Layout scan.** `perf/overflow-scan.js` walks all 52 chapter frames and reports any text that escapes its box. Run it at desktop width and at 390 px.
+| Check | How |
+| --- | --- |
+| Unit tests | `pnpm test`: game reducer, chapter rules, exercise checks, content integrity, frame driver, projective geometry, drafts, the sound gate |
+| Bundle budget | `pnpm build` fails if any chunk exceeds its gzip budget |
+| Runtime | Paste `perf/probe.js` into DevTools: idle time, frame times, long frames, DOM mutations |
+| Layout | `perf/overflow-scan.js` walks all 52 chapter frames and reports any text escaping its box |
 
-## Documentation
+## Further reading
 
-- [`docs/CONCEPTS.md`](docs/CONCEPTS.md): the story, the chapter map, gamification, the design system, the darkroom features, architecture and accessibility.
+- [`docs/CONCEPTS.md`](docs/CONCEPTS.md): the story, chapter map, gamification, design system, darkroom features, architecture and accessibility.
 - [`docs/research/`](docs/research/): a map of the official material, a deep dive into the examples, the learning-journey plan, and the concept inventory.
 - [`perf/README.md`](perf/README.md): how performance is measured, and the results.
-- `docs-llm/` (git-ignored): the source material, meaning the WICG explainer, its examples, and Chrome's documentation.
+- The source material: the [WICG explainer](https://github.com/WICG/html-in-canvas) and its examples.
 
 ## Privacy
 
-Progress, exercise drafts and the sound preference are stored in your browser's `localStorage` only. The production build includes cookieless Vercel Web Analytics and Speed Insights; both are disabled in development and do nothing when the site is served elsewhere.
+Progress, exercise drafts and your sound preference stay in your browser's `localStorage`. The production build includes cookieless Vercel Web Analytics and Speed Insights; both are off in development and do nothing when the site is served elsewhere.
+
+<div align="center">
+<br>
+<sub>Made in the dark, developed in the light. 🎞️</sub>
+</div>
