@@ -114,7 +114,7 @@ export const lab: Beat = (host, ctx) => {
     apply();
   } });
 
-  const sweep = button({ label: 'Sweep the yard: close every kept image', variant: 'secondary', size: 'sm', onClick: () => engine.sweep() });
+  const sweep = button({ label: 'Sweep the yard: close kept and waiting images', variant: 'secondary', size: 'sm', onClick: () => engine.sweep() });
 
   const sampler = window.setInterval(() => {
     const stats = engine.stats();

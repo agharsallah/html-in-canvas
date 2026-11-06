@@ -150,12 +150,19 @@ function finishDraw(state: RailState, settings: RailSettings, events: RailEvent[
 }
 
 /**
- * Close every open image that is no longer on the railway: the worker kept
- * them (it never closed them), so it can still close them now.
+ * Sweep the yard. The worker holds two kinds of open images it can close
+ * right now: ones it kept after drawing (it never closed them), and a
+ * backlog still waiting to be drawn, of which only the newest matters.
+ * Images still travelling, or on the drawing board, are left alone.
  */
 export function sweepRail(state: RailState): RailEvent[] {
-  const busy = new Set([...state.outbound.map((m) => m.id), ...state.queue, ...(state.working ? [state.working.id] : [])]);
   const events: RailEvent[] = [];
+  for (const id of state.queue.splice(0, Math.max(0, state.queue.length - 1))) {
+    state.open.delete(id);
+    state.capturedAt.delete(id);
+    events.push({ kind: 'close', id, at: state.now, skipped: true });
+  }
+  const busy = new Set([...state.outbound.map((m) => m.id), ...state.queue, ...(state.working ? [state.working.id] : [])]);
   for (const id of [...state.open]) {
     if (busy.has(id)) continue;
     state.open.delete(id);

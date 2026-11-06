@@ -85,6 +85,11 @@ scope.onmessage = (event) => {
       job.form.close();
       scope.postMessage({ type: 'close', id: job.id, skipped: false });
     }
+    // A backlog waiting to be drawn is only ever going to be late: keep the newest.
+    for (const job of queue.splice(0, Math.max(0, queue.length - 1))) {
+      job.form.close();
+      scope.postMessage({ type: 'close', id: job.id, skipped: true });
+    }
   }
   if (data.form) {
     queue.push({ id: Number(data.id), form: data.form as ElementImage });

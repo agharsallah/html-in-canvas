@@ -152,11 +152,22 @@ describe('railway simulation', () => {
     expect(events.filter((e) => e.kind === 'capture').length).toBe(15);
   });
 
-  it('sweeping closes every kept image but leaves the ones still on the railway', () => {
+  it('sweeping closes kept images and the backlog, but not what is travelling or being drawn', () => {
     const { state } = run({ ...base, workerDelayMs: 40, closeImages: false }, 1000);
-    const travelling = inFlight(state);
+    const travelling = state.outbound.length + (state.working ? 1 : 0);
+    const waiting = state.queue.length;
     const closed = sweepRail(state);
     expect(closed.length).toBeGreaterThan(0);
-    expect(state.open.size).toBe(travelling);
+    expect(state.queue.length).toBe(Math.min(1, waiting));
+    expect(state.open.size).toBe(travelling + state.queue.length);
+    expect(inFlight(state)).toBe(travelling + state.queue.length);
+  });
+
+  it('sweeping a backed-up line keeps only the newest waiting image', () => {
+    const { state } = run({ ...base, workerDelayMs: 200, captureEvery: 1, closeImages: true }, 2000);
+    expect(state.queue.length).toBeGreaterThan(3);
+    const newest = state.queue[state.queue.length - 1];
+    sweepRail(state);
+    expect(state.queue).toEqual([newest]);
   });
 });
