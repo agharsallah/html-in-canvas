@@ -1,0 +1,209 @@
+/* Roll 07: lith print. Peach paper, red-black shadows, molten orange. */
+.chapter[data-roll='foundry'] .notebook {
+  /* Long code lines scroll inside their card instead of widening it. */
+  grid-template-columns: minmax(0, 1fr);
+}
+.chapter[data-roll='foundry'] .story-scene {
+  background: radial-gradient(circle at 25% 20%, #5a1a06, #120402 70%);
+}
+.fdy-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- lab */
+.fdy-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(16rem, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.fdy-main,
+.fdy-side {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.fdy-view {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.fdy-view figcaption {
+  font-size: var(--step--1);
+}
+.fdy-stage {
+  position: relative;
+  height: clamp(240px, 40vw, 380px);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 110%, #8a2a08, #1a0703 65%);
+}
+.fdy-console {
+  min-height: 5rem;
+  background: #1a0703;
+  color: #ffd2a8;
+}
+
+/* The live card: what gets uploaded and melted. */
+.fdy-card {
+  --heat: #ff5a1f;
+  position: relative;
+  box-sizing: border-box;
+  width: 320px;
+  height: 200px;
+  padding: 14px 18px;
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  background: #fbead3;
+  color: #2a0d03;
+  border: 2px solid #2a0d03;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+.fdy-card-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+}
+.fdy-card-line {
+  margin: 0;
+}
+.fdy-card-row {
+  display: flex;
+  gap: 12px;
+}
+.fdy-card button {
+  width: 120px;
+  height: 40px;
+  font: inherit;
+  font-weight: 700;
+  color: #2a0d03;
+  background: var(--heat);
+  border: 2px solid #2a0d03;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.fdy-card button + button {
+  background: #ffffff;
+}
+.fdy-card button:focus-visible {
+  outline: 3px solid #2a0d03;
+  outline-offset: 2px;
+}
+.fdy-card-out {
+  font-weight: 700;
+}
+.fdy-dials {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  justify-items: center;
+}
+
+/* --------------------------------------------------- WebGPU crucible */
+.fdy-gpu {
+  display: grid;
+  gap: var(--space-2);
+}
+.fdy-gpu-frame {
+  position: relative;
+  width: 320px;
+  max-width: 100%;
+  height: 140px;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  overflow: hidden;
+  background: #100503;
+}
+.fdy-gpu-canvas {
+  display: block;
+  width: 320px;
+  height: 140px;
+}
+.fdy-gpu-status {
+  margin: 0;
+  font-size: var(--step--1);
+}
+.fdy-range {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 288px;
+  height: 34px;
+  margin: 0;
+  opacity: 0;
+  cursor: grab;
+  color: var(--heat, #ff5a1f);
+}
+.fdy-range:focus-visible {
+  color: #ffd166;
+}
+.fdy-readout {
+  box-sizing: border-box;
+  width: 320px;
+  height: 96px;
+  padding: 10px 16px;
+  display: grid;
+  align-content: center;
+  background: #fbead3;
+  color: #2a0d03;
+  font-family: var(--font-body);
+}
+.fdy-readout-big {
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.fdy-readout-small {
+  font-size: 14px;
+}
+.fdy-sim-hidden {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+@media (max-width: 1080px) {
+  .fdy-lab {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .fdy-card {
+    width: 100%;
+  }
+  .fdy-dials {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Compact dials for the narrow side panel. */
+.fdy-dials .ui-dial {
+  gap: var(--space-2);
+}
+.fdy-dials .dial-control {
+  width: 58px;
+  height: 58px;
+}
+.fdy-dials .dial-readout {
+  font-size: var(--step-1);
+  white-space: nowrap;
+}
+.fdy-dials {
+  justify-items: start;
+}
+.fdy-wide {
+  grid-column: 1 / -1;
+  min-width: 0;
+}

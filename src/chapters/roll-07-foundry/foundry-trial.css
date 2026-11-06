@@ -1,0 +1,118 @@
+/* Roll 07 trial: safe-or-melt cards and the WebGPU order form. */
+/* -------------------------------------------------------------- trial */
+.fdy-trial {
+  display: grid;
+  gap: var(--space-6);
+}
+.fdy-phase {
+  display: grid;
+  gap: var(--space-4);
+}
+.fdy-phase-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+.fdy-phase-n {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--accent);
+}
+.fdy-sort-progress {
+  margin: 0;
+  font-weight: 700;
+}
+.fdy-sort {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr));
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.fdy-effect {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-3) var(--space-4);
+  border: var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.fdy-effect h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.fdy-effect code {
+  display: block;
+  font-size: 0.75rem;
+  overflow-wrap: anywhere;
+}
+.fdy-effect-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.fdy-effect[data-verdict='safe'] {
+  border-color: var(--success);
+  box-shadow: 4px 4px 0 0 var(--success);
+}
+.fdy-effect[data-verdict='melts'] {
+  border-color: #c0392b;
+  box-shadow: 4px 4px 0 0 #c0392b;
+}
+.fdy-effect[data-verdict='wrong'] {
+  border-color: var(--hint);
+}
+.fdy-sort-why {
+  margin: 0;
+  font-size: var(--step--1);
+}
+.fdy-config {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.fdy-order-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.fdy-field {
+  display: grid;
+  gap: var(--space-1);
+}
+.fdy-field-label {
+  margin: 0;
+  font-size: var(--step--1);
+  font-weight: 700;
+}
+.fdy-field .ui-segmented {
+  flex-wrap: wrap;
+}
+.fdy-chips.code-tree {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.fdy-config-out {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.fdy-code {
+  white-space: pre;
+}
+.fdy-verdict ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+
+@media (max-width: 1080px) {
+  .fdy-config {
+    grid-template-columns: 1fr;
+  }
+}

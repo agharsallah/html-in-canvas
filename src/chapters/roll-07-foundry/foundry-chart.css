@@ -1,0 +1,71 @@
+/* Roll 07: the GPU pipeline chart. */
+/* ------------------------------------------------------------- chart */
+.gp-node rect {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.gp-node[data-state='colour'] rect {
+  fill: color-mix(in srgb, var(--glow) 55%, white);
+}
+.gp-node[data-state='moves'] rect {
+  fill: #c0392b;
+  stroke: #5a0d05;
+}
+.gp-node[data-state='moves'] text {
+  fill: white;
+}
+.gp-label {
+  font-size: 13px;
+  font-weight: 700;
+  fill: var(--ink);
+}
+.gp-sub,
+.gp-caption {
+  font-size: 11px;
+  fill: var(--ink);
+}
+.gp-link {
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.gp-hit {
+  fill: none;
+  stroke-width: 2;
+  stroke-dasharray: 6 4;
+  stroke: var(--success);
+}
+.gp-hit[data-sync='false'] {
+  stroke: #c0392b;
+}
+.gp-hit-label {
+  font-size: 12px;
+  fill: var(--ink);
+}
+.gp-drift-track {
+  fill: color-mix(in srgb, var(--ink) 12%, transparent);
+}
+.gp-drift {
+  fill: var(--glow);
+}
+.gp-drift[data-over='true'] {
+  fill: #c0392b;
+}
+.gp-tol {
+  stroke: var(--ink);
+  stroke-width: 2;
+}
+.gpu-pipeline [data-series='colour'] i {
+  background: color-mix(in srgb, var(--glow) 55%, white);
+  border: 1px solid var(--ink);
+}
+.gpu-pipeline [data-series='moves'] i {
+  background: #c0392b;
+}
+
+.gp-svg .gp-label {
+  font-size: 15px;
+}
+.gp-svg .gp-sub {
+  font-size: 12px;
+}
