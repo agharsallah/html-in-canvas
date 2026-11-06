@@ -6,6 +6,7 @@ import { detectCapabilities } from '../core/capabilities';
 import { createBrowserStore } from '../core/storage';
 import { mark, markFirstFrame } from '../core/perf';
 import { createGameStore } from '../game/store';
+import { drafts } from '../game/drafts';
 import { createFrameDriver } from '../hic/paint';
 import { mountAlbum } from '../ui/album';
 import { prefersReducedMotion } from '../ui/dom';
@@ -33,7 +34,10 @@ export async function startApp(): Promise<void> {
   const store = createGameStore(createBrowserStore());
   const params = new URLSearchParams(location.search);
   // Reset first, so `?reset&unlock=all` gives a fresh save with everything open.
-  if (params.has('reset')) store.dispatch({ type: 'reset' });
+  if (params.has('reset')) {
+    store.dispatch({ type: 'reset' });
+    drafts.clear();
+  }
   if (params.get('unlock') === 'all') store.dispatch({ type: 'unlock-all' });
 
   mountToasts(ui, store);

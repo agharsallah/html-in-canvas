@@ -1,7 +1,9 @@
 /**
  * The Practice frame: a row of exercise tabs and the active exercise.
- * Drafts survive switching tabs; solved results are saved in the game state.
+ * Drafts are saved per exercise (game/drafts.ts), so your code is still there
+ * when you come back; solved results are saved in the game state.
  */
+import { drafts } from '../../game/drafts';
 import type { GameStore } from '../../game/store';
 import { h } from '../../ui/dom';
 import type { Exercise } from './exercise';
@@ -18,7 +20,6 @@ export interface PracticeOptions {
 }
 
 export function mountPractice(host: HTMLElement, o: PracticeOptions): () => void {
-  const drafts = new Map<string, string>();
   const view = h('div', { class: 'practice-view' });
   const solvedState = () => o.store.getState().exercises;
   let teardown = () => {};
