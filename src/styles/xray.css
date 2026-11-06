@@ -1,0 +1,140 @@
+/*
+ * X-ray mode: outlines and tag labels on the drawable HTML. These rules
+ * restyle elements inside the canvas, so every visible print repaints and
+ * re-uploads once when X-ray is toggled. That is the demonstration.
+ */
+:root {
+  --xray: #0b9fd0;
+}
+
+.hud-xray[aria-pressed='true'] {
+  border-color: var(--tray);
+  background: color-mix(in srgb, var(--tray) 22%, var(--umber-900));
+  box-shadow: 0 0 18px color-mix(in srgb, var(--tray) 40%, transparent);
+}
+
+[data-xray='on'] :is(.print-card, .print-verso, .hero-card) {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--xray) 14%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--xray) 14%, transparent) 1px, transparent 1px);
+  background-size: 20px 20px;
+  /* Not an outline: in Chrome 157 an outline on the drawable element itself
+     marks its snapshot changed on every geometry update, so the print would
+     re-upload every frame. An inset shadow draws the same line for free. */
+  box-shadow: inset 0 0 0 2px var(--xray);
+}
+[data-xray='on'] [data-xray-pos] {
+  position: relative;
+}
+[data-xray='on'] :is(.print-card, .print-verso, .hero-card) [data-xray-tag] {
+  outline: 1px dashed var(--xray);
+  outline-offset: 1px;
+}
+[data-xray='on'] [data-xray-tag]::before {
+  content: attr(data-xray-tag) / "";
+  position: absolute;
+  z-index: 2;
+  top: -7px;
+  left: 2px;
+  padding: 0 4px;
+  border-radius: 2px;
+  font: 600 9px/13px var(--font-mono);
+  letter-spacing: 0;
+  text-transform: none;
+  font-style: normal;
+  color: #fff;
+  background: var(--xray);
+  white-space: nowrap;
+  pointer-events: none;
+}
+[data-xray='on'] :is(.print-card, .print-verso, .hero-card)::before {
+  top: 4px;
+  left: auto;
+  right: 4px;
+}
+
+.xray-tip {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 40;
+  display: grid;
+  gap: 2px;
+  max-width: 280px;
+  padding: 8px 11px;
+  border: 1px solid var(--tray);
+  border-radius: 6px;
+  background: color-mix(in srgb, var(--umber-950) 92%, transparent);
+  color: var(--baryta);
+  font-size: 12.5px;
+  line-height: 1.35;
+  pointer-events: none;
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.45);
+}
+.xray-tip-left {
+  transform: translateX(-100%);
+}
+.xray-tip code {
+  font-family: var(--font-mono);
+  color: var(--tray);
+}
+.xray-tip-el {
+  font-size: 14px;
+}
+.xray-tip-how {
+  color: var(--dust);
+}
+
+.xray-legend {
+  position: absolute;
+  left: var(--space-6);
+  bottom: var(--space-6);
+  z-index: 5;
+  width: min(21rem, calc(100vw - 2 * var(--space-6)));
+  padding: var(--space-4);
+  border: 1px solid var(--tray);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--umber-950) 88%, transparent);
+  color: var(--baryta);
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+.xray-legend p {
+  margin: 0 0 var(--space-2);
+}
+.xray-legend p:last-child {
+  margin: 0;
+  color: var(--dust);
+}
+.xray-legend-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-1);
+  color: var(--tray);
+}
+body[data-view='chapter'] .xray-legend,
+body[data-view='chapter'] .xray-tip {
+  display: none;
+}
+.xray-tip[hidden] {
+  display: none;
+}
+
+/* Phones: holding a print, the HUD steps aside so the back can fill the screen. */
+@media (max-width: 700px) {
+  .hud-status {
+    transition: opacity 0.3s var(--ease-snap);
+  }
+  body[data-inspect] .hud-status {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .xray-legend {
+    left: var(--space-4);
+    bottom: calc(var(--space-7) + var(--space-6));
+    width: calc(100vw - 2 * var(--space-4));
+  }
+}

@@ -57,7 +57,7 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
         h('a', { class: 'hud-album hud-guide', href: 'guide.html' }, glyph('story', 18), 'Guide'),
         h('button', { class: 'hud-album', type: 'button', onclick: onOpenAlbum }, glyph('album', 18), 'Album ', albumCount)),
     ),
-    h('p', { class: 'hud-hint' }, 'Scroll or drag to walk the line. Press Tab to visit the prints.'),
+    h('p', { class: 'hud-hint' }, 'Scroll or drag to walk the line. Click a print to turn it over. Press X to see its HTML.'),
   );
 
   const render = (state: GameState) => {

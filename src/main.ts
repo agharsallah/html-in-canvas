@@ -15,6 +15,8 @@ import './styles/feedback.css';
 import './styles/editor.css';
 import './styles/hud.css';
 import './styles/print-card.css';
+import './styles/print-verso.css';
+import './styles/xray.css';
 import './styles/hero.css';
 import './styles/chapter.css';
 import './styles/story.css';
