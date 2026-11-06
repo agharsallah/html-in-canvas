@@ -54,11 +54,28 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
       if (checklist.dataset.checked) markChecks(code);
     },
     onSubmit: () => runCheck(),
-    onReset: () => {
-      editor.value = exercise.starter;
-      editor.focus();
-    },
+    onReset: () => resetCode(),
   });
+
+  /** Back to the starter, with a way back to what you had. */
+  const resetCode = () => {
+    const previous = editor.value;
+    if (previous === exercise.starter) return editor.focus();
+    editor.value = exercise.starter;
+    delete checklist.dataset.checked;
+    for (const row of checklist.children) (row as HTMLElement).dataset.state = 'idle';
+    const undo = button({ label: 'Undo reset', variant: 'secondary', size: 'sm', onClick: () => {
+      editor.value = previous;
+      feedback.replaceChildren();
+      if (solved) {
+        checklist.dataset.checked = 'true';
+        markChecks(previous);
+      }
+      editor.focus();
+    } });
+    feedback.replaceChildren(callout({ kind: 'info', title: 'Back to the starter code', body: h('p', {}, 'Write it again from memory, or bring your version back. ', undo) }));
+    editor.focus();
+  };
 
   const runCheck = () => {
     checklist.dataset.checked = 'true';
@@ -109,6 +126,13 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
   const solutionButton = button({ label: 'Show the solution', variant: 'ghost', onClick: showSolution });
   const nextButton = o.onNext ? button({ label: 'Next exercise', variant: 'primary', onClick: o.onNext }) : null;
   if (nextButton) nextButton.hidden = !solved;
+  // Coming back to a solved exercise: your code is in the editor, and the
+  // list shows it still meets every requirement.
+  if (solved && o.draft !== undefined && o.draft !== exercise.starter) {
+    checklist.dataset.checked = 'true';
+    markChecks(o.draft);
+  }
+
   const replay = solved && hasProof(exercise.id) ? proofReplayButton(() => {
     proof.open();
     replay!.hidden = true;
