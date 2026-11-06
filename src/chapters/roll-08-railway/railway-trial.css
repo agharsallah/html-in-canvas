@@ -1,0 +1,167 @@
+/* Roll 08 trial: the dispatch board. */
+.rail-trial {
+  display: grid;
+  gap: var(--space-4);
+  max-width: 64rem;
+}
+.rail-level-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+.rail-level-brief {
+  margin: 0;
+  max-width: var(--measure);
+}
+.rail-dispatch {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.rail-dispatch-col {
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.rail-timetable {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: row;
+}
+.rail-row {
+  counter-increment: row;
+  display: flex;
+  align-items: stretch;
+  gap: 4px;
+  min-width: 0;
+}
+.rail-row[data-lane='worker'] {
+  margin-left: clamp(0.5rem, 6vw, 3rem);
+}
+.rail-row-pick {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  min-width: 0;
+  padding: 6px 10px;
+  border: var(--line-soft);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.rail-row-pick::before {
+  content: counter(row);
+  min-width: 1.4em;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: color-mix(in srgb, var(--ink) 55%, var(--paper));
+}
+.rail-row-pick code {
+  overflow-wrap: anywhere;
+  font-size: 0.8rem;
+}
+.rail-row[data-lane='sign'] .rail-row-pick {
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 700;
+  border-color: var(--ink);
+}
+.rail-row[data-lane='sign'] .rail-row-pick::before { color: var(--glow); }
+.rail-row[data-lane='worker'] .rail-row-pick { border-left: 4px solid var(--second); }
+.rail-row[data-lane='main'] .rail-row-pick { border-left: 4px solid var(--accent); }
+.rail-top-pick {
+  flex: none;
+  justify-content: center;
+  border-style: dashed;
+  background: transparent;
+  font-size: var(--step--1);
+}
+.rail-top-pick::before { content: none; }
+.rail-top-pick[data-cursor='true'],
+.rail-row[data-cursor='true'] .rail-row-pick {
+  box-shadow: 0 3px 0 0 var(--glow);
+  outline: 2px dashed color-mix(in srgb, var(--ink) 40%, transparent);
+  outline-offset: 1px;
+}
+.rail-row[data-bad='true'] .rail-row-pick {
+  background: color-mix(in srgb, var(--error) 14%, #ffffff);
+  border-color: var(--error);
+}
+.rail-row-tools {
+  display: flex;
+  gap: 2px;
+}
+.rail-row-btn {
+  width: 2.1rem;
+  border: var(--line-soft);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  cursor: pointer;
+}
+.rail-row-btn:disabled { opacity: 0.35; cursor: default; }
+.rail-row-btn:not(:disabled):hover,
+.rail-row-pick:not(:disabled):hover { background: color-mix(in srgb, var(--glow) 30%, #ffffff); }
+.rail-lane {
+  padding: 1px 6px;
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  background: color-mix(in srgb, var(--accent) 18%, #ffffff);
+}
+[data-lane='worker'] > .rail-lane,
+.rail-row[data-lane='worker'] .rail-lane {
+  background: color-mix(in srgb, var(--second) 18%, #ffffff);
+}
+.rail-tray {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.rail-tray-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  max-width: 100%;
+  padding: 6px 10px;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  background: #ffffff;
+  color: var(--ink);
+  font: inherit;
+  text-align: left;
+  box-shadow: 3px 3px 0 0 var(--ink);
+  cursor: pointer;
+  transition: transform 120ms var(--ease-snap), box-shadow 120ms var(--ease-snap);
+}
+.rail-tray-item code { overflow-wrap: anywhere; font-size: 0.78rem; }
+.rail-tray-item:not(:disabled):hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 0 var(--ink); }
+.rail-tray-item:not(:disabled):active { transform: translate(3px, 3px); box-shadow: none; }
+.rail-tray-item:disabled { opacity: 0.5; }
+.rail-problems { margin: 0; padding-left: 1.2em; }
+.rail-board-slot[data-won='true'] .rail-row:not([data-lane='sign']) .rail-row-pick {
+  animation: rail-green 1.4s var(--ease-develop) both;
+}
+@keyframes rail-green {
+  0% { background: #ffffff; }
+  40% { background: color-mix(in srgb, var(--accent) 35%, #ffffff); }
+  100% { background: #ffffff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rail-board-slot[data-won='true'] .rail-row:not([data-lane='sign']) .rail-row-pick { animation: none; }
+  .rail-tray-item { transition: none; }
+}
+@media (max-width: 760px) {
+  .rail-dispatch { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,178 @@
+/* Roll 08: instant film. White borders, chemical greens, a yellow signal lamp. */
+.rail-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- lab */
+.rail-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(15rem, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+  min-width: 0;
+}
+.rail-main,
+.rail-side {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+  min-width: 0;
+}
+.rail-yard {
+  height: 280px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--glow) 22%, var(--paper)), var(--paper) 70%);
+}
+.rail-platforms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+}
+/* Each platform is an instant print: thin sides, a deep bottom border. */
+.rail-platform {
+  display: grid;
+  gap: var(--space-2);
+  align-content: start;
+  padding: var(--space-3) var(--space-3) var(--space-5);
+  background: #ffffff;
+  border: var(--line-soft);
+  box-shadow: 0 2px 0 color-mix(in srgb, var(--ink) 18%, transparent);
+  min-width: 0;
+}
+.rail-platform-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.rail-platform[data-side='worker'] .rail-platform-name {
+  color: color-mix(in srgb, var(--second) 80%, var(--ink));
+}
+.rail-form {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 10px 12px;
+  width: max-content;
+  max-width: 100%;
+  background: #fbfbf7;
+  color: var(--ink);
+  font-family: var(--font-body);
+}
+.rail-form .ui-field {
+  width: 9rem;
+}
+.rail-native canvas,
+.rail-sim-canvas {
+  display: block;
+  width: 100%;
+  height: 84px;
+  background: #fbfbf7;
+  color: var(--ink);
+  border: var(--line-soft);
+}
+.rail-native canvas {
+  height: 110px;
+}
+.rail-sim-note {
+  position: static;
+  margin: 0;
+}
+
+.rail-dials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+}
+.rail-board {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px var(--space-4);
+  margin: 0;
+  font-size: var(--step--1);
+}
+.rail-board dt {
+  color: color-mix(in srgb, var(--ink) 75%, var(--paper));
+}
+.rail-board dd {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.rail-log {
+  min-height: 9rem;
+  background: #16231e;
+  color: #cdeee0;
+  font-size: 0.72rem;
+  white-space: pre-wrap;
+}
+.rail-log li[data-late='true'] {
+  color: #ff9db2;
+}
+
+/* -------------------------------------------------------------- ledger */
+.rail-ledger {
+  display: grid;
+  gap: var(--space-3);
+  outline-offset: 3px;
+}
+.rail-ledger .legend-item[data-series='open'] { --series: var(--accent); }
+.rail-ledger .legend-item[data-series='flight'] { --series: var(--ink); }
+.ledger-panel {
+  display: grid;
+  gap: var(--space-1);
+}
+.ledger-head {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+}
+.ledger-title {
+  font-weight: 700;
+}
+.ledger-svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+.ledger-axis line { stroke: color-mix(in srgb, var(--ink) 35%, transparent); stroke-width: 1; }
+.ledger-axis text,
+.ledger-late-label {
+  font-size: 9px;
+  fill: color-mix(in srgb, var(--ink) 70%, var(--paper));
+}
+.ledger-area { fill: color-mix(in srgb, var(--accent) 35%, transparent); stroke: var(--accent); stroke-width: 2; }
+.ledger-line { stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.ledger-line-flight { stroke: var(--ink); stroke-dasharray: 4 3; }
+.ledger-line-latency { stroke: var(--accent); }
+.ledger-late { stroke: var(--second); stroke-width: 1.5; stroke-dasharray: 5 4; }
+.ledger-cross { stroke: var(--ink); stroke-width: 1; }
+
+/* -------------------------------------------------------------- figure */
+.rail-fig-node rect { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.rail-fig-node text { font-size: 12px; fill: var(--ink); }
+.rail-fig-key rect { fill: var(--accent); }
+.rail-fig-key text { fill: #ffffff; font-weight: 700; }
+.rail-fig-link { stroke: var(--ink); stroke-width: 1.5; }
+.rail-fig-head { fill: var(--ink); }
+.rail-fig-lane { font-family: var(--font-mono); font-size: 11px; fill: var(--accent); text-transform: uppercase; }
+.rail-fig-divider { stroke: color-mix(in srgb, var(--ink) 30%, transparent); stroke-dasharray: 6 5; }
+.rail-fig-note { font-size: 11px; fill: color-mix(in srgb, var(--ink) 70%, var(--paper)); }
+
+@media (max-width: 1080px) {
+  .rail-lab { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .rail-yard { height: 220px; }
+}
