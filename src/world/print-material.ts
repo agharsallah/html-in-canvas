@@ -40,25 +40,37 @@ const fragmentShader = /* glsl */ `
   void main() {
     vec3 paper = uPaper;
 
-    // The loupe: a disc under the pointer where the latent image develops,
-    // seen through a slightly magnifying glass with a safelight rim.
+    // The loupe: a magnifying glass under the pointer. Inside it the latent
+    // image is fully developed and crisp, in true colours; safelight only
+    // tints the rim, and a soft shadow lifts the glass off the paper.
     vec2 toLoupe = (vUv - uLoupe.xy) * vec2(uAspect, 1.0);
     float dist = length(toLoupe);
-    float radius = 0.17 * uLoupe.z;
-    float inside = 1.0 - smoothstep(radius - 0.012, radius, dist);
-    float rim = smoothstep(radius - 0.02, radius - 0.004, dist) * inside;
-    vec2 uv = mix(vUv, uLoupe.xy + (vUv - uLoupe.xy) * 0.86, inside);
+    float radius = 0.23 * uLoupe.z;
+    float inside = 1.0 - smoothstep(radius - 0.005, radius, dist);
+    float r = dist / max(radius, 1e-4);
+    // A lens, not a zoom: barely magnified at the centre, a touch more at the edge.
+    vec2 uv = mix(vUv, uLoupe.xy + (vUv - uLoupe.xy) * (0.94 + 0.05 * r * r), inside);
 
     vec4 snap = uHasMap > 0.5 ? texture2D(uMap, uv) : vec4(paper, 1.0);
     vec3 image = mix(paper, snap.rgb, snap.a);
 
+    // What stands out most from the paper develops first: dark ink on light
+    // paper, and light ink on the dark tintype and cyanotype papers alike.
     float lum = dot(image, vec3(0.299, 0.587, 0.114));
-    float developed = max(uDevelop, inside * 0.97);
-    float develop = clamp(developed * 1.5 - lum * 0.5, 0.0, 1.0);
+    float paperLum = dot(paper, vec3(0.299, 0.587, 0.114));
+    float developed = max(uDevelop, inside);
+    float develop = clamp(developed * 1.5 - (1.0 - abs(lum - paperLum)) * 0.5, 0.0, 1.0);
     vec3 color = mix(paper, image, develop);
-    // Seen through red glass: the peek is tinted like the safelight.
-    color = mix(color, color * vec3(1.0, 0.78, 0.72), inside * (1.0 - uDevelop));
-    color = mix(color, uLight, rim * 0.85);
+
+    float latent = 1.0 - uDevelop;
+    color = mix(color, clamp((color - 0.5) * 1.1 + 0.5, 0.0, 1.0), inside * latent);
+    color = mix(color, color * vec3(1.0, 0.84, 0.78), smoothstep(0.72, 1.0, r) * inside * 0.55);
+    float ring = smoothstep(radius - 0.013, radius - 0.005, dist) * inside;
+    color = mix(color, uLight, ring * 0.9);
+    float halo = (1.0 - smoothstep(radius, radius + 0.035, dist)) * (1.0 - inside) * uLoupe.z;
+    color *= 1.0 - halo * 0.25;
+    float glint = smoothstep(0.32, 0.0, length(toLoupe / max(radius, 1e-4) - vec2(-0.48, 0.5))) * inside;
+    color += glint * 0.07;
 
     // Grain: strong on wet, undeveloped paper; nearly gone when fixed.
     float grain = hash(floor(vUv * vec2(520.0, 700.0)) + floor(uTime * 10.0)) - 0.5;
