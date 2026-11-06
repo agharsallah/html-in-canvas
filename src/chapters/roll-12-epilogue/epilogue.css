@@ -1,0 +1,115 @@
+/* Roll 12: hologram. Violet ink on pearl paper, with mint and pink foil. */
+.reel-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Figures */
+.figure-reel .rf-label { font: 12px var(--font-mono); fill: var(--ink); }
+.figure-reel .rf-lane { stroke: color-mix(in srgb, var(--ink) 30%, transparent); stroke-width: 1.5; }
+.figure-reel .rf-tick { fill: var(--accent); }
+.figure-reel .rf-busy { fill: var(--second); }
+.figure-reel .rf-busy-text { font: 700 11px var(--font-mono); fill: var(--ink); }
+.figure-reel .rf-frame { fill: var(--accent); }
+.figure-reel .rf-stale { fill: none; stroke: var(--ink); stroke-dasharray: 3 2; }
+.figure-reel .rf-replay { fill: var(--glow); stroke: var(--ink); stroke-width: 1; }
+.figure-reel .rf-note { font: italic 12px var(--font-body); fill: var(--ink); }
+.figure-reel .rf-film { fill: var(--ink); }
+.figure-reel .rf-sprocket { fill: var(--paper); }
+.figure-reel .rf-cell { fill: color-mix(in srgb, var(--paper) 90%, var(--glow)); }
+.figure-reel .rf-num { font: 700 16px var(--font-display); fill: var(--accent); }
+.figure-reel .rf-cell-text { font: 10px var(--font-mono); fill: var(--ink); }
+
+/* The exhibition cards, as drawn into the gallery's WebGL canvas */
+.foil-card {
+  width: 280px;
+  height: 400px;
+  box-sizing: border-box;
+  padding: 26px 24px;
+  background: #f4f2ff;
+  color: #1b1e2b;
+  border: 3px solid #1b1e2b;
+  outline: 9px solid #f4f2ff;
+  outline-offset: -12px;
+  font-family: var(--font-body);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.foil-card[data-developed='false'] { background: #1d1b2c; color: #c9c3ff; border-color: #7b61ff; outline-color: #1d1b2c; }
+.foil-card-meta { margin: 0; font: 600 11px var(--font-mono); text-transform: uppercase; letter-spacing: 0.04em; }
+.foil-card-name { margin: 0; font: 700 26px/1.15 var(--font-display); }
+.foil-card-text { margin: 0; font-size: 15px; line-height: 1.4; }
+.foil-card-code { font: 12px var(--font-mono); overflow-wrap: anywhere; }
+
+/* Lab */
+.reel-lab { display: grid; gap: var(--space-5); min-width: 0; }
+.reel-exhibition { display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(14rem, 1fr); gap: var(--space-4); align-items: stretch; }
+.reel-gallery-host {
+  position: relative;
+  height: 420px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+  overflow: hidden;
+  background: radial-gradient(ellipse at 50% 40%, #2a2550, #0f0e1c 75%);
+}
+.reel-gallery-host:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.reel-gallery-host .mini-stage { position: absolute; inset: 0; }
+.reel-side { display: grid; gap: var(--space-3); align-content: start; }
+.reel-caption { padding: var(--space-3) var(--space-4); border: var(--line); border-radius: var(--radius-control); background: var(--surface); min-height: 8.5rem; }
+.reel-caption p { margin: 0 0 var(--space-1); }
+.reel-caption-count { font: 600 var(--step--1) var(--font-mono); }
+.reel-caption-name { font: 700 var(--step-1) var(--font-display); }
+.reel-lower { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.reel-hatch { display: grid; gap: var(--space-3); }
+.reel-detect { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2); font-size: var(--step--1); }
+.reel-detect li { display: grid; grid-template-columns: 1.5rem minmax(0, 1fr) auto; gap: var(--space-2); align-items: baseline; }
+.reel-detect-mark { font-weight: 700; }
+.reel-detect li[data-ok='true'] .reel-detect-mark { color: var(--success); }
+.reel-detect li[data-ok='false'] .reel-detect-mark { color: var(--error); }
+.reel-detect-path { font: 600 0.72rem var(--font-mono); padding: 1px 6px; border: var(--line-soft); border-radius: var(--radius-control); white-space: nowrap; }
+
+/* Coverage radar */
+.coverage-radar { display: grid; gap: var(--space-2); }
+.radar-plot { position: relative; max-width: 360px; }
+.radar-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.radar-grid { stroke: color-mix(in srgb, var(--ink) 18%, transparent); stroke-width: 1; }
+.radar-spoke { stroke: color-mix(in srgb, var(--ink) 14%, transparent); stroke-width: 1; }
+.radar-area { fill: color-mix(in srgb, var(--accent) 22%, transparent); stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; }
+.radar-label { font: 600 10px var(--font-mono); fill: var(--ink); }
+.radar-hit { fill: transparent; }
+.radar-dot { fill: var(--accent); stroke: var(--paper); stroke-width: 2; }
+.radar-point:focus-visible { outline: none; }
+.radar-point:focus-visible .radar-dot, .radar-point:hover .radar-dot { r: 6; }
+.radar-mean { font: 700 var(--step-1) var(--font-display); }
+.radar-table { font-size: var(--step--1); }
+.radar-table table { border-collapse: collapse; margin-top: var(--space-2); }
+.radar-table th, .radar-table td { text-align: left; padding: 2px var(--space-3) 2px 0; font-weight: 400; }
+
+/* Trial: boss rush */
+.rush { display: grid; gap: var(--space-4); max-width: 46rem; }
+.rush-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); flex-wrap: wrap; }
+.rush-boss { display: grid; gap: var(--space-1); flex: 1 1 14rem; }
+.rush-boss-name { margin: 0; font: 700 var(--step-1) var(--font-display); }
+.rush-hp { height: 12px; border: var(--line); border-radius: 6px; overflow: hidden; background: var(--surface); }
+.rush-hp span { display: block; height: 100%; background: linear-gradient(90deg, var(--accent), var(--second), var(--glow)); transition: width 400ms var(--ease-snap); }
+.rush-lives { display: flex; gap: var(--space-2); }
+.rush-life { width: 22px; height: 26px; border: var(--line); border-radius: 5px 5px 3px 3px; background: linear-gradient(180deg, var(--glow), var(--accent)); }
+.rush-life[data-lost='true'] { background: var(--surface); opacity: 0.4; }
+.rush-round { margin: 0; font: 600 var(--step--1) var(--font-mono); text-transform: uppercase; letter-spacing: 0.06em; }
+.rush-feedback:empty { display: none; }
+.rush-feedback { display: grid; gap: var(--space-3); justify-items: start; }
+.rush-hatch-options { grid-template-columns: repeat(auto-fill, minmax(min(100%, 17rem), 1fr)); }
+
+@media (max-width: 1080px) {
+  .reel-exhibition, .reel-lower { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .reel-gallery-host { height: 340px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rush-hp span { transition: none; }
+}
