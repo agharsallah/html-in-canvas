@@ -115,6 +115,14 @@ are shader uniforms, so they never cause an upload. The back of a print is one s
 48–55 MB (13 SVG pictures, the shared back and the hero tray); it was 21–25 MB before the
 opening shot. Darkroom entry JS: 38.5 kB gzip of a 40 kB budget.
 
+## Feedback effects and the entry budget
+
+Sound, confetti and the proof scenes kept the darkroom entry at **39.5 kB gzip** (budget
+40 kB) by staying out of it: the feedback wiring loads right after startup, the confetti
+overlay at the first celebration, the synthesiser at the first sound (never, while sound is
+off), and the proof scenes when the first exercise is solved. Confetti only animates while
+pieces are in the air; proof scenes only repaint while on screen (IntersectionObserver).
+
 ## Known limits
 
 - The entry bundle is dominated by three.js (≈150 kB gz); its WebGL renderer

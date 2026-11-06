@@ -97,6 +97,35 @@ snapshot changed on every geometry update, so the print re-uploads every frame (
 cost 35 points of idle time). Outlines on descendants don't. X-ray uses an inset `box-shadow`
 on the drawable root instead.
 
+## 2d. Feedback: sound, confetti, and your code running
+
+- **Sound is off by default.** A *Sound* toggle sits in the HUD and in every chapter header;
+  the choice persists. Every cue is synthesised with Web Audio (no files). Goals chime,
+  correct answers play a rising arpeggio, wrong ones a soft low nudge, a finished frame a
+  fanfare, and turning a print over sounds like paper. Code: `ui/fx/sound.ts` (the switch),
+  `ui/fx/synth.ts` (loaded the first time a cue plays).
+- **Each lab sounds like its place**, on meaningful moments only, never on plain clicks: the
+  fog's foghorn, the bell tower's struck bell (only on real changes), the lens grinding and
+  ringing true, the projector's film gate clattering, the mirror's shimmer and ghost, the
+  observatory's telemetry, the foundry's sizzle and pour, the late train's whistle, the
+  lighthouse horn and sonar, the vault's tumblers, the clockwork's tick-tock and ratchet, the
+  reel. Each cue varies its pitch, has a cooldown, and tires when it keeps firing (backs off
+  up to 4x), so busy labs never drone. Code: `ui/fx/lab-sfx.ts` (`admit` is unit-tested).
+- **HTML-in-Canvas confetti.** Correct answers and finished goals throw confetti whose pieces
+  are real HTML (code chips, a star, a check, paper squares) drawn into one overlay canvas.
+  Each burst draws every snapshot dozens of times with its own transform: one element, many
+  copies. The overlay is `inert`; reduced motion turns it off. Code: `ui/fx/confetti.ts`,
+  wired by `ui/fx/feedback-fx.ts`, which watches the UI for goals and success/error callouts,
+  so every trial and exercise gets it without per-chapter code.
+- **Your code, running.** Solving an exercise opens a live scene under it that acts out what
+  the code does, with real drawables: the card rising out of the fog, the nested hole filled,
+  the bell ringing with `changedElements` listed, a too-coarse grid next to a crisp one, the
+  ticket cropped, stretched and tilted, a moving button you can catch, a card on a turning
+  plane that uploads only when it changes, HTML melted in slices, `captureElementImage`
+  carriages on a railway, a pie whose wedge `drawFocusIfNeeded` rings, a flip card whose back
+  goes `inert`, pixels read back and exported as a PNG. Every exercise has one (tested).
+  Code: `chapters/shared/proof/`; the scenes load on demand.
+
 ## 3. The journey: rolls, processes and foes
 
 Each chapter is a **roll of film**, printed with a different historical
