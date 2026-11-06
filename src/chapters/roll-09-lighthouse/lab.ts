@@ -16,6 +16,7 @@ import { createLabNodes, createNodeControls, exposureOfNode, type LabNode } from
 import { paintHarbour, rectText } from './lab-paint';
 import { isGhostFocus, tally } from './rules';
 import { createSrView, type OutlineRow } from './sr-view';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const CANVAS_NAME = 'Harbour card';
 
@@ -126,6 +127,7 @@ export const lab: Beat = (host, ctx) => {
     lab.requestPaint();
     if (event.type !== 'focusin' || !target) return refresh();
     const row = rowOf(target);
+    sfx('sonar');
     sr.speak(row);
     if (performance.now() - lastTab < 600) goals.complete('tab');
     if (isGhostFocus(row.exposure) && !ghostFound) {
@@ -142,7 +144,10 @@ export const lab: Beat = (host, ctx) => {
   lab.root.addEventListener('focusout', onFocus);
   window.addEventListener('keydown', onKey, true);
 
-  node('horn').el.addEventListener('click', () => log('click → Sound the foghorn: HOOOOOO'));
+  node('horn').el.addEventListener('click', () => {
+    sfx('horn');
+    log('click → Sound the foghorn: HOOOOOO');
+  });
   dismissNode.el.addEventListener('click', () => {
     const ghost = notice.draw !== 'drawn';
     log(ghost ? 'click → Dismiss, on a notice that is not drawn any more!' : 'click → Dismiss');

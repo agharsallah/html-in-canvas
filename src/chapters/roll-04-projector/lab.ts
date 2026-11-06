@@ -18,6 +18,7 @@ import { LAB_TICKET as EL, makeTicket, renderReadout } from './lab-parts';
 import { mountNestedBooth } from './lab-nested';
 import { createRectHandle } from './rect-handle';
 import { argList, overloadFor, project, type DrawCall } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const PAD = 28; // room around the ticket in the gate, for outsets
 
@@ -103,6 +104,7 @@ export const lab: Beat = (host, ctx) => {
   };
 
   function changed() {
+    sfx('projector');
     source.setEnabled(crop, crop);
     // Without a destination size, the frame is the default size: the source's CSS size.
     if (!resize) {

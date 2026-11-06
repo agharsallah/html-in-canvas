@@ -14,6 +14,7 @@ import type { Beat } from '../shared/chapter';
 import { coverage } from './coverage';
 import { createGallery } from './gallery';
 import { detectSupport, pathFor, type DetectEnv, type RenderContext } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const CONTEXTS: Array<[RenderContext, string, string]> = [
   ['2d', '2D', '`drawElementImage` on CanvasRenderingContext2D'],
@@ -49,6 +50,7 @@ export const lab: Beat = (host, ctx) => {
       h('p', {}, rich(owned ? card.text : secretHidden ? 'Found by exploring.' : 'Finish its frame to develop it.')));
   };
   const turn = (delta: number) => {
+    sfx('reel');
     seen.add(gallery.turn(delta));
     renderCaption();
     if (seen.size >= 3) goals.complete('browse');
@@ -78,6 +80,7 @@ export const lab: Beat = (host, ctx) => {
 
   const results = h('ul', { class: 'reel-detect', 'aria-live': 'polite' });
   const detect = button({ label: 'Run feature detection', variant: 'primary', onClick: () => {
+    sfx('beep');
     const report = detectSupport(globalThis as unknown as DetectEnv);
     const row = (ok: boolean, name: string, how: string, path?: string) =>
       h('li', { 'data-ok': String(ok) }, h('span', { class: 'reel-detect-mark', 'aria-hidden': 'true' }, ok ? '✓' : '×'),

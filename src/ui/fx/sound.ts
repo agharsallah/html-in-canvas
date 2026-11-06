@@ -6,17 +6,18 @@
  * cues never clip. The AudioContext is created on the first cue after the
  * learner enables sound, which is always inside a click, so autoplay rules
  * are satisfied. The preference persists per browser.
+ *
+ * This module is only the switch. The synthesiser (synth.ts) is fetched the
+ * first time a cue plays, so pages where sound stays off never load it.
  */
 import { Emitter } from '../../core/emitter';
 
-export type Cue = 'tick' | 'goal' | 'correct' | 'wrong' | 'complete' | 'paper' | 'on';
+export type Cue = 'goal' | 'correct' | 'wrong' | 'complete' | 'paper' | 'on';
 
 const KEY = 'drawable:sound';
 const events = new Emitter<{ change: boolean }>();
 
 let enabled = readPreference();
-let audio: { ctx: AudioContext; out: GainNode; noise: AudioBuffer } | null = null;
-let lastTick = 0;
 
 function readPreference(): boolean {
   try {
@@ -43,106 +44,8 @@ export const sound = {
   onChange: (listener: (on: boolean) => void) => events.on('change', listener),
 };
 
+/** Play a celebration cue, if sound is on. */
 export function play(cue: Cue): void {
   if (!enabled) return;
-  const a = ensureAudio();
-  if (!a) return;
-  if (a.ctx.state === 'suspended') void a.ctx.resume();
-  const t = a.ctx.currentTime + 0.01;
-  switch (cue) {
-    case 'tick': {
-      // Controls click softly; rapid dial turns stay a gentle patter.
-      if (performance.now() - lastTick < 45) return;
-      lastTick = performance.now();
-      tone(a, 2600, t, 0.035, 'sine', 0.05);
-      break;
-    }
-    case 'on':
-      tone(a, 784, t, 0.18, 'sine', 0.16);
-      tone(a, 1175, t + 0.07, 0.3, 'sine', 0.12);
-      break;
-    case 'goal':
-      // A two-note glass chime, C6 then G6.
-      tone(a, 1046.5, t, 0.5, 'sine', 0.2);
-      tone(a, 1568, t + 0.07, 0.65, 'sine', 0.16);
-      tone(a, 523.25, t, 0.4, 'triangle', 0.06);
-      break;
-    case 'correct':
-      // A rising E minor-ish arpeggio, plucked.
-      [659.25, 783.99, 987.77, 1318.5].forEach((f, i) => {
-        tone(a, f, t + i * 0.055, 0.4, 'triangle', 0.13);
-        tone(a, f * 2, t + i * 0.055, 0.25, 'sine', 0.04);
-      });
-      break;
-    case 'wrong':
-      // Two soft, low, falling notes: a nudge, not a buzzer.
-      tone(a, 311.13, t, 0.16, 'triangle', 0.14, 900);
-      tone(a, 233.08, t + 0.11, 0.26, 'triangle', 0.14, 700);
-      break;
-    case 'complete':
-      [523.25, 659.25, 783.99, 1046.5, 1318.5, 1568].forEach((f, i) => tone(a, f, t + i * 0.06, 0.7, 'triangle', 0.1));
-      breath(a, t + 0.3, 0.6, 5200, 0.05);
-      break;
-    case 'paper':
-      // A sheet turning over: a short swell of band-passed noise.
-      breath(a, t, 0.32, 1800, 0.12);
-      break;
-  }
-}
-
-function ensureAudio(): typeof audio {
-  if (audio) return audio;
-  const Ctor = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-  if (!Ctor) return null;
-  const ctx = new Ctor();
-  const compressor = ctx.createDynamicsCompressor();
-  compressor.threshold.value = -18;
-  compressor.ratio.value = 6;
-  const out = ctx.createGain();
-  out.gain.value = 0.7;
-  out.connect(compressor).connect(ctx.destination);
-  const noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
-  const data = noise.getChannelData(0);
-  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
-  audio = { ctx, out, noise };
-  return audio;
-}
-
-/** One enveloped note: fast attack, exponential decay. */
-function tone(a: NonNullable<typeof audio>, freq: number, at: number, dur: number, type: OscillatorType, gain: number, lowpass?: number): void {
-  const osc = a.ctx.createOscillator();
-  osc.type = type;
-  osc.frequency.value = freq;
-  const env = a.ctx.createGain();
-  env.gain.setValueAtTime(0.0001, at);
-  env.gain.exponentialRampToValueAtTime(gain, at + 0.006);
-  env.gain.exponentialRampToValueAtTime(0.0001, at + dur);
-  let node: AudioNode = osc;
-  if (lowpass) {
-    const filter = a.ctx.createBiquadFilter();
-    filter.type = 'lowpass';
-    filter.frequency.value = lowpass;
-    node = osc.connect(filter);
-  }
-  node.connect(env).connect(a.out);
-  osc.start(at);
-  osc.stop(at + dur + 0.05);
-}
-
-/** Filtered noise with a swell and fade: paper, shimmer. */
-function breath(a: NonNullable<typeof audio>, at: number, dur: number, freq: number, gain: number): void {
-  const src = a.ctx.createBufferSource();
-  src.buffer = a.noise;
-  const filter = a.ctx.createBiquadFilter();
-  filter.type = 'bandpass';
-  filter.frequency.setValueAtTime(freq * 0.6, at);
-  filter.frequency.exponentialRampToValueAtTime(freq, at + dur);
-  filter.Q.value = 0.8;
-  const env = a.ctx.createGain();
-  env.gain.setValueAtTime(0.0001, at);
-  env.gain.exponentialRampToValueAtTime(gain, at + dur * 0.35);
-  env.gain.exponentialRampToValueAtTime(0.0001, at + dur);
-  src.connect(filter).connect(env).connect(a.out);
-  src.start(at, Math.random() * 0.5);
-  src.stop(at + dur + 0.05);
+  void import('./synth').then((synth) => synth.playCue(cue));
 }

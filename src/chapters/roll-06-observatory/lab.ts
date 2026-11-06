@@ -13,6 +13,7 @@ import type { OrbitMotion } from '../../scenes/orbit-scene';
 import type { Beat } from '../shared/chapter';
 import { mountSatellite, type Probe } from './lab-satellite';
 import { formatBytes, type ControlBox, type HitMode } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const MODE_NOTE: Record<HitMode, string> = {
   projective: 'The full projective matrix: the hit region is glued to the tilted face.',
@@ -70,7 +71,10 @@ export const lab: Beat = (host, ctx) => {
       meter.record(report.bytes, report.allocated);
       if (!report.ok) say(`upload failed → ${report.error}`);
       else if (reason !== 'unchanged') say(`${reason === 'first' ? 'first upload' : 'changedElements has the form'} → ${report.api}, ${formatBytes(report.bytes)}${report.allocated ? ', allocated' : ''}`);
-      if (reason === 'changed' && typed) goals.complete('typed');
+      if (reason === 'changed' && typed) {
+        sfx('beep');
+        goals.complete('typed');
+      }
     },
     onProbe(probe: Probe) {
       say(`click → ${probe.text}${probe.backFacing ? ' (the face is turned away, so the form is inert)' : ''}`);
@@ -79,6 +83,7 @@ export const lab: Beat = (host, ctx) => {
         ctx.say('The far side: the form is turned away and inert, so your click falls through to the canvas.');
       }
       const isControl = !['canvas', 'card'].includes(probe.target);
+      if (isControl && !probe.backFacing) sfx('whirr');
       if (isControl && probe.mode === 'projective' && !probe.backFacing && motion.value !== 'still') goals.complete('hit');
       if (probe.mode === 'flat' && !isControl) ctx.say('Missed: the flat box does not match the tilted face.', 'foe');
     },

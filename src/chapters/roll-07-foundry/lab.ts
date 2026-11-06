@@ -14,6 +14,7 @@ import type { Beat } from '../shared/chapter';
 import { mountCrucible, type CrucibleClick } from './lab-crucible';
 import { mountGpuCrucible } from './lab-gpu';
 import { DRIFT_TOLERANCE, maxDrift, type Box, type Effects } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const SWATCHES = [
   { value: '#ff5a1f', label: 'Bronze' },
@@ -68,6 +69,7 @@ export const lab: Beat = (host, ctx) => {
     },
     onClick: (click: CrucibleClick) => {
       const drift = maxDrift(crucible.effects);
+      if (click.hit) sfx('sizzle');
       say(`click → browser hit ${click.hit ? `#fdy-${click.hit}` : 'no control'}; you saw ${click.seen ? `#fdy-${click.seen}` : 'no control'}`);
       if (click.hit && click.hit === click.seen && drift <= DRIFT_TOLERANCE && crucible.effects.heat >= 0.3) goals.complete('colour');
       if (drift > DRIFT_TOLERANCE && click.seen && click.seen !== click.hit) {
@@ -82,6 +84,7 @@ export const lab: Beat = (host, ctx) => {
   card.addEventListener('click', (event) => {
     const id = (event.target as HTMLElement).closest<HTMLElement>('[data-control]')?.dataset.control;
     if (!id) return;
+    sfx(id === 'pour' ? 'pour' : 'sizzle');
     pours += 1;
     out.textContent = id === 'pour' ? `Poured ${pours}` : `Cooling ${pours}`;
     crucible.markChanged();
@@ -117,6 +120,7 @@ export const lab: Beat = (host, ctx) => {
     melt: dial('Melt', 'melt', 60, ' px'),
   };
   const preset = (label: string, e: Effects) => button({ label, size: 'sm', variant: 'secondary', onClick: () => {
+    sfx(e.melt > 0 ? 'pour' : 'sizzle');
     crucible.setEffects(e);
     dials.heat.set(e.heat * 100);
     dials.grain.set(e.grain * 100);

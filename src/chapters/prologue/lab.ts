@@ -8,6 +8,7 @@ import { createObjectives } from '../../ui/components/objectives';
 import { h } from '../../ui/dom';
 import type { Beat } from '../shared/chapter';
 import { createLabCanvas } from '../shared/lab-canvas';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const SIGN_TEXT = ['Fresh prints daily', 'Impresiones frescas', 'ताज़ा प्रिंट रोज़', 'مطبوعات طازجة'];
 
@@ -32,6 +33,7 @@ export const lab: Beat = (host, ctx) => {
     SIGN_TEXT.forEach((line, i) => c.fillText(line, 20, 44 + i * 34));
   });
   painted.addEventListener('pointerup', () => {
+    sfx('smudge');
     ctx.say('Nothing to select. That sign is paint, not text.');
     goals.complete('pixels');
   });
@@ -71,7 +73,10 @@ export const lab: Beat = (host, ctx) => {
 
   const onSelection = () => {
     const selection = document.getSelection();
-    if (selection && !selection.isCollapsed && sign.contains(selection.anchorNode)) goals.complete('select');
+    if (selection && !selection.isCollapsed && sign.contains(selection.anchorNode)) {
+      if (!goals.isDone('select')) sfx('reveal');
+      goals.complete('select');
+    }
   };
   document.addEventListener('selectionchange', onSelection);
   name.addEventListener('input', () => {

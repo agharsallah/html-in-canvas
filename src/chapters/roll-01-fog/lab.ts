@@ -14,6 +14,7 @@ import { createLabCanvas, describeError, simulatedException } from '../shared/la
 import { FOG_CARDS } from './diorama';
 import { renderMarkup } from './markup';
 import { describeState, drawError, type ContentMode, type ElementState } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 interface Child {
   label: string;
@@ -124,6 +125,7 @@ export const lab: Beat = (host, ctx) => {
   });
 
   const expose = button({ label: 'Expose', variant: 'primary', onClick: () => {
+    sfx(content === 'fallback' || !children.some((c) => c.toggle.checked) ? 'foghorn' : 'fog-clear');
     exposing = true;
     logNextPaint = true;
     children.forEach((child) => (child.state = 'fog'));

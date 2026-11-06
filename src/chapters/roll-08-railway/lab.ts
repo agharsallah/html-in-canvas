@@ -19,6 +19,7 @@ import { createLabReadouts } from './lab-readouts';
 import { createNativeEngine, type NativeRailEngine } from './native-engine';
 import { LATE_MS, type RailEvent, type RailSettings } from './sim';
 import { createSimPlatforms, type SimPlatforms } from './sim-view';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const SAMPLE_MS = 100;
 
@@ -58,6 +59,7 @@ export const lab: Beat = (host, ctx) => {
         platforms?.draw(event.id, event.late);
         goals.complete('drawn');
         if (event.late) {
+          sfx('whistle');
           lastLate = performance.now();
           goals.complete('late');
         }
@@ -114,7 +116,10 @@ export const lab: Beat = (host, ctx) => {
     apply();
   } });
 
-  const sweep = button({ label: 'Sweep the yard: close kept and waiting images', variant: 'secondary', size: 'sm', onClick: () => engine.sweep() });
+  const sweep = button({ label: 'Sweep the yard: close kept and waiting images', variant: 'secondary', size: 'sm', onClick: () => {
+    sfx('chug');
+    engine.sweep();
+  } });
 
   const sampler = window.setInterval(() => {
     const stats = engine.stats();

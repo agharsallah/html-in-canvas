@@ -17,6 +17,7 @@ import { createLabCanvas, describeError } from '../shared/lab-canvas';
 import { itemById, leakLevel } from './rules';
 import { createDossier, SPECIMENS, type FrameOrigin } from './specimens';
 import { modelReport, probeVisitedNative } from './spy';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const ORIGIN = { x: 16, y: 16 };
 
@@ -94,6 +95,7 @@ export const lab: Beat = (host, ctx) => {
   });
 
   const spy = (item: string) => {
+    sfx('tumbler');
     if (!exposed) return say('Expose the dossier first: there is nothing in the canvas to read.', 'blocked');
     const id = itemFor(item);
     const rule = itemById(id);
@@ -118,6 +120,7 @@ export const lab: Beat = (host, ctx) => {
   };
 
   const expose = button({ label: 'Expose the dossier', variant: 'primary', onClick: () => {
+    sfx('clunk');
     exposed = true;
     syncSim();
     lab.requestPaint();

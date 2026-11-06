@@ -17,6 +17,7 @@ import type { Beat } from '../shared/chapter';
 import { createGhostStage, type Pose } from './ghost-stage';
 import { createMatrixReadout } from './matrix-readout';
 import { toAffine, type Point } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 type PoseId = 'home' | 'tilted' | 'corner';
 const POSES: Record<PoseId, Pose> = {
@@ -85,6 +86,8 @@ export const lab: Beat = (host, ctx) => {
     void ripple.getBoundingClientRect();
     ripple.classList.add('ghost-ripple-go');
     ctx.say(SAY[kind], kind === 'hit' ? 'caret' : kind === 'empty' ? 'narrator' : 'foe');
+    if (kind === 'hit') sfx('shimmer');
+    if (kind === 'ghost') sfx('ghost');
     if (kind === 'hit' && !preserve) goals.complete('hit');
     if (kind === 'hit' && preserve && syncedByHand) goals.complete('resync');
     if (kind === 'missed' && cleared) goals.complete('clear');

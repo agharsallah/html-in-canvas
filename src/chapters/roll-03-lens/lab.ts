@@ -16,6 +16,7 @@ import type { Beat } from '../shared/chapter';
 import { createLensStage } from './lab-stage';
 import { createLoupe } from './loupe';
 import { analyzeSizing, devicePixels, presetGrid, type GridPreset } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const PRESET_CODE: Record<GridPreset, (grind: number) => string> = {
   default: () => '// No ResizeObserver: the grid keeps its default.\n// canvas.width = 300; canvas.height = 150;',
@@ -37,6 +38,7 @@ export const lab: Beat = (host, ctx) => {
   let preset: GridPreset = 'default';
   let crispAt: number | null = null;
   let startDpr: number | null = null;
+  let lastVerdict = '';
 
   const goals = createObjectives([
     { id: 'css-trap', text: 'Size the grid to the CSS box on a screen above DPR 1. Is it sharp?' },
@@ -63,6 +65,7 @@ export const lab: Beat = (host, ctx) => {
     },
   });
   const grind = createDial({ label: 'Grid px per CSS px', min: 0.5, max: 3, step: 0.05, value: 1, unit: '×', onInput: () => {
+    sfx('grind');
     preset = 'custom';
     presetControl.set('custom', true);
     update();
@@ -104,6 +107,8 @@ export const lab: Beat = (host, ctx) => {
       if (!goals.isDone('css-trap')) ctx.say('CSS size is still blurry: the grid has to count device pixels, not CSS pixels.', 'foe');
       goals.complete('css-trap');
     }
+    if (report.verdict === 'crisp' && lastVerdict !== 'crisp') sfx('glass');
+    lastVerdict = report.verdict;
     if (report.verdict === 'crisp') {
       if (crispAt === null) {
         crispAt = screenDpr;

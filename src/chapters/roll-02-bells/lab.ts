@@ -12,6 +12,7 @@ import { createToggle } from '../../ui/components/toggle';
 import { h } from '../../ui/dom';
 import type { Beat } from '../shared/chapter';
 import { createLabCanvas } from '../shared/lab-canvas';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const HUES = ['#b5762c', '#7a4f2a', '#2f6f6a', '#a4433b'];
 const QUIET_MS = 2000;
@@ -86,6 +87,8 @@ export const lab: Beat = (host, ctx) => {
     lab.beginFrame();
     lab.drawElement(card, 16, 16);
     count += 1;
+    // A real change rings the bell; a bare requestPaint() loop stays silent.
+    if (changed.length) sfx('bell');
     counter.textContent = `${count} ${count === 1 ? 'paint' : 'paints'}`;
     bellHost.dataset.quiet = 'false';
 

@@ -15,6 +15,7 @@ import { GEAR_LABELS } from './diorama';
 import { createLabControls, INJECT_SHORT, type LabSettings } from './lab-controls';
 import { createProbe } from './lab-probe';
 import { simulate, STEPS, stepInfo, type InjectId, type Simulation } from './rules';
+import { sfx } from '../../ui/fx/lab-sfx';
 
 const ROW = new Map(STEPS.map((step, i) => [step.id, i]));
 
@@ -76,6 +77,7 @@ export const lab: Beat = (host, ctx) => {
     if (cursor >= sim.ticks.length - 1) return stop();
     cursor += 1;
     const tick = sim.ticks[cursor]!;
+    sfx(tick.kind === 'jam' ? 'jam' : 'tick');
     const info = stepInfo(tick.step);
     narration.textContent = `Frame ${tick.frame}${tick.lap > 1 ? `, lap ${tick.lap}` : ''} · ${info.number ? `${info.number} ` : ''}${info.short}: ${tick.note}`;
     scene.setActive(tick.step);
@@ -86,6 +88,7 @@ export const lab: Beat = (host, ctx) => {
   };
 
   const finishFrame = () => {
+    sfx('ratchet');
     const frame = sim.ticks[Math.max(0, cursor + 1)]?.frame;
     while (cursor < sim.ticks.length - 1 && sim.ticks[cursor + 1]!.frame === frame) advance();
   };
