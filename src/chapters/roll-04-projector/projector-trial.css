@@ -1,0 +1,143 @@
+/* Roll 04 trial and the projector map figure. */
+/* Projector map figure */
+.pmap .pmap-title { font-family: var(--font-mono); font-size: 14px; font-weight: 700; }
+.pmap .pmap-css { fill: var(--second); }
+.pmap .pmap-grid { fill: var(--accent); }
+.pmap .pmap-element { fill: color-mix(in srgb, var(--second) 8%, white); stroke: var(--ink); stroke-width: 1.5; }
+.pmap .pmap-canvas { fill: color-mix(in srgb, var(--accent) 6%, white); stroke: var(--ink); stroke-width: 1.5; }
+.pmap .pmap-src { fill: color-mix(in srgb, var(--second) 30%, transparent); stroke: var(--second); stroke-width: 2.5; }
+.pmap .pmap-dst { fill: color-mix(in srgb, var(--accent) 28%, transparent); stroke: var(--accent); stroke-width: 2.5; }
+.pmap .pmap-ray { stroke: color-mix(in srgb, var(--glow) 80%, var(--ink)); stroke-width: 1.2; stroke-dasharray: 5 4; }
+.pmap .pmap-num { font-family: var(--font-mono); font-size: 13px; fill: var(--ink); }
+.pmap .pmap-k { font-family: var(--font-display); font-size: 20px; font-weight: 700; fill: var(--ink); }
+.pmap .pmap-k-note { font-family: var(--font-mono); font-size: 11px; fill: var(--ink); opacity: 0.75; }
+.pmap-caption {
+  margin: 0;
+  font-size: var(--step--1);
+}
+
+/* ---------------------------------------------------------------- trial */
+.tk-trial {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(18rem, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.tk-stage {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.tk-brief {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.tk-legend {
+  margin: 0;
+  font-size: var(--step--1);
+}
+.tk-screen-wrap {
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+  background: #1a0b12;
+  padding: var(--space-2);
+}
+.tk-screen .tk-canvas { fill: #fbf0e2; }
+.tk-gridline { stroke: color-mix(in srgb, #2c1f2e 12%, transparent); stroke-width: 1; }
+.tk-axis { font-family: var(--font-mono); font-size: 11px; fill: currentColor; }
+.tk-screen .tk-axis { fill: #fbf0e2; }
+.tk-target { opacity: 0.32; }
+.tk-target .tk-frame { stroke: var(--ink); stroke-dasharray: 6 4; stroke-width: 2; }
+.tk-attempt .tk-frame { stroke: var(--accent); stroke-width: 2.5; }
+.tk-attempt.tk-ok .tk-frame { stroke: var(--success); }
+.tk-frame { fill: none; }
+
+.tk .tk-glow { fill: color-mix(in srgb, var(--glow) 70%, transparent); }
+.tk .tk-paper { fill: #fffaf0; stroke: #2c1f2e; stroke-width: 2; }
+.tk .tk-title-band { fill: var(--accent); }
+.tk .tk-title { font-family: var(--font-mono); font-size: 15px; font-weight: 700; fill: #fff; }
+.tk .tk-sub { font-family: var(--font-body); font-size: 11px; fill: #2c1f2e; }
+.tk .tk-hole { fill: #2c1f2e; opacity: 0.6; }
+.tk .tk-tear { stroke: #2c1f2e; stroke-width: 1.5; stroke-dasharray: 4 3; }
+.tk .tk-stub { font-family: var(--font-mono); font-size: 11px; font-weight: 700; fill: var(--second); }
+.tk .tk-stub-no { font-family: var(--font-mono); font-size: 8px; fill: #2c1f2e; }
+
+.tk-blueprint-fig {
+  margin: 0;
+  display: grid;
+  gap: var(--space-1);
+}
+.tk-blueprint-fig figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.tk-guide { stroke: var(--second); stroke-width: 0.8; stroke-dasharray: 3 3; }
+.tk-form {
+  display: grid;
+  gap: var(--space-3);
+}
+.tk-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+}
+.tk-label {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.tk-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+}
+.tk-field {
+  display: grid;
+  grid-template-columns: 2.2em minmax(0, 1fr) auto;
+  align-items: center;
+  gap: var(--space-2);
+}
+.tk-field[hidden] {
+  display: none;
+}
+.tk-field-name {
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.tk-input {
+  width: 100%;
+  min-width: 0;
+}
+.tk-readout {
+  white-space: pre-wrap;
+}
+.tk-feedback:empty {
+  display: none;
+}
+
+@media (max-width: 1080px) {
+  .proj-lab,
+  .proj-out,
+  .tk-trial {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 640px) {
+  .proj-nested-row {
+    grid-template-columns: 1fr;
+  }
+  .tk-fields {
+    grid-template-columns: 1fr;
+  }
+  .proj-wrapper {
+    width: 260px;
+  }
+  .proj-inner {
+    width: 220px;
+  }
+}
+.tk-form .ui-dial[hidden] {
+  display: none;
+}
