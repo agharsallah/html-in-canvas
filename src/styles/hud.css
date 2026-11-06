@@ -1,0 +1,128 @@
+.hud {
+  position: absolute;
+  inset: 0 0 auto 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-6);
+  pointer-events: none;
+}
+.hud > * {
+  pointer-events: auto;
+}
+
+.hud-wordmark {
+  display: grid;
+  color: var(--baryta);
+  text-decoration: none;
+}
+.hud-title {
+  background: linear-gradient(100deg, var(--baryta) 30%, var(--amber) 60%, var(--stain));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--step-4);
+  line-height: 1;
+  letter-spacing: -0.01em;
+}
+.hud-subtitle {
+  font-size: var(--step--1);
+  color: var(--dust);
+  margin-top: var(--space-1);
+}
+
+.hud-status {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.hud-mode-wrap {
+  position: relative;
+}
+.hud-album {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}
+.hud-guide {
+  text-decoration: none;
+}
+.hud-mode,
+.hud-album {
+  border: 1px solid color-mix(in srgb, var(--dust) 45%, transparent);
+  background: color-mix(in srgb, var(--umber-900) 80%, transparent);
+  color: var(--baryta);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  font-size: var(--step--1);
+}
+.hud-mode::before {
+  content: '';
+  display: inline-block;
+  width: 0.55em;
+  height: 0.55em;
+  border-radius: 50%;
+  margin-right: 0.5em;
+  background: var(--dust);
+  vertical-align: 0.05em;
+}
+.hud-mode[data-mode='native']::before {
+  background: var(--tray);
+  box-shadow: 0 0 10px var(--tray);
+}
+.hud-mode-info {
+  position: absolute;
+  right: 0;
+  top: calc(100% + var(--space-2));
+  width: min(22rem, 80vw);
+  padding: var(--space-4);
+  background: var(--umber-900);
+  border: 1px solid var(--umber-600);
+  border-radius: var(--radius-paper);
+  font-size: var(--step--1);
+}
+.hud-mode-info p {
+  margin: 0 0 var(--space-2);
+}
+
+.hud-hint {
+  position: absolute;
+  bottom: var(--space-5);
+  left: 50%;
+  translate: -50% 0;
+  margin: 0;
+  font-size: var(--step--1);
+  color: var(--dust);
+  text-align: center;
+  pointer-events: none;
+}
+
+/* While a chapter is open the darkroom recedes. */
+body[data-view='chapter'] .hud-hint,
+body[data-view='entering'] .hud-hint {
+  opacity: 0;
+}
+body[data-view='chapter'] .hud {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .hud {
+    padding: var(--space-4);
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .hud-status {
+    justify-content: flex-start;
+  }
+  .hud-title {
+    font-size: var(--step-3);
+  }
+}

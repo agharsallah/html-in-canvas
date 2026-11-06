@@ -1,0 +1,140 @@
+/*
+ * A print on the wire. In native mode this element is a `drawable` child of
+ * the WebGL canvas and is copied into a texture; in fallback mode it sits in
+ * the CSS3D layer. Size must match PRINT_CARD_SIZE in print-card.ts.
+ */
+.print-card {
+  width: 340px;
+  height: 460px;
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  overflow: hidden;
+}
+
+.print-edge {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: color-mix(in srgb, var(--ink) 65%, var(--paper));
+}
+
+.print-title {
+  margin: 8px 0 0;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 36px;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+.print-logline {
+  margin: 0;
+  max-width: 28ch;
+}
+
+.print-concepts {
+  list-style: none;
+  margin: 4px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.print-concepts code {
+  display: inline-block;
+  padding: 2px 7px;
+  font-size: 12px;
+  border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  border-radius: 2px;
+}
+
+.print-foe {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--accent);
+}
+
+.print-note {
+  margin: auto 0 0;
+  font-style: italic;
+  color: color-mix(in srgb, var(--ink) 70%, var(--paper));
+}
+
+.print-footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 12px;
+}
+
+.print-frames {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+}
+.print-frames li {
+  display: grid;
+  justify-items: center;
+  gap: 3px;
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
+.print-frames li::before {
+  content: '';
+  width: 18px;
+  height: 13px;
+  border: 1.5px solid currentColor;
+  border-radius: 2px;
+}
+.print-frames li[data-done='true'] {
+  color: var(--ink);
+}
+.print-frames li[data-done='true']::before {
+  background: var(--ink);
+}
+
+.print-enter {
+  padding: 10px 16px;
+  border: 0;
+  border-radius: 2px;
+  background: var(--ink);
+  color: var(--paper);
+  font-weight: 600;
+  font-size: 15px;
+}
+.print-enter:hover {
+  background: var(--accent);
+  color: var(--ink);
+}
+.print-enter:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.print-card[data-status='locked'] .print-title {
+  color: color-mix(in srgb, var(--ink) 45%, var(--paper));
+  font-style: italic;
+}
+
+/* Fallback mode: the shader can't develop a DOM node, so CSS does it. */
+.css3d-layer .print-card {
+  --develop: 1;
+  filter: contrast(calc(0.35 + var(--develop) * 0.65)) brightness(calc(1.35 - var(--develop) * 0.35));
+}

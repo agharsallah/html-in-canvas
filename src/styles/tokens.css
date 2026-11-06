@@ -1,0 +1,87 @@
+/*
+ * Design tokens. The darkroom is aubergine and oxblood, lit by three
+ * sources: a red-orange safelight, an amber enlarger lamp, and the teal glow
+ * of the developer tray, with magenta stain where chemistry spilled.
+ * Prints are cool baryta paper with selenium-toned ink. Each chapter
+ * overrides --paper, --ink, --accent, --glow and --second with its process.
+ */
+:root {
+  --night: #1d0f1f;
+  --oxblood: #3a1424;
+  --umber-950: #1d0f1f;
+  --umber-900: #2a1529;
+  --umber-800: #3a1d36;
+  --umber-600: #6a3a5c;
+  --safelight: #ff5a36;
+  --amber: #ffb547;
+  --tray: #2ee6c0;
+  --stain: #ff4fa3;
+  --baryta: #eef0ec;
+  --selenium: #241c18;
+  --dust: #d7c3cf;
+
+  --paper: var(--baryta);
+  --ink: var(--selenium);
+  --accent: var(--safelight);
+  --glow: var(--amber);
+  --second: var(--tray);
+
+  /* Chart series. Validated for CVD separation and contrast (dataviz skill). */
+  --rarity-common: #6f8fe0;
+  --rarity-rare: #18a588;
+  --rarity-legendary: #c97a12;
+  --rarity-secret: #e2408f;
+
+  --font-display: 'Bodoni Moda', 'Didot', 'Bodoni 72', serif;
+  --font-body: 'Atkinson Hyperlegible Next', system-ui, sans-serif;
+  --font-mono: 'Atkinson Hyperlegible Mono', ui-monospace, monospace;
+
+  /* Major-third scale */
+  --step--1: 0.8rem;
+  --step-0: 1rem;
+  --step-1: 1.25rem;
+  --step-2: 1.563rem;
+  --step-3: 1.953rem;
+  --step-4: 2.441rem;
+  --step-5: 3.052rem;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+
+  --radius-paper: 2px;
+  --radius-control: 6px;
+  --radius-card: 12px;
+
+  --success: #2f7d5b;
+  --error: #c0392b;
+  --hint: #a8740f;
+  --ease-snap: cubic-bezier(0.3, 0.7, 0.2, 1);
+  --ease-develop: cubic-bezier(0.2, 0.7, 0.1, 1);
+  --measure: 66ch;
+  /* Photographic grain, used as an overlay on paper surfaces. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.55 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  color-scheme: dark;
+}
+
+/*
+ * Composite tokens reference --ink/--paper/--accent. Custom properties
+ * resolve where they are declared, so they are re-declared on every scope
+ * that re-themes them (each chapter), or they would keep the darkroom's.
+ */
+:root,
+.chapter {
+  /* Flat, elevated: crisp ink lines and hard offset shadows, like cut paper
+     stacked on paper. Big surfaces cast a shadow in the chapter's accent. */
+  --line: 1.5px solid var(--ink);
+  --line-soft: 1.5px solid color-mix(in srgb, var(--ink) 24%, transparent);
+  --surface: color-mix(in srgb, var(--paper) 50%, white);
+  --lift-1: 2px 2px 0 0 var(--ink);
+  --lift-2: 3px 3px 0 0 var(--ink);
+  --lift-3: 6px 6px 0 0 var(--accent);
+  --lift-second: 6px 6px 0 0 var(--second);
+}

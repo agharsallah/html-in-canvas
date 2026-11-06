@@ -1,0 +1,250 @@
+/* Our own components: filmstrip, dial, light meter, rubber stamp, tilt. */
+
+/* ------------------------------------------------------------ filmstrip */
+.filmstrip {
+  --film: #17111a;
+  position: relative;
+  padding: 11px 10px;
+  border-radius: 6px;
+  background:
+    radial-gradient(circle at 7px 5.5px, var(--paper) 2.6px, transparent 3px) 0 0 / 16px 11px repeat-x,
+    radial-gradient(circle at 7px 5.5px, var(--paper) 2.6px, transparent 3px) 0 100% / 16px 11px repeat-x,
+    var(--film);
+  box-shadow: var(--lift-3);
+}
+.filmstrip ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 6px;
+}
+.film-frame {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto auto;
+  column-gap: 8px;
+  align-items: center;
+  min-width: 112px;
+  padding: 6px 12px 6px 8px;
+  border: 0;
+  border-radius: 3px;
+  /* Undeveloped: a negative, inverted and dim. */
+  background: #2b2230;
+  color: #b9a9bd;
+  font: inherit;
+  text-align: left;
+  transition: background 200ms, color 200ms, transform 160ms var(--ease-snap);
+}
+.film-frame:hover {
+  transform: translateY(-2px);
+  color: white;
+}
+.film-frame-number {
+  grid-column: 1 / -1;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.08em;
+  color: #e2a64a;
+}
+.film-frame-art {
+  display: grid;
+  place-items: center;
+}
+.film-frame-label {
+  font-weight: 600;
+  font-size: var(--step--1);
+}
+.film-frame[data-done='true'] {
+  /* Developed: a positive print in the roll's colours. */
+  background: linear-gradient(135deg, var(--paper), color-mix(in srgb, var(--paper) 70%, var(--glow)));
+  color: var(--ink);
+}
+.film-frame[data-done='true'] .film-frame-number {
+  color: var(--accent);
+}
+.film-frame[aria-current='step'] {
+  background: linear-gradient(135deg, var(--accent), color-mix(in srgb, var(--accent) 60%, var(--second)));
+  color: white;
+  box-shadow: 0 0 0 2px var(--paper), 0 0 22px color-mix(in srgb, var(--accent) 70%, transparent);
+}
+.film-frame[aria-current='step'] .film-frame-number {
+  color: white;
+}
+
+/* ----------------------------------------------------------------- dial */
+.ui-dial {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+.dial-control {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  cursor: grab;
+  touch-action: none;
+}
+.dial-control:active {
+  cursor: grabbing;
+}
+.dial-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+.dial-tick {
+  stroke: color-mix(in srgb, var(--ink) 45%, transparent);
+  stroke-width: 1.5;
+}
+.dial-track {
+  stroke: color-mix(in srgb, var(--ink) 14%, transparent);
+  stroke-width: 4;
+}
+.dial-fill {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.dial-knob circle {
+  fill: var(--surface);
+  stroke: var(--ink);
+  stroke-width: 1.5;
+  filter: drop-shadow(3px 3px 0 var(--ink));
+}
+.dial-indicator {
+  stroke: var(--accent);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.dial-text {
+  display: grid;
+}
+.dial-label {
+  font-size: var(--step--1);
+}
+.dial-readout {
+  font-family: var(--font-display);
+  font-size: var(--step-3);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+/* ---------------------------------------------------------- light meter */
+.ui-gauge {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 4px 14px 4px 4px;
+  border: 1px solid color-mix(in srgb, var(--dust) 40%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--umber-900) 85%, transparent);
+}
+.gauge-svg {
+  width: 64px;
+  height: 42px;
+}
+.gauge-track {
+  stroke: rgb(255 255 255 / 0.14);
+  stroke-width: 6;
+}
+.gauge-fill {
+  stroke: var(--amber);
+  stroke-width: 6;
+  stroke-linecap: round;
+}
+.gauge-tick {
+  stroke: rgb(255 255 255 / 0.35);
+  stroke-width: 1.25;
+}
+.gauge-needle {
+  stroke: var(--safelight);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  transition: transform 700ms var(--ease-develop);
+  transform-box: view-box;
+}
+.gauge-hub {
+  fill: var(--baryta);
+}
+.gauge-text {
+  display: grid;
+  line-height: 1.15;
+}
+.gauge-number {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  color: var(--baryta);
+}
+.gauge-caption {
+  font-size: 0.72rem;
+  color: var(--amber);
+}
+
+/* -------------------------------------------------------- rubber stamp */
+.stamp-badge {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: var(--stamp-size);
+  height: var(--stamp-size);
+  color: var(--stamp-ink, var(--accent));
+  rotate: var(--stamp-tilt);
+}
+.stamp-badge > * {
+  grid-area: 1 / 1;
+}
+.stamp-ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 3;
+}
+.stamp-ring-inner {
+  stroke-width: 1.5;
+}
+.stamp-text {
+  fill: currentColor;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 1.2px;
+}
+.stamp-svg {
+  /* Rubber on paper: a little translucent, so the paper shows through. */
+  opacity: 0.88;
+  mix-blend-mode: multiply;
+}
+.stamp-badge[data-earned='false'] {
+  color: color-mix(in srgb, currentColor 35%, transparent);
+  rotate: 0deg;
+}
+.stamp-badge[data-press='true'] {
+  animation: stamp-press 650ms cubic-bezier(0.2, 1.4, 0.4, 1) both;
+}
+@keyframes stamp-press {
+  0% { transform: scale(2.2); opacity: 0; }
+  60% { transform: scale(0.94); opacity: 1; }
+  100% { transform: scale(1); }
+}
+
+/* ----------------------------------------------------------------- tilt */
+.tilt {
+  --rx: 0deg;
+  --ry: 0deg;
+  transform: perspective(900px) rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform 260ms var(--ease-snap);
+  will-change: transform;
+}
+.tilt::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 0%), rgb(255 255 255 / 0.35), transparent 45%);
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.tilt:hover::after {
+  opacity: 1;
+}

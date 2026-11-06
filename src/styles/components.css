@@ -1,0 +1,273 @@
+/* ------------------------------------------------------------- buttons */
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6em;
+  padding: 0.62em 1.15em;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  color: var(--ink);
+  font-weight: 600;
+  line-height: 1.2;
+  box-shadow: var(--lift-2);
+  transition: transform 120ms var(--ease-snap), box-shadow 120ms var(--ease-snap), background 120ms;
+}
+.ui-button:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 var(--ink);
+}
+.ui-button:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 0 var(--ink);
+}
+.ui-button[data-variant='primary'] {
+  background: var(--ink);
+  color: var(--paper);
+  box-shadow: 3px 3px 0 0 var(--accent);
+}
+.ui-button[data-variant='primary']:hover:not(:disabled) {
+  box-shadow: 4px 4px 0 0 var(--accent);
+}
+.ui-button[data-variant='primary']:active:not(:disabled) {
+  box-shadow: 1px 1px 0 0 var(--accent);
+}
+.ui-button[data-variant='ghost'] {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  text-decoration: underline;
+  text-underline-offset: 0.25em;
+  text-decoration-thickness: 1px;
+}
+.ui-button[data-variant='ghost']:hover:not(:disabled) {
+  transform: none;
+  box-shadow: none;
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.ui-button[data-size='sm'] {
+  padding: 0.4em 0.8em;
+  font-size: var(--step--1);
+  box-shadow: var(--lift-1);
+}
+.ui-button[data-size='sm'][data-variant='ghost'] {
+  box-shadow: none;
+}
+.ui-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.ui-button[hidden] {
+  display: none;
+}
+.ui-kbd {
+  font-family: var(--font-mono);
+  font-size: 0.75em;
+  padding: 0.05em 0.4em;
+  border: 1px solid color-mix(in srgb, currentColor 40%, transparent);
+  border-radius: 4px;
+  opacity: 0.75;
+}
+
+/* ------------------------------------------------------------- toggles */
+.ui-toggle {
+  display: flex;
+  justify-self: start;
+  align-items: center;
+  gap: 0.75em;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  font: inherit;
+  padding: 0.35em 0;
+}
+.ui-toggle-text {
+  display: grid;
+  gap: 0.15em;
+}
+.ui-toggle-description {
+  font-size: var(--step--1);
+  opacity: 0.75;
+}
+
+/* switch */
+.ui-switch-track {
+  position: relative;
+  flex: none;
+  width: 44px;
+  height: 26px;
+  border: var(--line);
+  border-radius: 999px;
+  background: var(--surface);
+  box-shadow: var(--lift-1);
+  transition: background 160ms;
+}
+.ui-switch-thumb {
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: var(--ink);
+  transition: transform 180ms var(--ease-snap);
+}
+.ui-switch[aria-checked='true'] .ui-switch-track {
+  background: var(--accent);
+}
+.ui-switch[aria-checked='true'] .ui-switch-thumb {
+  transform: translateX(18px);
+  background: var(--paper);
+  box-shadow: 0 0 0 1.5px var(--ink);
+}
+
+/* checkbox card */
+.ui-checkbox {
+  width: 100%;
+  padding: 0.85em 1em;
+  border: var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  transition: border-color 120ms, box-shadow 120ms, transform 120ms var(--ease-snap);
+}
+.ui-checkbox:hover {
+  border-color: var(--ink);
+}
+.ui-checkbox[aria-checked='true'] {
+  border-color: var(--ink);
+  box-shadow: var(--lift-2);
+  transform: translate(-1px, -1px);
+}
+.ui-checkbox-box {
+  position: relative;
+  flex: none;
+  width: 22px;
+  height: 22px;
+  border: var(--line);
+  border-radius: 6px;
+  background: white;
+}
+.ui-checkbox[aria-checked='true'] .ui-checkbox-box {
+  background: var(--ink);
+}
+.ui-checkbox[aria-checked='true'] .ui-checkbox-box::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border: solid var(--paper);
+  border-width: 0 2.5px 2.5px 0;
+  rotate: 45deg;
+}
+
+/* chip: an attribute you can add to code (lives on dark code panels) */
+.ui-chip {
+  display: inline-flex;
+  gap: 0.5em;
+  padding: 0.18em 0.65em 0.18em 0.45em;
+  border: 1.5px dashed #7f8a90;
+  border-radius: var(--radius-control);
+  color: #c9d1d6;
+  font-family: var(--font-mono);
+  font-size: inherit;
+  transition: background 120ms, border-color 120ms, color 120ms;
+}
+.ui-chip:hover {
+  border-color: #dfe6ea;
+  color: white;
+}
+.ui-chip-box {
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+}
+.ui-chip[aria-pressed='true'] {
+  border-style: solid;
+  border-color: var(--glow);
+  background: color-mix(in srgb, var(--glow) 22%, transparent);
+  color: white;
+}
+.ui-chip[aria-pressed='true'] .ui-chip-box {
+  background: var(--glow);
+  border-color: var(--glow);
+}
+
+/* ----------------------------------------------------------- segmented */
+.ui-segmented {
+  display: inline-flex;
+  justify-self: start;
+  gap: 3px;
+  padding: 3px;
+  border: var(--line);
+  border-radius: 9px;
+  background: var(--surface);
+  box-shadow: var(--lift-2);
+}
+.ui-segment {
+  padding: 0.45em 1em;
+  border: 0;
+  border-radius: var(--radius-control);
+  background: transparent;
+  color: var(--ink);
+  font: inherit;
+}
+.ui-segment:hover {
+  background: color-mix(in srgb, var(--ink) 8%, transparent);
+}
+.ui-segment[aria-checked='true'] {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ------------------------------------------------------------- fields */
+.ui-field {
+  font: inherit;
+  padding: 0.35em 0.6em;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 55%, transparent);
+  border-radius: var(--radius-control);
+  background: white;
+  color: var(--ink);
+}
+.ui-field:focus {
+  outline: 3px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--ink);
+}
+
+/* ------------------------------------------------------------- panels */
+.panel {
+  display: grid;
+  gap: var(--space-3);
+  align-content: start;
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border: var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+}
+.panel-title {
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.2;
+}
+.panel-title:first-child {
+  margin-top: 0;
+}
+.panel-help {
+  margin: 0;
+  font-size: var(--step--1);
+  color: color-mix(in srgb, var(--ink) 72%, var(--paper));
+}
+.panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}

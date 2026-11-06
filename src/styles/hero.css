@@ -1,0 +1,122 @@
+/*
+ * The hero card: real HTML lying in the developer tray. In native mode it is
+ * a drawable child of the WebGL canvas; its snapshot is what the liquid
+ * shader refracts. Size must match HERO_CARD_SIZE in hero-card.ts.
+ */
+.hero-card {
+  position: relative; /* offsetParent for the ripple maths in developer-tray.ts */
+  width: 560px;
+  height: 380px;
+  padding: 26px 34px 28px;
+  display: flex;
+  flex-direction: column;
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgb(255 90 54 / 0.10), transparent 60%),
+    radial-gradient(90% 80% at 0% 100%, rgb(46 230 192 / 0.10), transparent 60%),
+    #f2f1ec;
+  color: #1d1418;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  pointer-events: auto;
+}
+.hero-edge {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: #6b5d63;
+}
+.hero-clock {
+  font-variant-numeric: tabular-nums;
+  color: #c2412a;
+}
+.hero-title {
+  margin: 10px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: 104px;
+  line-height: 0.92;
+  letter-spacing: -0.03em;
+  background: linear-gradient(100deg, #1d1418 40%, #c2412a 72%, #b4237a);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hero-lede {
+  margin: 12px 0 0;
+  max-width: 44ch;
+  font-size: 15.5px;
+}
+.hero-lede strong {
+  color: #0f7d6a;
+}
+.hero-greeting {
+  margin: 6px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 17px;
+  color: #c2412a;
+}
+.hero-actions {
+  margin-top: auto;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+.hero-sign {
+  display: grid;
+  gap: 4px;
+  font-size: 12px;
+  color: #6b5d63;
+}
+.hero-input {
+  width: 220px;
+  padding: 6px 2px;
+  border: 0;
+  border-bottom: 2px solid #1d1418;
+  background: transparent;
+  color: #1d1418;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 24px;
+  caret-color: #c2412a;
+}
+.hero-input::placeholder {
+  color: #a59aa0;
+}
+.hero-input:focus {
+  outline: none;
+  border-bottom-color: #c2412a;
+}
+.hero-begin {
+  padding: 13px 22px;
+  border: 1.5px solid #1d1418;
+  border-radius: 6px;
+  background: #1d1418;
+  color: #f2f1ec;
+  font: 600 16px var(--font-body);
+  box-shadow: 4px 4px 0 0 #c2412a;
+  cursor: pointer;
+}
+.hero-begin:hover {
+  background: #c2412a;
+  box-shadow: 4px 4px 0 0 #1d1418;
+}
+.hero-begin:focus-visible {
+  outline: 3px solid #0f7d6a;
+  outline-offset: 3px;
+}
+
+/* At the tray, the paper itself carries the wordmark and the instructions. */
+body[data-spot='tray'][data-view='hub'] .hud-wordmark {
+  opacity: 0;
+  pointer-events: none;
+}
+.hud-wordmark {
+  transition: opacity 600ms;
+}

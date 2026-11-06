@@ -1,0 +1,266 @@
+/* Story frame: dialogue + notebook of concept cards. */
+.story {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.story-stage {
+  position: sticky;
+  top: 0;
+  display: grid;
+}
+/* The 3D scene is the stage; the dialogue is a speech card resting on it. */
+.story-scene {
+  height: clamp(240px, 38vh, 420px);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, color-mix(in srgb, var(--glow) 40%, var(--paper)), var(--paper));
+}
+.story[data-has-scene='true'] .dialogue {
+  position: relative;
+  margin: -48px var(--space-4) 0;
+  padding: var(--space-4) var(--space-5);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--lift-3);
+}
+
+.dialogue {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-5);
+}
+.dialogue-name {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: color-mix(in srgb, var(--ink) 65%, var(--paper));
+}
+.dialogue-text {
+  margin: var(--space-2) 0 var(--space-4);
+  min-height: 3.8em;
+  max-width: 40ch;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.25;
+}
+.dialogue-text[data-speaker='foe'] {
+  font-style: italic;
+  color: var(--accent);
+}
+.dialogue-text[data-speaker='narrator'] {
+  font-style: italic;
+}
+.dialogue-text code {
+  font-size: 0.72em;
+}
+.dialogue-controls {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+.dialogue-counter {
+  margin: 0 0 0 var(--space-2);
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
+.dialogue-progress {
+  display: flex;
+  gap: 4px;
+  margin-top: var(--space-4);
+  max-width: 24rem;
+}
+.dialogue-progress span {
+  flex: 1;
+  height: 4px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--ink) 15%, transparent);
+  transition: background 200ms;
+}
+.dialogue-progress span[data-state='seen'] {
+  background: var(--ink);
+}
+.dialogue-progress span[data-state='current'] {
+  background: var(--accent);
+}
+
+.notebook {
+  display: grid;
+  /* minmax(0, …): long code lines in concept cards scroll, not widen the drawer. */
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--space-4);
+}
+.notebook-empty {
+  margin: 0;
+  padding: var(--space-5);
+  border: 1.5px dashed color-mix(in srgb, var(--ink) 30%, transparent);
+  border-radius: var(--radius-card);
+  font-style: italic;
+  color: color-mix(in srgb, var(--ink) 65%, var(--paper));
+}
+
+/* Concept cards: kind, name, one-line definition, then detail. */
+.concept {
+  position: relative;
+  padding: var(--space-4) var(--space-5);
+  border: var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  animation: pin 420ms var(--ease-develop) both;
+}
+.concept[data-fresh='true'],
+.concept[data-highlight='true'] {
+  border-color: var(--ink);
+  box-shadow: 4px 4px 0 0 var(--accent);
+}
+.concept:focus {
+  outline: none;
+}
+@keyframes pin {
+  from {
+    opacity: 0;
+    translate: 0 -8px;
+  }
+}
+.concept-head {
+  display: flex;
+  gap: var(--space-3);
+  align-items: center;
+  margin-bottom: var(--space-2);
+}
+.concept-emblem {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 44px;
+  height: 44px;
+  border: var(--line);
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--accent), var(--second));
+  color: white;
+  box-shadow: var(--lift-1);
+}
+.concept-head .concept-title {
+  margin: 0;
+}
+.concept-kind {
+  display: inline-block;
+  margin: 0 0 var(--space-1);
+  padding: 0.1em 0.6em;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+}
+.concept[data-kind='attribute'] .concept-kind,
+.concept[data-kind='method'] .concept-kind,
+.concept[data-kind='event'] .concept-kind,
+.concept[data-kind='property'] .concept-kind {
+  background: var(--ink);
+  color: var(--paper);
+}
+.concept-title {
+  margin: 0 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  line-height: 1.15;
+}
+.concept-title code {
+  font-size: 0.8em;
+}
+.concept-what {
+  margin: 0 0 var(--space-3);
+  font-size: var(--step-1);
+  line-height: 1.4;
+  font-weight: 600;
+  max-width: var(--measure);
+}
+.concept-detail {
+  margin: 0 0 var(--space-2);
+  max-width: var(--measure);
+}
+.concept .code {
+  margin-top: var(--space-3);
+}
+.concept-source {
+  margin: var(--space-3) 0 0;
+  font-size: var(--step--1);
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
+
+/* Avatars */
+.avatar {
+  width: 44px;
+  height: 72px;
+  position: relative;
+  flex: none;
+}
+.avatar-caret-bar {
+  position: absolute;
+  left: 19px;
+  top: 18px;
+  width: 6px;
+  height: 52px;
+  background: var(--ink);
+  border-radius: 1px;
+  animation: blink 1.06s steps(1) infinite;
+}
+.avatar-caret-eyes {
+  position: absolute;
+  left: 10px;
+  top: 2px;
+  width: 24px;
+  height: 10px;
+}
+.avatar-caret-eyes::before,
+.avatar-caret-eyes::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 7px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--ink);
+}
+.avatar-caret-eyes::before {
+  left: 0;
+}
+.avatar-caret-eyes::after {
+  right: 0;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+.avatar-foe {
+  border-radius: 46% 54% 40% 60% / 55% 40% 60% 45%;
+  background: radial-gradient(circle at 40% 40%, color-mix(in srgb, var(--accent) 70%, transparent), transparent 70%);
+  filter: blur(3px);
+}
+.chapter-remark .avatar {
+  transform: scale(0.6);
+  margin: -12px -6px;
+}
+
+@media (max-width: 900px) {
+  .story {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+  .story-stage {
+    position: static;
+  }
+  .dialogue-text {
+    font-size: var(--step-1);
+    min-height: 5em;
+  }
+  .story[data-has-scene='true'] .dialogue {
+    margin: -40px var(--space-2) 0;
+  }
+}

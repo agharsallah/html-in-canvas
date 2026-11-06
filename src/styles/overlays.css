@@ -1,0 +1,254 @@
+/* Toasts */
+.toasts {
+  position: absolute;
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: grid;
+  gap: var(--space-2);
+  justify-items: end;
+  pointer-events: none;
+  z-index: 10;
+}
+.toast {
+  margin: 0;
+  padding: var(--space-2) var(--space-4);
+  background: var(--umber-900);
+  color: var(--baryta);
+  border: 1px solid var(--umber-600);
+  border-radius: var(--radius-paper);
+  font-size: var(--step--1);
+  animation: toast-in 380ms var(--ease-develop) both;
+}
+.toast[data-leaving='true'] {
+  opacity: 0;
+  transition: opacity 380ms;
+}
+.toast[data-kind='silver'] {
+  color: var(--dust);
+}
+.toast[data-kind='negative'] {
+  border-color: var(--tray);
+}
+.toast[data-rarity='legendary'] {
+  border-color: var(--safelight);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--safelight) 35%, transparent);
+}
+.toast[data-kind='unlock'],
+.toast[data-kind='rank'] {
+  background: linear-gradient(135deg, var(--safelight), var(--stain));
+  color: var(--umber-950);
+  border-color: var(--safelight);
+}
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    translate: 0 10px;
+  }
+}
+
+/* Album: a contact sheet on a lightbox. */
+.album {
+  width: min(70rem, 94vw);
+  max-height: 90vh;
+  padding: var(--space-6);
+  background:
+    radial-gradient(800px 400px at 100% 0%, rgb(255 79 163 / 0.14), transparent 60%),
+    radial-gradient(700px 500px at 0% 100%, rgb(46 230 192 / 0.12), transparent 60%),
+    var(--umber-900);
+  color: var(--baryta);
+  border: 1px solid var(--umber-600);
+  border-radius: var(--radius-card);
+  --ink: var(--baryta);
+  --paper: var(--umber-900);
+  --accent: var(--amber);
+}
+.album::backdrop {
+  background: rgb(14 6 12 / 0.75);
+  backdrop-filter: blur(3px);
+}
+.album-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.album-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-5);
+  line-height: 1;
+}
+.album-head .ui-button {
+  color: var(--baryta);
+}
+.album-chart {
+  margin-top: var(--space-4);
+}
+.album-section {
+  margin: var(--space-6) 0 var(--space-1);
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+.album-help {
+  margin: 0 0 var(--space-3);
+  font-size: var(--step--1);
+  color: var(--dust);
+}
+.album-sheet {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+  gap: var(--space-4);
+  padding: var(--space-5);
+  border-radius: var(--radius-card);
+  /* A lightbox: cool white light behind the film. */
+  background:
+    radial-gradient(circle at 50% 0%, rgb(255 255 255 / 0.08), transparent 70%),
+    #120a12;
+}
+.negative {
+  position: relative;
+  min-height: 15rem;
+  border-radius: 8px;
+  --series: var(--rarity-common);
+}
+.negative[data-rarity='rare'] { --series: var(--rarity-rare); }
+.negative[data-rarity='legendary'] { --series: var(--rarity-legendary); }
+.negative[data-rarity='secret'] { --series: var(--rarity-secret); }
+.negative[data-collected='false'] {
+  display: grid;
+  align-content: start;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border: 1.5px dashed rgb(255 255 255 / 0.18);
+  color: #8f7d8f;
+  font-size: var(--step--1);
+}
+.negative-lock {
+  display: grid;
+  place-items: center;
+  height: 5rem;
+  opacity: 0.6;
+}
+.negative-edge {
+  margin: 0;
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  opacity: 0.85;
+}
+.negative-hidden {
+  margin: 0;
+}
+.negative-flip {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 15rem;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  perspective: 900px;
+}
+.negative-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  border-radius: 8px;
+  backface-visibility: hidden;
+  transition: transform 600ms var(--ease-develop);
+}
+/* Front: the negative. Dark, orange-based film with the rarity edge glowing. */
+.negative-front {
+  background: linear-gradient(160deg, #3b1e14, #170c0a);
+  color: #ffd9b8;
+  border: 2px solid var(--series);
+  box-shadow: 0 0 22px color-mix(in srgb, var(--series) 45%, transparent), 4px 4px 0 0 var(--series);
+}
+.negative-emblem {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin: var(--space-2) 0;
+  border-radius: 16px;
+  background: var(--series);
+  color: #170c0a;
+}
+.negative-name {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+  line-height: 1.1;
+  overflow-wrap: anywhere;
+}
+.negative-kind {
+  margin-top: auto;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+/* Back: the developed positive. */
+.negative-back {
+  background: var(--baryta);
+  color: var(--selenium);
+  border: 2px solid var(--series);
+  box-shadow: 4px 4px 0 0 var(--series);
+  transform: rotateY(180deg);
+}
+.negative-text {
+  font-size: var(--step--1);
+  line-height: 1.45;
+}
+.negative-code {
+  margin-top: auto;
+  padding: 4px 6px;
+  border-radius: 4px;
+  background: #1d2024;
+  color: #e9e6e1;
+  font-size: 0.72rem;
+  overflow-wrap: anywhere;
+}
+.negative-flip[aria-pressed='true'] .negative-front { transform: rotateY(-180deg); }
+.negative-flip[aria-pressed='true'] .negative-back { transform: rotateY(0deg); }
+.album-stamps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--space-4);
+}
+.stamp {
+  display: grid;
+  justify-items: center;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  text-align: center;
+  font-size: var(--step--1);
+  color: #8f7d8f;
+}
+.stamp[data-earned='true'] {
+  color: var(--baryta);
+  --stamp-ink: var(--stain);
+}
+.stamp strong {
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+
+/* In a chapter, toasts sit above the bottom navigation bar. */
+body[data-view='chapter'] .toasts {
+  bottom: 6.5rem;
+}
+@media (max-width: 720px) {
+  body[data-view='chapter'] .toasts {
+    bottom: 9rem;
+    right: var(--space-3);
+  }
+}

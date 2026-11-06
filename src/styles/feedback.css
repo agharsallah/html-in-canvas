@@ -1,0 +1,183 @@
+/* ------------------------------------------------------------ callouts */
+.ui-callout {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  align-items: start;
+  padding: var(--space-3) var(--space-4);
+  border: var(--line-soft);
+  border-left: 5px solid var(--callout-color);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  --callout-color: var(--ink);
+  animation: callout-in 260ms var(--ease-snap) both;
+}
+.ui-callout[data-kind='success'] { --callout-color: var(--success); }
+.ui-callout[data-kind='error'] { --callout-color: var(--error); }
+.ui-callout[data-kind='hint'] { --callout-color: var(--hint); }
+.ui-callout-glyph {
+  display: grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--callout-color);
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+.ui-callout-body p {
+  margin: 0;
+  max-width: var(--measure);
+}
+.ui-callout-title {
+  font-weight: 700;
+}
+.ui-callout-title + p {
+  margin-top: var(--space-1);
+}
+@keyframes callout-in {
+  from { opacity: 0; translate: 0 4px; }
+}
+
+/* ----------------------------------------------------------- objectives */
+.ui-objectives {
+  padding: var(--space-4) var(--space-5);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: var(--lift-3);
+}
+.ui-objectives-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-3);
+}
+.ui-objectives h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-1);
+}
+.ui-objectives-count {
+  margin: 0;
+  font-size: var(--step--1);
+  font-variant-numeric: tabular-nums;
+}
+.ui-objectives ul {
+  list-style: none;
+  margin: var(--space-3) 0 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-3);
+}
+.ui-objective {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-3);
+  align-items: start;
+}
+.ui-objective-box {
+  position: relative;
+  width: 20px;
+  height: 20px;
+  margin-top: 0.1em;
+  border: var(--line);
+  border-radius: 6px;
+  background: white;
+  transition: background 200ms;
+}
+.ui-objective[data-done='true'] .ui-objective-box {
+  background: var(--success);
+  border-color: var(--success);
+}
+.ui-objective[data-done='true'] .ui-objective-box::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 1px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2.5px 2.5px 0;
+  rotate: 45deg;
+}
+.ui-objective[data-done='true'] > span:last-child {
+  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
+}
+
+/* -------------------------------------------------------- option cards */
+.ui-option {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-4);
+  align-items: center;
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: var(--line-soft);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  color: var(--ink);
+  text-align: left;
+  font: inherit;
+  transition: transform 120ms var(--ease-snap), box-shadow 120ms, border-color 120ms;
+}
+.ui-option:hover:not(:disabled) {
+  border-color: var(--ink);
+  transform: translate(-1px, -1px);
+  box-shadow: var(--lift-2);
+}
+.ui-option-key {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border: var(--line);
+  border-radius: var(--radius-control);
+  font-family: var(--font-mono);
+  font-weight: 700;
+}
+.ui-option[data-result='right'] {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+  box-shadow: 3px 3px 0 0 var(--success);
+}
+.ui-option[data-result='right'] .ui-option-key {
+  background: var(--success);
+  border-color: var(--success);
+  color: white;
+}
+.ui-option[data-result='wrong'] {
+  opacity: 0.55;
+}
+.ui-option[data-result='wrong'] .ui-option-key {
+  background: var(--error);
+  border-color: var(--error);
+  color: white;
+}
+.ui-option:disabled {
+  cursor: default;
+}
+
+/* -------------------------------------------------------------- console */
+.console {
+  margin: 0;
+  padding: var(--space-3) var(--space-4) var(--space-3) var(--space-6);
+  min-height: 3.5rem;
+  background: #1f2224;
+  color: #f1c6b5;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  border-radius: var(--radius-control);
+  overflow-wrap: anywhere;
+}
+.console:empty::before {
+  content: 'Console is empty';
+  display: block;
+  margin-left: calc(-1 * var(--space-4));
+  color: #8b9296;
+}
+.console li[data-empty='true'] {
+  color: #b9c2c8;
+}
