@@ -6,6 +6,7 @@
 import { describe, expect, it } from 'vitest';
 import { CHEAT_SHEET, ENTRIES, GROUPS } from '../src/guide/content';
 import { FIGURES } from '../src/guide/figures';
+import { GUIDE } from '../src/guide/meta';
 import { tokenize } from '../src/ui/editor/highlight';
 
 const RESERVED = ['guide', 'g-main', 'g-rail', 'g-title', 'everything', 'cheat-sheet'];
@@ -18,6 +19,10 @@ describe('guide content', () => {
       expect(RESERVED).not.toContain(id);
       expect(id).toMatch(/^[a-z][a-z0-9-]*$/);
     });
+  });
+
+  it('advertises the real concept count in the darkroom', () => {
+    expect(GUIDE.concepts).toBe(ENTRIES.length);
   });
 
   it('gives every group at least one entry', () => {

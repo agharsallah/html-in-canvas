@@ -25,7 +25,7 @@ export function heroSection(caps: Capabilities): HTMLElement {
   mountFigure(figure, heroFigure, caps);
   return h('section', { class: 'g-hero', 'aria-labelledby': 'g-title' },
     h('div', { class: 'g-hero-text' },
-      h('p', { class: 'g-kicker' }, 'The complete guide'),
+      h('p', { class: 'g-kicker' }, 'The field guide'),
       h('h1', { id: 'g-title', class: 'g-title' }, 'HTML', h('span', { class: 'g-title-in' }, 'in'), 'Canvas'),
       h('p', { class: 'g-lead' }, rich('Canvas only knew pixels. Now a `<canvas>` can draw real, laid-out, accessible HTML, and keep it clickable. This page puts every concept of the API in one place, with a live 3D figure for each.')),
       h('ul', { class: 'g-stats', 'aria-label': 'At a glance' },

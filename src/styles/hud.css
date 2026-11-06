@@ -51,8 +51,67 @@
   align-items: center;
   gap: 0.45em;
 }
+/*
+ * The field guide: a page of its own, so it is set apart from the darkroom
+ * controls by a hairline and shaped like the light meter beside it, a lens
+ * and two lines that say what is inside.
+ */
 .hud-guide {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-left: var(--space-2);
+  padding: 4px 16px 4px 4px;
+  border: 1px solid color-mix(in srgb, var(--tray) 55%, transparent);
+  border-radius: 999px;
+  background:
+    radial-gradient(120% 140% at 0% 50%, color-mix(in srgb, var(--tray) 16%, transparent), transparent 60%),
+    color-mix(in srgb, var(--umber-900) 85%, transparent);
+  color: var(--baryta);
   text-decoration: none;
+  transition: border-color 200ms, box-shadow 200ms, translate 200ms var(--ease-snap);
+}
+.hud-guide::before {
+  content: '';
+  position: absolute;
+  left: calc(-1 * var(--space-4) / 2 - var(--space-2) / 2);
+  top: 20%;
+  bottom: 20%;
+  border-left: 1px solid color-mix(in srgb, var(--dust) 35%, transparent);
+}
+.hud-guide .glyph {
+  box-sizing: content-box;
+  padding: 10px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--tray) 18%, var(--umber-950));
+  color: var(--tray);
+}
+.hud-guide-text {
+  display: grid;
+  line-height: 1.15;
+}
+.hud-guide-name {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: var(--step-1);
+}
+.hud-guide-sub {
+  font-size: 0.72rem;
+  color: var(--tray);
+}
+.hud-guide:hover {
+  border-color: var(--tray);
+  box-shadow: 0 0 22px -6px var(--tray);
+  translate: 0 -1px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .hud-guide {
+    transition: none;
+  }
+  .hud-guide:hover {
+    translate: none;
+  }
 }
 .hud-mode,
 .hud-album {
@@ -124,5 +183,14 @@ body[data-view='chapter'] .hud {
   }
   .hud-title {
     font-size: var(--step-3);
+  }
+  /* Phones: the guide leads the second row instead of trailing it. */
+  .hud-guide {
+    order: -1;
+    flex-basis: 100%;
+    margin-left: 0;
+  }
+  .hud-guide::before {
+    display: none;
   }
 }

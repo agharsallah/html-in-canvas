@@ -4,6 +4,7 @@
  */
 import { button } from '../../ui/components/button';
 import { renderConcept } from '../../ui/concept-card';
+import { GUIDE } from '../../guide/meta';
 import { h } from '../../ui/dom';
 import type { ConceptCard } from './chapter';
 
@@ -19,7 +20,12 @@ export function createNotebook(root: HTMLElement, concepts: ConceptCard[]): Note
   const dialog = h('dialog', { class: 'drawer', 'aria-labelledby': 'notebook-title' },
     h('header', { class: 'drawer-head' },
       h('h3', { id: 'notebook-title' }, 'Notebook'),
-      h('p', { class: 'drawer-sub' }, `${concepts.length} concepts in this roll`),
+      h('p', { class: 'drawer-sub' }, `${concepts.length} concepts in this roll. `,
+        // A reference to keep beside the story, so it opens beside it.
+        h('a', { class: 'drawer-guide', href: GUIDE.href, target: '_blank', rel: 'noopener' },
+          `All ${GUIDE.concepts} in the ${GUIDE.name.toLowerCase()}`,
+          h('span', { 'aria-hidden': 'true' }, ' ↗'),
+          h('span', { class: 'visually-hidden' }, ' (opens in a new tab)'))),
       button({ label: 'Close', variant: 'ghost', size: 'sm', onClick: () => dialog.close() })),
     list);
   dialog.addEventListener('click', (event) => {

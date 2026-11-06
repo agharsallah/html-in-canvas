@@ -18,8 +18,9 @@ pnpm build      # typecheck + production build + bundle budget
 pnpm perf:budget  # bundle budget only (after a build)
 ```
 
-**The guide** (`guide.html`) puts every concept on one page, like a CSS-Tricks
-complete guide: a 3D contact sheet of all 25 concepts, a scrollspy rail with
+**The field guide** (`guide.html`) puts every concept on one page, like a
+CSS-Tricks complete guide. The darkroom links to it from the HUD, the hero card
+and every chapter's notebook. It has a 3D contact sheet of all 25 concepts, a scrollspy rail with
 search (`/` to filter, `j`/`k` to step through concepts), and a live 3D figure
 with controls for each concept. Every figure is a `content="drawable"` canvas
 whose labels are real HTML drawn with `drawElementImage`. All figures share one

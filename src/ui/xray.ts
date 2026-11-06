@@ -20,7 +20,8 @@ export function mountXray(root: HTMLElement, caps: Capabilities): void {
     class: 'hud-album hud-xray', type: 'button', 'aria-pressed': 'false',
     title: 'X-ray: outline the real HTML inside the canvas (X)',
   }, glyph('xray', 18), 'X-ray');
-  root.querySelector('.hud-status .hud-guide')?.before(button);
+  // Beside the other darkroom controls, before the Album.
+  root.querySelector('.hud-status > button.hud-album')?.before(button);
 
   const tip = h('div', { class: 'xray-tip', hidden: true, 'aria-hidden': 'true' });
   const legend = h('aside', { class: 'xray-legend', hidden: true, 'aria-live': 'polite' },

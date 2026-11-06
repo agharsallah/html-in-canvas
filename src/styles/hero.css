@@ -61,6 +61,46 @@
   font-size: 17px;
   color: #c2412a;
 }
+.hero-guide {
+  align-self: flex-start;
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin: 12px 0 8px;
+  padding: 5px 12px 6px 10px;
+  border-left: 3px solid #0f7d6a;
+  color: #1d1418;
+  text-decoration: none;
+  background: rgb(15 125 106 / 0.07);
+}
+.hero-guide-kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #0f7d6a;
+}
+.hero-guide-name {
+  font-weight: 600;
+  font-size: 15px;
+  text-decoration: underline;
+  text-decoration-color: rgb(15 125 106 / 0.45);
+  text-underline-offset: 3px;
+}
+.hero-guide:hover {
+  background: rgb(15 125 106 / 0.14);
+}
+.hero-guide:hover .hero-guide-name {
+  text-decoration-color: #0f7d6a;
+}
+.hero-guide:focus-visible {
+  outline: 3px solid #0f7d6a;
+  outline-offset: 2px;
+}
+/* A returning visitor's greeting takes some of the room. */
+.hero-greeting:not([hidden]) ~ .hero-guide {
+  margin-top: 6px;
+}
 .hero-actions {
   margin-top: auto;
   display: flex;

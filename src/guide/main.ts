@@ -35,7 +35,7 @@ function start(): void {
   const top = h('header', { class: 'g-top' },
     h('a', { class: 'g-wordmark', href: './' },
       h('span', { class: 'g-wordmark-title' }, 'Drawable'),
-      h('span', { class: 'g-wordmark-sub' }, 'the guide')),
+      h('span', { class: 'g-wordmark-sub' }, 'the field guide')),
     h('div', { class: 'g-top-actions' },
       h('span', { class: 'g-top-mode', 'data-mode': caps.mode }, caps.mode === 'native' ? 'Native' : 'Simulated'),
       h('a', { class: 'g-top-link', href: './' }, glyph('lab', 16), 'Darkroom'),

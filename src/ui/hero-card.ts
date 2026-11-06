@@ -6,6 +6,7 @@
  * can select its words, type your name into it, and press its button, all
  * through a rippling 3D surface.
  */
+import { GUIDE } from '../guide/meta';
 import { h } from './dom';
 
 /** Must match `.hero-card` in hero.css. */
@@ -38,6 +39,11 @@ export function createHeroCard(native: boolean): HeroCard {
         'In Chrome 157 this paper is ', h('strong', {}, 'real HTML drawn by WebGL'), ' under rippling developer. ',
         'Your browser shows it laid on top instead. Sign your name anyway.'),
     greeting,
+    // The second door: the same API as a one-page reference, for anyone who
+    // came to look something up rather than to play.
+    h('a', { class: 'hero-guide', href: GUIDE.href },
+      h('span', { class: 'hero-guide-kicker' }, 'Or all at once'),
+      h('span', { class: 'hero-guide-name' }, `The ${GUIDE.name.toLowerCase()}: ${GUIDE.concepts} concepts, one page`, h('span', { 'aria-hidden': 'true' }, ' →'))),
     h('div', { class: 'hero-actions' },
       h('label', { class: 'hero-sign' }, h('span', {}, 'Sign the register'), input),
       begin));

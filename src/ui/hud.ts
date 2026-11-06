@@ -1,9 +1,11 @@
 /**
- * The HUD: wordmark, render mode, silver and rank, and the Album button.
+ * The HUD: wordmark, render mode, silver and rank, the Album button, and
+ * the way out to the field guide (every concept on one page).
  */
 import { ENABLE_HINT, type Capabilities } from '../core/capabilities';
 import type { GameStore } from '../game/store';
 import { RANKS, rankFor, type GameState } from '../game/state';
+import { GUIDE } from '../guide/meta';
 import { NEGATIVES } from '../story/negatives';
 import { createGauge } from './components/gauge';
 import { glyph } from './components/glyphs';
@@ -54,8 +56,14 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
       h('div', { class: 'hud-status' },
         h('div', { class: 'hud-mode-wrap' }, modeButton, modeInfo),
         meter.el,
-        h('a', { class: 'hud-album hud-guide', href: 'guide.html' }, glyph('story', 18), 'Guide'),
-        h('button', { class: 'hud-album', type: 'button', onclick: onOpenAlbum }, glyph('album', 18), 'Album ', albumCount)),
+        h('button', { class: 'hud-album', type: 'button', onclick: onOpenAlbum }, glyph('album', 18), 'Album ', albumCount),
+        // A page of its own, not a game control: set apart, last in the row,
+        // and it says what it holds before anyone has to click.
+        h('a', { class: 'hud-guide', href: GUIDE.href },
+          glyph('guide', 18),
+          h('span', { class: 'hud-guide-text' },
+            h('span', { class: 'hud-guide-name' }, GUIDE.name),
+            h('span', { class: 'hud-guide-sub' }, `All ${GUIDE.concepts} concepts on one page`)))),
     ),
     h('p', { class: 'hud-hint' }, 'Scroll or drag to walk the line. Click a print to turn it over. Press X to see its HTML.'),
   );

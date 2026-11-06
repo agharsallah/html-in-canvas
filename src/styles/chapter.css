@@ -236,6 +236,12 @@
   margin: 0;
   font-size: var(--step--1);
 }
+.drawer-guide {
+  color: inherit;
+  font-weight: 600;
+  text-underline-offset: 3px;
+  white-space: nowrap;
+}
 .drawer-head .ui-button {
   grid-row: 1 / span 2;
   grid-column: 2;
