@@ -88,7 +88,8 @@ export class NativeSurfaces implements SurfaceBackend {
         element: binding.elementSize,
         viewport,
       });
-      entry.visible = binding.mesh.visible && onScreen(entry.matrix, binding.elementSize, viewport);
+      entry.visible = binding.mesh.visible && facesCamera(binding.mesh.matrixWorld.elements, camera)
+        && onScreen(entry.matrix, binding.elementSize, viewport);
       entry.depth = binding.mesh.matrixWorld.elements[14]! - camera.position.z;
 
       if (changed.has(binding.element)) entry.texture.invalidate();
@@ -138,6 +139,15 @@ export class NativeSurfaces implements SurfaceBackend {
     for (const entry of this.entries) entry.texture.dispose();
     this.entries.clear();
   }
+}
+
+/**
+ * A turned-over print shows its back: the face pointing away must not be
+ * uploaded or hit, or it would catch clicks meant for the back.
+ */
+function facesCamera(m: ArrayLike<number>, camera: Camera): boolean {
+  const p = camera.position;
+  return m[8]! * (p.x - m[12]!) + m[9]! * (p.y - m[13]!) + m[10]! * (p.z - m[14]!) > 0;
 }
 
 /** True when the projected print overlaps the viewport (with a margin). */

@@ -86,7 +86,8 @@ export class HeroSpot {
 
   update(dt: number, reducedMotion: boolean): void {
     const atTray = this.o.rig.trackX < TRAY_ZONE;
-    if (atTray !== this.atTray) {
+    // While a print is turned over the inspector owns the hint; catch up after.
+    if (atTray !== this.atTray && !document.body.dataset.inspect) {
       this.atTray = atTray;
       this.o.rig.setAnchor(atTray ? VIEW : null, LOOK);
       document.body.dataset.spot = atTray ? 'tray' : 'line';
@@ -95,7 +96,7 @@ export class HeroSpot {
       if (hint) {
         this.lineHint ||= hint.textContent ?? '';
         hint.textContent = atTray
-          ? 'Stir the liquid with your pointer, sign the paper, or scroll to walk the line.'
+          ? 'Stir the liquid, sign the paper, press X to see its HTML, or scroll to walk the line.'
           : this.lineHint;
       }
     }

@@ -6,7 +6,7 @@ import { Vector3 } from 'three';
 import type { GameStore } from '../game/store';
 import { framesDone, isComplete, isUnlocked, type GameState } from '../game/state';
 import { ROLLS, type Roll, type RollId } from '../story/rolls';
-import { createPrintCard, renderPrintCard, PRINT_CARD_SIZE, type PrintStatus } from '../ui/print-card';
+import { createPrintCard, renderPrintCard, PRINT_CARD_SIZE, type PrintStatus, type PrintView } from '../ui/print-card';
 import { CameraRig } from './camera-rig';
 import { DarkroomSet, SAFELIGHT, wireY, type WireShape } from './darkroom-set';
 import { Print } from './print';
@@ -14,6 +14,7 @@ import type { Stage } from './stage';
 import type { SurfaceBackend } from './surfaces/surface';
 import { bindHubInput, type HubInput } from './hub-input';
 import { HeroSpot, TRAY_X } from './hero/hero-spot';
+import { Inspector } from './inspector';
 
 export const SPACING = 2.7;
 const PLANE = { width: 1.7, height: (1.7 * PRINT_CARD_SIZE.height) / PRINT_CARD_SIZE.width };
@@ -39,6 +40,7 @@ export class Hub {
   private readonly hanging: Hanging[] = [];
   private readonly input: HubInput;
   private readonly hero: HeroSpot;
+  private readonly inspector: Inspector;
   private wind = 0;
 
   constructor(options: HubOptions) {
@@ -58,6 +60,17 @@ export class Hub {
       const card = createPrintCard(roll);
       print.bind(surfaces.attach({ element: card, mesh: print.paper, plane: PLANE, elementSize: PRINT_CARD_SIZE }));
       this.hanging.push({ roll, print, card, x });
+    });
+
+    // Turn any print over to read its back, locked or not.
+    this.inspector = new Inspector({
+      surfaces,
+      camera: stage.camera,
+      rig: this.rig,
+      plane: PLANE,
+      items: this.hanging,
+      viewOf: (roll, index) => viewOf(store.getState(), roll, index),
+      onChange: () => {},
     });
 
     this.sync(store.getState(), true);
@@ -81,9 +94,19 @@ export class Hub {
       canvas: stage.canvas,
       rig: this.rig,
       cards: this.hanging.map(({ card, print, x, roll }) => ({ card, print, x, roll: roll.id })),
-      onEnter: options.onEnter,
+      onEnter: (roll) => {
+        this.inspector.close();
+        options.onEnter(roll);
+      },
       onKeyboardReach: options.onKeyboardReach,
       onWind: (amount) => (this.wind += amount),
+      onTurn: (roll, viaKeyboard) => {
+        const hanging = this.hanging.find((item) => item.roll.id === roll);
+        if (hanging) this.rig.setTarget(hanging.x);
+        this.inspector.open(roll, viaKeyboard);
+      },
+      isInspecting: () => this.inspector.isOpen,
+      onCloseInspect: () => this.inspector.close(),
     });
   }
 
@@ -95,6 +118,7 @@ export class Hub {
 
   /** Back to the main view: release any fly-in and walk to where the story is. */
   goHome(state: GameState): void {
+    this.inspector.close();
     this.rig.release();
     this.rig.setTarget(this.currentX(state));
   }
@@ -108,21 +132,17 @@ export class Hub {
     this.rig.update(dt, reducedMotion);
     this.set.update(dt, reducedMotion, this.rig.focusX);
     this.hero.update(dt, reducedMotion);
+    this.inspector.update(dt);
     for (const { print } of this.hanging) print.update(dt, time, this.wind, reducedMotion);
   }
 
   private sync(state: GameState, instant: boolean): void {
-    const next = nextRollToPlay(state);
     this.hanging.forEach(({ roll, print, card }, index) => {
-      const status = statusOf(state, roll);
-      renderPrintCard(card, roll, {
-        status,
-        frames: framesDone(state, roll.id),
-        current: roll.id === next,
-        previousTitle: ROLLS[index - 1]?.title,
-      });
-      print.setDevelopTarget(status === 'locked' ? 0.14 : 1, instant);
+      const view = viewOf(state, roll, index);
+      renderPrintCard(card, roll, view);
+      print.setDevelopTarget(view.status === 'locked' ? 0.2 : 1, instant);
     });
+    this.inspector?.refresh();
   }
 
   /** Where the story is: the first playable roll not yet complete. */
@@ -130,6 +150,15 @@ export class Hub {
     const id = nextRollToPlay(state);
     return this.hanging.find(({ roll }) => roll.id === id)?.x ?? 0;
   }
+}
+
+function viewOf(state: GameState, roll: Roll, index: number): PrintView {
+  return {
+    status: statusOf(state, roll),
+    frames: framesDone(state, roll.id),
+    current: roll.id === nextRollToPlay(state),
+    previousTitle: ROLLS[index - 1]?.title,
+  };
 }
 
 function statusOf(state: GameState, roll: Roll): PrintStatus {

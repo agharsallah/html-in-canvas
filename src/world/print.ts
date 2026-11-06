@@ -5,11 +5,13 @@
 import {
   BoxGeometry,
   CanvasTexture,
+  Color,
   Group,
   Mesh,
   MeshBasicMaterial,
   MeshLambertMaterial,
   PlaneGeometry,
+  Vector3,
   type ShaderMaterial,
 } from 'three';
 import type { Size } from '../hic/projective-geometry';
@@ -55,13 +57,25 @@ export class Print {
   private develop = 0;
   private developTarget = 0;
   private hover = 0;
+  private loupe = 0;
+  private turnT = 0;
+  private turned = false;
+  private dimmed = false;
+  private dimAmount = 0;
   hovered = false;
 
   constructor(private readonly options: PrintOptions) {
     const { plane } = options;
-    this.paper = new Mesh(new PlaneGeometry(plane.width, plane.height), createPrintMaterial(options));
+    this.paper = new Mesh(new PlaneGeometry(plane.width, plane.height), createPrintMaterial({ ...options, aspect: plane.width / plane.height }));
     this.paper.position.y = -plane.height / 2 - 0.06;
     this.pivot.add(this.paper);
+
+    // The back of the paper, seen while a print turns over.
+    const back = new Mesh(new PlaneGeometry(plane.width, plane.height), new MeshBasicMaterial({ color: options.paper }));
+    (back.material.color as Color).multiplyScalar(0.82);
+    back.rotation.y = Math.PI;
+    back.position.z = -0.002;
+    this.paper.add(back);
 
     // A soft shadow just behind the paper makes it float off the wall.
     const shadow = new Mesh(new PlaneGeometry(plane.width * 1.5, plane.height * 1.35), getShadowMaterial());
@@ -85,6 +99,28 @@ export class Print {
     if (instant) this.develop = target;
   }
 
+  /** Move the safelight loupe (uv, origin bottom-left). Shows on latent prints only. */
+  peek(u: number, v: number): void {
+    const loupe = this.paper.material.uniforms.uLoupe!.value as Vector3;
+    loupe.x = u;
+    loupe.y = v;
+  }
+
+  /** Turn the print over to show its back (or hang it face out again). */
+  turn(over: boolean): void {
+    this.turned = over;
+  }
+
+  /** Fade into the dark while another print is in your hands. */
+  dim(on: boolean): void {
+    this.dimmed = on;
+  }
+
+  /** 0 = face out, 1 = turned over; eased. */
+  get turnAmount(): number {
+    return smooth(this.turnT);
+  }
+
   /** A nudge, e.g. from the cursor or when the print gets focus. */
   push(strength: number): void {
     this.velocity += strength;
@@ -94,11 +130,15 @@ export class Print {
     const k = 18;
     const damping = 2.6;
     const breeze = reducedMotion ? 0 : Math.sin(time * 0.7 + this.options.seed * 3.1) * 0.012 + wind;
+    this.turnT = reducedMotion ? (this.turned ? 1 : 0)
+      : Math.min(1, Math.max(0, this.turnT + (this.turned ? dt : -dt) * 1.5));
+    const turn = smooth(this.turnT);
     this.velocity += (-k * this.angle - damping * this.velocity + breeze * k) * dt;
     this.angle += this.velocity * dt;
-    if (reducedMotion) this.angle *= 0.9;
+    // A print in your hands doesn't swing.
+    if (reducedMotion || turn > 0) this.angle *= reducedMotion ? 0.9 : 1 - turn * 0.2;
 
-    const twistTarget = this.hovered ? 0.0 : Math.sin(time * 0.5 + this.options.seed) * 0.06;
+    const twistTarget = this.hovered || this.turned ? 0.0 : Math.sin(time * 0.5 + this.options.seed) * 0.06;
     this.twist += (twistTarget - this.twist) * Math.min(1, dt * 2);
     this.pivot.rotation.set(0, reducedMotion ? 0 : this.twist, this.angle);
 
@@ -108,14 +148,23 @@ export class Print {
     this.hover += ((this.hovered ? 1 : 0) - this.hover) * Math.min(1, dt * 8);
     // Hovered prints lift toward you. The paper mesh moves, so the DOM
     // geometry follows and the real button stays under the pointer.
-    const lift = reducedMotion ? 0 : this.hover;
-    this.paper.position.z = lift * 0.45;
+    const lift = reducedMotion ? 0 : this.hover * (1 - turn);
+    // Turning over: the paper comes off the wall, flips around its vertical
+    // axis, and its back (another drawable) faces you.
+    this.paper.position.z = lift * 0.45 + Math.sin(turn * Math.PI) * 0.5 + turn * 0.35;
+    this.paper.rotation.y = turn * Math.PI;
     this.paper.scale.setScalar(1 + lift * 0.04);
+
+    const latent = this.developTarget < 0.5 && this.hovered && !this.turned;
+    this.loupe += ((latent ? 1 : 0) - this.loupe) * Math.min(1, dt * (latent ? 6 : 4));
 
     const uniforms = this.paper.material.uniforms;
     uniforms.uDevelop!.value = this.develop;
     uniforms.uTime!.value = time;
     uniforms.uHover!.value = this.hover;
+    (uniforms.uLoupe!.value as Vector3).z = this.loupe;
+    this.dimAmount += ((this.dimmed ? 1 : 0) - this.dimAmount) * Math.min(1, dt * 4);
+    uniforms.uDim!.value = this.dimAmount;
     if (this.handle) {
       setPrintTexture(this.paper.material, this.handle.texture, this.handle.isReady());
       this.handle.setDevelop(this.develop);
@@ -128,3 +177,5 @@ export class Print {
     this.paper.material.dispose();
   }
 }
+
+const smooth = (t: number): number => t * t * (3 - 2 * t);
