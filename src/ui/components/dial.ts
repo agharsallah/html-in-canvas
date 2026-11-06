@@ -56,8 +56,10 @@ export function createDial({ label, min, max, value, step = 1, unit = '', onInpu
     control.setAttribute('aria-valuetext', `${current}${unit}`);
   };
 
+  const decimals = (String(step).split('.')[1] ?? '').length;
   const set = (next: number, emit = true) => {
-    const snapped = Math.round(Math.min(max, Math.max(min, next)) / step) * step;
+    // Round to the step's decimals: 48 * 0.05 is 2.4000000000000004.
+    const snapped = Number((Math.round(Math.min(max, Math.max(min, next)) / step) * step).toFixed(decimals));
     if (snapped === current) return;
     current = snapped;
     render();

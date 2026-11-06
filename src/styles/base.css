@@ -66,6 +66,11 @@ pre {
   font-family: var(--font-mono);
   font-size: 0.9em;
 }
+/* Long API names (getElementImageDefaultSize()) break rather than spill out
+   of their box. Code blocks keep white-space: pre and scroll instead. */
+code {
+  overflow-wrap: anywhere;
+}
 
 .code {
   margin: 0;

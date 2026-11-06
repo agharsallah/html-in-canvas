@@ -22,6 +22,9 @@ a mid-range laptop or phone would feel it.
 - **Bundle**: `pnpm perf:budget`, which also runs as part of `pnpm build`.
   Gzip budgets per chunk; the build fails when one is exceeded.
 - **Render rate**: count `paint` events on `#world` for a few seconds.
+- **Layout**: [`overflow-scan.js`](overflow-scan.js) walks all 52 chapter frames
+  and the HUD and lists any text that crosses the edge of its box. Run it at
+  desktop and at 390 px wide (DevTools device mode); it should return no issues.
 
 ## Results
 

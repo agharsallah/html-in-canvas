@@ -17,6 +17,9 @@
 .lab-sim-layer {
   position: absolute;
   inset: 0;
+  /* Never catch the pointer itself: in native mode it is empty and would sit
+     over the canvas, swallowing clicks meant for the drawn elements. */
+  pointer-events: none;
 }
 .lab-sim-layer > * {
   position: absolute;
@@ -28,6 +31,7 @@
 }
 .lab-sim-layer > [data-drawn='true'] {
   visibility: visible;
+  pointer-events: auto;
 }
 .lab-sim-note {
   position: absolute;
