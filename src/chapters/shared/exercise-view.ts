@@ -7,6 +7,7 @@ import { callout } from '../../ui/components/callout';
 import { h, rich } from '../../ui/dom';
 import { createCodeEditor } from '../../ui/editor/code-editor';
 import { evaluate, type Exercise } from './exercise';
+import { createProofPanel, PROOFS, proofReplayButton } from './proof';
 
 export interface ExerciseViewOptions {
   exercise: Exercise;
@@ -32,6 +33,8 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
     ...exercise.checks.map((check) => h('li', { 'data-state': 'idle' }, h('span', { class: 'ex-check-mark', 'aria-hidden': 'true' }), check.label)));
   const feedback = h('div', { class: 'ex-feedback', 'aria-live': 'polite' });
   const help = h('div', { class: 'ex-help' });
+  // After a pass, a live scene shows what this code does.
+  const proof = createProofPanel(exercise.id);
 
   const markChecks = (code: string) => {
     const { results, passed } = evaluate(exercise, code);
@@ -64,6 +67,10 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
     feedback.replaceChildren(passed
       ? callout({ kind: 'success', title: revealed ? 'It works, now make it yours' : 'Developed by hand', body: revealed ? 'Try retyping it from memory next time to earn the silver.' : 'Every requirement is met.' })
       : callout({ kind: 'error', title: `${failing} ${failing === 1 ? 'requirement' : 'requirements'} still missing`, body: 'The red rows in the list show what your code does not do yet.' }));
+    if (passed) {
+      proof.open();
+      if (replay) replay.hidden = true;
+    }
     if (passed && !solved) {
       solved = true;
       o.onSolved(revealed);
@@ -102,6 +109,10 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
   const solutionButton = button({ label: 'Show the solution', variant: 'ghost', onClick: showSolution });
   const nextButton = o.onNext ? button({ label: 'Next exercise', variant: 'primary', onClick: o.onNext }) : null;
   if (nextButton) nextButton.hidden = !solved;
+  const replay = solved && PROOFS[exercise.id] ? proofReplayButton(() => {
+    proof.open();
+    replay!.hidden = true;
+  }) : null;
 
   const seen = button({
     label: o.conceptTitle ? h('span', {}, 'Seen in: ', rich(o.conceptTitle)) : 'Open the notebook',
@@ -118,9 +129,13 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
       checklist),
     h('div', { class: 'ex-work' },
       editor.el,
-      h('div', { class: 'ex-actions' }, checkButton, hintButton, solutionButton, nextButton),
+      h('div', { class: 'ex-actions' }, checkButton, hintButton, solutionButton, replay, nextButton),
       feedback,
+      proof.el,
       help)));
 
-  return () => host.replaceChildren();
+  return () => {
+    proof.destroy();
+    host.replaceChildren();
+  };
 }

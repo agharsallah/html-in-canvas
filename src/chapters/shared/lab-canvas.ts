@@ -17,6 +17,11 @@ import { h } from '../../ui/dom';
 export interface DrawTransform {
   rotate?: number; // degrees
   scale?: number;
+  /** Extra horizontal scale, e.g. cos(angle) for a card turning over. */
+  scaleX?: number;
+  /** Turn and scale around the element's centre instead of its top-left. */
+  center?: boolean;
+  alpha?: number;
 }
 
 export type LabPaintHandler = (changed: readonly Element[]) => void;
@@ -110,15 +115,18 @@ export function createLabCanvas(host: HTMLElement, caps: Capabilities, label: st
       ctx2d.reset();
       if (!native) for (const child of simLayer.children) (child as HTMLElement).dataset.drawn = 'false';
     },
-    drawElement(el, x, y, { rotate = 0, scale: s = 1 } = {}) {
+    drawElement(el, x, y, { rotate = 0, scale: s = 1, scaleX = 1, center = false, alpha = 1 } = {}) {
+      const w = el.offsetWidth;
+      const hh = el.offsetHeight;
       if (native) {
         const ctx = ctx2d as Drawable2DContext;
         ctx.save();
-        ctx.translate(x * scale, y * scale);
+        ctx.globalAlpha = alpha;
+        ctx.translate((x + (center ? w / 2 : 0)) * scale, (y + (center ? hh / 2 : 0)) * scale);
         ctx.rotate((rotate * Math.PI) / 180);
-        ctx.scale(s, s);
+        ctx.scale(s * scaleX, s);
         try {
-          ctx.drawElementImage(el, 0, 0);
+          ctx.drawElementImage(el, center ? (-w / 2) * scale : 0, center ? (-hh / 2) * scale : 0);
         } finally {
           ctx.restore();
         }
@@ -128,7 +136,9 @@ export function createLabCanvas(host: HTMLElement, caps: Capabilities, label: st
         throw simulatedException('The element is not drawable. Add the drawable attribute.');
       }
       el.dataset.drawn = 'true';
-      el.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${s})`;
+      el.style.transformOrigin = center ? '50% 50%' : '0 0';
+      el.style.opacity = String(alpha);
+      el.style.transform = `translate(${x}px, ${y}px) rotate(${rotate}deg) scale(${s * scaleX}, ${s})`;
     },
     destroy() {
       cancelAnimationFrame(simFrame);
