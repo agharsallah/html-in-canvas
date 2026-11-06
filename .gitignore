@@ -43,3 +43,4 @@ docs-llm/
 dist-perf/
 
 .vercel
+vercel.json
