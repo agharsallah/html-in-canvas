@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Drawable, a darkroom adventure through HTML-in-Canvas</title>
+    <meta name="description" content="Learn the HTML-in-Canvas API by developing HTML into canvas prints in a 3D darkroom." />
+    <meta name="theme-color" content="#1b120e" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  </head>
+  <body data-view="hub">
+    <!--
+      The darkroom. This canvas is a content="drawable" host: the hanging
+      prints are its drawable children, drawn into WebGL textures.
+    -->
+    <canvas id="world" content="drawable" layoutsubtree aria-label="The darkroom: prints hanging on a wire"></canvas>
+    <div id="world-layer"></div>
+    <main id="ui"></main>
+    <noscript>Drawable needs JavaScript to develop its prints.</noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
