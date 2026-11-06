@@ -27,3 +27,4 @@ import './styles/overlays.css';
 import { startApp } from './app/app';
 
 void startApp();
+void import('./core/telemetry').then((m) => m.startTelemetry());

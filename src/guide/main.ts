@@ -64,3 +64,5 @@ function start(): void {
 }
 
 start();
+
+void import('../core/telemetry').then((m) => m.startTelemetry());

@@ -4,6 +4,17 @@
   "version": "0.1.0",
   "type": "module",
   "description": "An interactive 3D learning site for the HTML-in-Canvas proposal.",
+  "homepage": "https://htmlincanvas.vercel.app",
+  "keywords": [
+    "html-in-canvas",
+    "canvas",
+    "drawElementImage",
+    "webgl",
+    "three.js",
+    "wicg",
+    "learning",
+    "interactive"
+  ],
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build && node scripts/check-budget.mjs",
@@ -17,6 +28,8 @@
     "@fontsource/atkinson-hyperlegible-mono": "^5.3.0",
     "@fontsource/atkinson-hyperlegible-next": "^5.3.0",
     "@fontsource/bodoni-moda": "^5.3.0",
+    "@vercel/analytics": "^2.0.1",
+    "@vercel/speed-insights": "^2.0.0",
     "three": "^0.187.0"
   },
   "devDependencies": {
