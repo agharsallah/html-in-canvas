@@ -4,18 +4,23 @@
  * the CSS3D layer. Size must match PRINT_CARD_SIZE in print-card.ts.
  */
 .print-card {
+  --photo: color-mix(in srgb, var(--accent) 14%, #0c0812);
+  position: relative; /* the offsetParent for pointer maths (the loupe) */
   width: 340px;
   height: 460px;
-  padding: 22px 24px;
+  padding: 18px 22px 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 9px;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 15px;
-  line-height: 1.45;
+  font-size: 14.5px;
+  line-height: 1.4;
   overflow: hidden;
+  /* Dragging walks the line; it must not paint selection over the print. */
+  user-select: none;
+  cursor: zoom-in;
 }
 
 .print-edge {
@@ -28,11 +33,59 @@
   color: color-mix(in srgb, var(--ink) 65%, var(--paper));
 }
 
+/* The photograph, with a thin white border like a real print. */
+.print-art {
+  position: relative;
+  margin: 2px 0 0;
+  width: 296px;
+  height: 154px;
+  padding: 2px;
+  background: color-mix(in srgb, var(--paper) 70%, white);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+  flex: none;
+}
+.print-art-svg {
+  display: block;
+  pointer-events: none;
+}
+.print-foe {
+  position: absolute;
+  left: 12px;
+  bottom: 9px;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 15px;
+  color: #fff;
+  text-shadow: 0 1px 6px rgb(0 0 0 / 0.6);
+}
+.print-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 8px 3px 7px;
+  border-radius: 99px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.print-tag-next {
+  background: var(--accent);
+  color: var(--paper);
+}
+.print-tag-latent {
+  background: #1b0d16;
+  color: #ff8f73;
+}
+
 .print-title {
-  margin: 8px 0 0;
+  margin: 4px 0 0;
   font-family: var(--font-display);
   font-weight: 600;
-  font-size: 36px;
+  font-size: 29px;
   line-height: 1.02;
   letter-spacing: -0.015em;
   text-wrap: balance;
@@ -40,45 +93,32 @@
 
 .print-logline {
   margin: 0;
-  max-width: 28ch;
+  max-width: 34ch;
+  color: color-mix(in srgb, var(--ink) 86%, var(--paper));
 }
 
 .print-concepts {
   list-style: none;
-  margin: 4px 0 0;
+  margin: 0;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 5px;
 }
 .print-concepts code {
   display: inline-block;
-  padding: 2px 7px;
-  font-size: 12px;
-  border: 1px solid color-mix(in srgb, var(--ink) 35%, transparent);
+  padding: 1px 6px;
+  font-size: 11.5px;
+  border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
   border-radius: 2px;
-}
-
-.print-foe {
-  margin: 0;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 17px;
-  color: var(--accent);
-}
-
-.print-note {
-  margin: auto 0 0;
-  font-style: italic;
-  color: color-mix(in srgb, var(--ink) 70%, var(--paper));
 }
 
 .print-footer {
   margin-top: auto;
   display: flex;
   justify-content: space-between;
-  align-items: end;
-  gap: 12px;
+  align-items: center;
+  gap: 10px;
 }
 
 .print-frames {
@@ -86,55 +126,92 @@
   margin: 0;
   padding: 0;
   display: flex;
-  gap: 6px;
-  font-size: 11px;
-  font-family: var(--font-mono);
+  gap: 4px;
 }
 .print-frames li {
-  display: grid;
-  justify-items: center;
-  gap: 3px;
-  color: color-mix(in srgb, var(--ink) 60%, var(--paper));
-}
-.print-frames li::before {
-  content: '';
-  width: 18px;
-  height: 13px;
-  border: 1.5px solid currentColor;
+  width: 14px;
+  height: 11px;
+  border: 1.5px solid color-mix(in srgb, var(--ink) 55%, var(--paper));
   border-radius: 2px;
 }
 .print-frames li[data-done='true'] {
-  color: var(--ink);
-}
-.print-frames li[data-done='true']::before {
-  background: var(--ink);
+  border-color: var(--ink);
+  background: var(--accent);
 }
 
+.print-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.print-turn,
 .print-enter {
-  padding: 10px 16px;
-  border: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
   border-radius: 2px;
+  font: 600 14px var(--font-body);
+  cursor: pointer;
+}
+.print-turn {
+  border: 1.5px solid color-mix(in srgb, var(--ink) 40%, transparent);
+  background: transparent;
+  color: var(--ink);
+  padding-inline: 9px 11px;
+}
+.print-turn:hover {
+  border-color: var(--ink);
+}
+.print-enter {
+  border: 0;
   background: var(--ink);
   color: var(--paper);
-  font-weight: 600;
-  font-size: 15px;
 }
 .print-enter:hover {
   background: var(--accent);
-  color: var(--ink);
+  color: var(--paper);
 }
+.print-turn:focus-visible,
 .print-enter:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
 
-.print-card[data-status='locked'] .print-title {
-  color: color-mix(in srgb, var(--ink) 45%, var(--paper));
+.print-latent {
+  margin: 0;
+  font-size: 12.5px;
   font-style: italic;
+  line-height: 1.3;
+  color: color-mix(in srgb, var(--ink) 75%, var(--paper));
 }
 
-/* Fallback mode: the shader can't develop a DOM node, so CSS does it. */
+/* Fallback mode: the shader can't develop a DOM node, so CSS does it.
+   Latent prints show a faint image that strengthens while you hover. */
 .css3d-layer .print-card {
   --develop: 1;
   filter: contrast(calc(0.35 + var(--develop) * 0.65)) brightness(calc(1.35 - var(--develop) * 0.35));
+}
+.css3d-layer .print-card[data-status='locked'] {
+  filter: none;
+}
+.css3d-layer .print-card[data-status='locked'] > * {
+  opacity: 0.2;
+  transition: opacity 0.4s var(--ease-develop);
+}
+.css3d-layer .print-card[data-status='locked']:hover > * {
+  opacity: 0.7;
+}
+
+.print-card svg {
+  pointer-events: none;
+}
+
+/* Fallback: with a print in your hands, the rest of the line recedes. */
+.css3d-layer .print-card {
+  transition: opacity 0.5s var(--ease-develop);
+}
+body[data-inspect] .css3d-layer .print-card {
+  opacity: 0.28;
 }

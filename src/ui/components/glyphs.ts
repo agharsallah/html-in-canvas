@@ -22,6 +22,7 @@ const PATHS: Record<string, string[]> = {
   album: ['M4 5h16v14H4z', 'M4 9h16', 'M7 5v4', 'M11 5v4', 'M15 5v4', 'M9 13h6'],
   lock: ['M6 11h12v9H6z', 'M8.5 11V8a3.5 3.5 0 0 1 7 0v3'],
   check: ['M5 12.5l4.5 4.5L19 7.5'],
+  xray: ['M4 8V5a1 1 0 0 1 1-1h3', 'M16 4h3a1 1 0 0 1 1 1v3', 'M20 16v3a1 1 0 0 1-1 1h-3', 'M8 20H5a1 1 0 0 1-1-1v-3', 'M8 9h5', 'M8 12h8', 'M8 15h3'],
 };
 
 export type GlyphName = keyof typeof PATHS;
