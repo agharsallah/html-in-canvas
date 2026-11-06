@@ -22,6 +22,11 @@ export interface HudOptions {
 export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }: HudOptions): void {
   const meter = createGauge('Silver and progress to the next rank');
   const albumCount = h('span', { class: 'hud-album-count' });
+  // Same as visiting with ?unlock=all: every roll (and its lab) opens at once.
+  const unlockButton = h('button', {
+    class: 'hud-album hud-unlock', type: 'button', title: 'Open every roll and lab, skipping the trials',
+    onclick: () => store.dispatch({ type: 'unlock-all' }),
+  }, 'Open all labs');
 
   const modeInfo = h('div', { class: 'hud-mode-info', id: 'mode-info', hidden: true },
     h('p', {}, caps.mode === 'native'
@@ -56,6 +61,7 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
       h('div', { class: 'hud-status' },
         h('div', { class: 'hud-mode-wrap' }, modeButton, modeInfo),
         meter.el,
+        unlockButton,
         h('button', { class: 'hud-album', type: 'button', onclick: onOpenAlbum }, glyph('album', 18), 'Album ', albumCount),
         // A page of its own, not a game control: set apart, last in the row,
         // and it says what it holds before anyone has to click.
@@ -74,6 +80,7 @@ export function mountHud(root: HTMLElement, { caps, store, onOpenAlbum, onHome }
     const progress = next ? (state.silver - rank.minSilver) / (next.minSilver - rank.minSilver) : 1;
     meter.update(progress, `${state.silver} silver`,
       next ? `${rank.title}, ${next.minSilver - state.silver} to ${next.title}` : rank.title);
+    unlockButton.hidden = state.unlockAll;
     albumCount.textContent = `${state.negatives.length}/${NEGATIVES.length}`;
   };
   render(store.getState());

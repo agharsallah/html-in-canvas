@@ -51,6 +51,9 @@
   align-items: center;
   gap: 0.45em;
 }
+.hud-unlock[hidden] {
+  display: none;
+}
 /*
  * The field guide: a page of its own, so it is set apart from the darkroom
  * controls by a hairline and shaped like the light meter beside it, a lens
