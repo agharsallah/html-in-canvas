@@ -1,0 +1,121 @@
+/* Roll 06 trial: the pipeline bench and orbit aim. */
+/* -------------------------------------------------------------- trial */
+.obs-trial {
+  display: grid;
+  gap: var(--space-6);
+}
+.obs-phase {
+  display: grid;
+  gap: var(--space-4);
+}
+.obs-phase-head h3 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+}
+.obs-phase-n {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--second);
+}
+.obs-pipeline {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.obs-bin,
+.obs-lane {
+  display: grid;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.obs-lane {
+  min-height: 2.5rem;
+  padding-left: 1.5rem;
+}
+.obs-part {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border: var(--line-soft);
+  border-radius: var(--radius-control);
+  background: color-mix(in srgb, var(--paper) 60%, black);
+}
+.obs-part code {
+  font-size: 0.78rem;
+  overflow-wrap: anywhere;
+  min-width: 0;
+  flex: 1 1 14rem;
+}
+.obs-placed {
+  background: #16314f;
+  border-color: #3d6ea8;
+}
+.obs-part-actions {
+  display: inline-flex;
+  gap: var(--space-1);
+}
+.obs-lane-empty,
+.obs-bin-empty {
+  opacity: 0.6;
+  font-size: var(--step--1);
+}
+.obs-verdict ul {
+  margin: 0;
+  padding-left: 1.1rem;
+}
+.obs-aim {
+  display: grid;
+  gap: var(--space-3);
+}
+.obs-aim-prompt {
+  margin: 0;
+  font-size: var(--step-1);
+}
+.obs-aim-stage {
+  position: relative;
+  height: clamp(260px, 48vw, 440px);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background: radial-gradient(circle at 50% 40%, #2a64b4, #0b2347 75%);
+  cursor: crosshair;
+}
+.obs-aim-stage:focus-visible {
+  outline: 3px solid var(--second);
+  outline-offset: 3px;
+}
+.obs-ghost rect {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  stroke-dasharray: 5 4;
+}
+.obs-ghost text {
+  fill: var(--accent);
+  font-size: 12px;
+  opacity: 0.85;
+}
+.obs-cross circle,
+.obs-cross line {
+  fill: none;
+  stroke: var(--second);
+  stroke-width: 2;
+}
+.obs-aim-result {
+  margin: 0;
+  min-height: 1.5em;
+}
+
+@media (max-width: 1080px) {
+  .obs-pipeline {
+    grid-template-columns: 1fr;
+  }
+}

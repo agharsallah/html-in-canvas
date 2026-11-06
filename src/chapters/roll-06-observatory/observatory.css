@@ -1,0 +1,219 @@
+/* Roll 06: cyanotype. Prussian blue paper, white linework, a yellow sun. */
+.chapter[data-roll='observatory'] {
+  --surface: color-mix(in srgb, var(--paper) 78%, black);
+}
+.chapter[data-roll='observatory'] .notebook {
+  /* Long code lines scroll inside their card instead of widening it. */
+  grid-template-columns: minmax(0, 1fr);
+}
+.chapter[data-roll='observatory'] .figure {
+  background: color-mix(in srgb, var(--paper) 85%, black);
+}
+.obs-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- lab */
+.obs-lab {
+  display: grid;
+  grid-template-columns: minmax(0, 1.5fr) minmax(16rem, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.obs-main,
+.obs-side {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.obs-view {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.obs-view figcaption {
+  font-size: var(--step--1);
+}
+.obs-stage {
+  position: relative;
+  height: clamp(260px, 46vw, 420px);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+  background: radial-gradient(circle at 70% 80%, #2a64b4, #0b2347 70%);
+}
+.sat-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.sat-hit {
+  fill: color-mix(in srgb, var(--second) 10%, transparent);
+  stroke: var(--second);
+  stroke-width: 2;
+}
+.sat-hit[data-mode='flat'] {
+  stroke: var(--accent);
+  stroke-dasharray: 6 4;
+  fill: color-mix(in srgb, var(--accent) 10%, transparent);
+}
+.sat-hit[data-mode='off'] {
+  stroke: #9fb7d8;
+  stroke-dasharray: 2 4;
+  fill: none;
+}
+.sat-hit[data-facing='false'] {
+  opacity: 0.25;
+}
+
+/* The live form: a light card so it reads on the blue satellite. */
+.obs-form {
+  position: relative;
+  box-sizing: border-box;
+  width: 320px;
+  height: 200px;
+  margin: 0;
+  padding: 10px 14px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+  background: #f4f8ff;
+  color: #0d2c57;
+  border: 2px solid #123b73;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 15px;
+}
+.obs-form-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+}
+.obs-row {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: center;
+  gap: 8px;
+}
+.obs-form input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 32px;
+  padding: 0 8px;
+  font: inherit;
+  color: #0d2c57;
+  background: white;
+  border: 1.5px solid #123b73;
+  border-radius: 4px;
+  outline-color: #e0a100;
+}
+.obs-form input:focus-visible,
+.obs-form button:focus-visible {
+  outline: 3px solid #e0a100;
+  outline-offset: 1px;
+}
+.obs-form button {
+  height: 34px;
+  font: inherit;
+  font-weight: 700;
+  color: #0d2c57;
+  background: #ffd166;
+  border: 1.5px solid #123b73;
+  border-radius: 6px;
+  cursor: pointer;
+  outline-color: #e0a100;
+}
+.obs-form output {
+  font-weight: 600;
+}
+.obs-element .obs-form {
+  max-width: 100%;
+}
+.obs-console {
+  min-height: 6rem;
+  background: #0b2347;
+  color: #dbe9ff;
+}
+
+/* ---------------------------------------------------------- the meter */
+.upload-meter .meter-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-bottom: var(--space-2);
+}
+.meter-stat {
+  display: grid;
+  font-size: var(--step--1);
+}
+.meter-stat strong {
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-variant-numeric: tabular-nums;
+}
+.meter-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  font-size: 11px;
+}
+.meter-svg text {
+  fill: currentColor;
+  opacity: 0.75;
+}
+.meter-gridline {
+  stroke: currentColor;
+  opacity: 0.15;
+}
+.meter-frame-line {
+  stroke: var(--accent);
+  stroke-dasharray: 5 4;
+}
+.meter-note {
+  fill: var(--accent) !important;
+  opacity: 1 !important;
+}
+.meter-bars rect,
+.upload-meter [data-series='upload'] i {
+  fill: var(--glow);
+  background: var(--glow);
+}
+.meter-allocs rect,
+.upload-meter [data-series='alloc'] i {
+  fill: var(--second);
+  background: var(--second);
+}
+
+/* Figures */
+.pipe-sub {
+  font-size: 11px !important;
+  opacity: 0.75;
+}
+.obs-fig-flat {
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.5;
+}
+.obs-fig-quad {
+  fill: color-mix(in srgb, var(--second) 25%, transparent);
+  stroke: var(--second);
+  stroke-width: 2;
+}
+
+@media (max-width: 1080px) {
+  .obs-lab {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 420px) {
+  .obs-form {
+    width: 100%;
+  }
+}
