@@ -1,0 +1,235 @@
+/* Roll 03: daguerreotype. Mirror silver, steel-blue tarnish, gilt focus rings. */
+.lens-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------------------------------------------------------------- lab */
+.lens-lab {
+  display: grid;
+  grid-template-columns: minmax(15rem, 21rem) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.lens-controls {
+  display: grid;
+  gap: var(--space-3);
+  min-width: 0;
+}
+.lens-dials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+}
+.lens-code {
+  margin: 0;
+  font-size: 0.74rem;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+.lens-measure,
+.lens-real {
+  margin: 0;
+  font-size: var(--step--1);
+  font-family: var(--font-mono);
+  overflow-wrap: anywhere;
+}
+.lens-measure:empty {
+  display: none;
+}
+.lens-bench {
+  display: grid;
+  gap: var(--space-4);
+  min-width: 0;
+}
+.lens-view {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+  justify-items: start;
+}
+.lens-view figcaption,
+.lens-loupe figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.lens-surface {
+  position: relative;
+  width: min(100%, 360px);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+  overflow: hidden;
+  background: var(--paper);
+}
+.lens-canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  height: auto;
+}
+/* The drawable card. Same box as the canvas-text stand-in in card.ts. */
+.lens-card {
+  box-sizing: border-box;
+  width: 240px;
+  height: 92px;
+  padding: 12px 12px 12px 18px;
+  background: #ffffff;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  border-left: 6px solid var(--accent);
+  display: grid;
+  align-content: start;
+  gap: 2px;
+}
+.lens-card-title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 22px;
+  white-space: nowrap;
+}
+.lens-card-body {
+  font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 18px;
+}
+.lens-card-measure {
+  position: absolute;
+  top: 0;
+  left: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.lens-surface .lab-sim-note {
+  position: absolute;
+  right: var(--space-2);
+  bottom: var(--space-2);
+  margin: 0;
+  padding: 2px var(--space-2);
+  font-size: 0.7rem;
+  border: var(--line-soft);
+  background: var(--surface);
+  border-radius: var(--radius-control);
+}
+
+.lens-readouts {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  align-items: start;
+}
+.lens-loupe {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+.lens-loupe-glass {
+  position: relative;
+  border: 3px solid var(--second);
+  border-radius: var(--radius-card);
+  box-shadow: 0 0 0 1.5px var(--ink), var(--lift-3);
+  overflow: hidden;
+  background: var(--paper);
+}
+.lens-loupe-canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 2 / 1.1;
+  height: auto;
+  image-rendering: pixelated;
+}
+.lens-loupe-label {
+  position: absolute;
+  left: var(--space-2);
+  padding: 1px var(--space-2);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  background: color-mix(in srgb, var(--paper) 88%, transparent);
+  border: var(--line-soft);
+  border-radius: var(--radius-control);
+}
+.lens-loupe-label[data-row='top'] { top: var(--space-2); }
+.lens-loupe-label[data-row='bottom'] { top: calc(50% + var(--space-2)); }
+.lens-meter {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: center;
+}
+.lens-lab-scene {
+  width: 100%;
+  height: 190px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+  background: radial-gradient(circle at 40% 40%, var(--glow), var(--paper) 75%);
+}
+
+/* The three-grids chart. Series: CSS gold, grid accent, device ink. */
+.lens-grids {
+  margin: 0;
+}
+.lens-grids-svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.lens-grids-caption {
+  margin: var(--space-2) 0 0;
+  font-size: var(--step--1);
+}
+.lens-bar-label,
+.lens-bar-value {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  fill: var(--ink);
+}
+.lens-bar-css { fill: var(--second); }
+.lens-bar-grid { fill: var(--accent); }
+.lens-bar-device { fill: var(--ink); }
+.lens-tick { stroke-width: 1.5; }
+.lens-tick-css { stroke: var(--second); stroke-dasharray: 3 2; }
+.lens-tick-grid { stroke: var(--accent); }
+.lens-tick-device { stroke: var(--ink); }
+.lens-ruler[data-aligned='true'] .lens-tick-grid { stroke: var(--success); stroke-width: 2.5; }
+.lens-ruler-base { stroke: color-mix(in srgb, var(--ink) 25%, transparent); }
+
+/* Units table figure (concept card). */
+.lens-units-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+.lens-units-table caption {
+  text-align: left;
+  font-family: var(--font-mono);
+  padding-bottom: var(--space-2);
+}
+.lens-units-table th,
+.lens-units-table td {
+  text-align: left;
+  vertical-align: top;
+  padding: var(--space-2);
+  border-top: var(--line-soft);
+}
+.lens-units-table th {
+  white-space: nowrap;
+  border-left: 4px solid var(--unit-color, var(--ink));
+}
+.lens-units-table tr[data-unit='css'],
+.lens-ledger-col[data-unit='css'] { --unit-color: var(--second); }
+.lens-units-table tr[data-unit='grid'],
+.lens-ledger-col[data-unit='grid'] { --unit-color: var(--accent); }
+.lens-units-table tr[data-unit='device'],
+.lens-ledger-col[data-unit='device'] { --unit-color: var(--ink); }
+.lens-units-table tr[data-unit='texture'],
+.lens-ledger-col[data-unit='texture'] { --unit-color: #7a6a9a; }
+
+@media (max-width: 1080px) {
+  .lens-lab { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .lens-readouts { grid-template-columns: 1fr; }
+}

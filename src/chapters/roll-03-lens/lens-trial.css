@@ -1,0 +1,145 @@
+/* Roll 03 trial: the boss fight against Blur. */
+.lens-trial {
+  display: grid;
+  gap: var(--space-5);
+  max-width: 60rem;
+}
+.lens-boss {
+  --blur: 7px;
+  --strength: 100%;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: center;
+  padding: var(--space-4) var(--space-5);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  background: linear-gradient(110deg, var(--paper), var(--glow) 45%, var(--paper));
+  box-shadow: var(--lift-3);
+}
+.lens-boss-name {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--step-5);
+  font-style: italic;
+  filter: blur(var(--blur));
+  transition: filter 500ms var(--ease-develop);
+}
+.lens-boss[data-hit='true'] .lens-boss-name {
+  animation: lens-shudder 360ms;
+}
+@keyframes lens-shudder {
+  25% { transform: translateX(-6px); }
+  75% { transform: translateX(6px); }
+}
+.lens-boss-phase,
+.lens-boss-tally {
+  margin: 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.lens-boss-meter {
+  height: 12px;
+  margin: var(--space-2) 0;
+  border: var(--line);
+  border-radius: 6px;
+  overflow: hidden;
+  background: var(--surface);
+}
+.lens-boss-fill {
+  display: block;
+  height: 100%;
+  width: var(--strength);
+  background: linear-gradient(90deg, var(--accent), var(--second));
+  transition: width 500ms var(--ease-snap);
+}
+
+.lens-ledger,
+.lens-sizing {
+  display: grid;
+  gap: var(--space-4);
+  justify-items: start;
+}
+.lens-ledger-value {
+  display: grid;
+  gap: var(--space-1);
+}
+.lens-ledger-value p {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+.lens-ledger-code {
+  font-size: var(--step-2);
+}
+.lens-bins {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 10rem), 1fr));
+  gap: var(--space-3);
+  width: 100%;
+}
+.lens-ledger-board {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--space-3);
+  width: 100%;
+}
+.lens-ledger-col {
+  padding: var(--space-3);
+  border: var(--line-soft);
+  border-top: 4px solid var(--unit-color);
+  border-radius: var(--radius-control);
+  background: var(--surface);
+  min-height: 5rem;
+}
+.lens-ledger-col h4 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--step--1);
+}
+.lens-ledger-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  font-size: 0.75rem;
+}
+.lens-round {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: var(--space-5);
+  width: 100%;
+  align-items: start;
+}
+.lens-facts {
+  margin: 0 0 var(--space-3);
+  padding-left: 1.2rem;
+  font-size: var(--step--1);
+}
+.lens-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: var(--space-3);
+}
+.lens-field {
+  display: grid;
+  gap: 2px;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.lens-number {
+  width: 8rem;
+}
+.lens-score {
+  margin: var(--space-3) 0 0;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.lens-score:empty {
+  display: none;
+}
+@media (max-width: 760px) {
+  .lens-round { grid-template-columns: 1fr; }
+  .lens-boss { grid-template-columns: 1fr; }
+}
