@@ -1,0 +1,224 @@
+/* Roll 09: salt print. Warm brown ink on matte paper, sea blue, lamp light. */
+.lh-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.chapter[data-roll='lighthouse'] {
+  --lh-silent: #8a7a6c;
+  --lh-ghost: #b8322a;
+}
+.chapter[data-roll='lighthouse'] .view {
+  margin: 0;
+  display: grid;
+  gap: var(--space-2);
+  min-width: 0;
+}
+.chapter[data-roll='lighthouse'] .view figcaption {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+
+/* ------------------------------------------------------------- figures */
+.lh-figure-table table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--step--1);
+}
+.lh-figure-table caption {
+  text-align: left;
+  font-family: var(--font-display);
+  margin-bottom: var(--space-2);
+}
+.lh-figure-table :is(th, td) {
+  padding: 6px 8px;
+  border-bottom: var(--line-soft);
+  text-align: left;
+}
+.lh-figure-table td[data-v='no'] { color: var(--lh-ghost); font-weight: 700; }
+.lh-figure-table td[data-v='yes'] { color: var(--success); }
+.lh-fig-canvas { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.lh-fig-img { fill: color-mix(in srgb, var(--accent) 35%, var(--paper)); }
+.lh-fig-small, .lh-fig-node text { font-family: var(--font-mono); font-size: 13px; fill: var(--ink); }
+.lh-fig-note { fill: var(--accent); }
+.lh-fig-node rect { fill: var(--surface); stroke: var(--accent); stroke-width: 1.5; }
+.lh-fig-nogeo rect { stroke: var(--ink); stroke-dasharray: 5 4; }
+.lh-fig-arrow { stroke: var(--ink); stroke-width: 2; }
+
+/* ----------------------------------------------------------------- lab */
+.lh-lab {
+  display: grid;
+  grid-template-columns: minmax(15rem, 21rem) minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+.lh-row {
+  display: grid;
+  gap: var(--space-2);
+  padding-bottom: var(--space-3);
+  border-bottom: var(--line-soft);
+}
+.lh-row-name { margin: 0; font-weight: 700; }
+.lh-row-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+/* Chips are styled for dark code panels; on this light panel they need ink. */
+.lh-row-chips .ui-chip { color: var(--ink); border-color: color-mix(in srgb, var(--ink) 45%, transparent); }
+.lh-row-chips .ui-chip:hover { color: var(--ink); border-color: var(--ink); }
+.lh-row-chips .ui-chip[aria-pressed='true'] { color: var(--ink); border-color: var(--accent); background: color-mix(in srgb, var(--accent) 16%, transparent); }
+.lh-row-chips .ui-chip[aria-pressed='true'] .ui-chip-box { background: var(--accent); border-color: var(--accent); }
+.lh-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+  min-width: 0;
+}
+.lh-stage > .console,
+.lh-charts { grid-column: 1 / -1; }
+.lh-charts {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--space-4);
+}
+.lh-surface { min-height: 350px; }
+.lh-child {
+  display: block;
+  box-sizing: border-box;
+  width: 260px;
+  margin: 0;
+  padding: 6px 12px;
+  background: #fffaf0;
+  color: var(--ink);
+  border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent);
+  border-radius: 4px;
+  font: 16px/1.3 var(--font-body);
+}
+h3.lh-child { font-family: var(--font-display); font-size: 21px; }
+button.lh-child, .lh-dismiss {
+  background: var(--accent);
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+}
+.lh-child p { margin: 0 0 6px; }
+.lh-dismiss { padding: 4px 10px; border: 0; border-radius: 4px; font: inherit; }
+/* Simulated mode: undrawn children stay in the accessibility tree and in the
+   Tab order (only their pixels are missing), as in a real drawable canvas.
+   Without geometry, or once cleared, they no longer catch clicks. */
+.lh-surface .lab-sim-layer > :not([data-drawn='true']) {
+  visibility: visible;
+  opacity: 0;
+}
+.lh-surface .lab-sim-layer > :is([data-geom='none'], [data-geom='offscreen']) {
+  pointer-events: none;
+}
+
+/* Screen reader view */
+.lh-outline {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 var(--space-3);
+  border-left: 2px solid var(--accent);
+  display: grid;
+  gap: var(--space-2);
+  font-size: var(--step--1);
+}
+.lh-outline-root { margin: 0; font-weight: 700; }
+.lh-node {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 var(--space-2);
+  align-items: baseline;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+.lh-node[data-depth='1'] { margin-left: var(--space-5); }
+.lh-role {
+  font-family: var(--font-mono);
+  color: var(--accent);
+  font-weight: 700;
+}
+.lh-state { flex-basis: 100%; color: color-mix(in srgb, var(--ink) 75%, var(--paper)); }
+.lh-node[data-silent='true'] :is(.lh-role, .lh-name) {
+  color: var(--lh-silent);
+  text-decoration: line-through;
+}
+.lh-node[data-geometry='none'][data-silent='false'] { border: 1.5px dashed color-mix(in srgb, var(--ink) 40%, transparent); }
+.lh-node[data-ghost='true'] { background: color-mix(in srgb, var(--lh-ghost) 12%, transparent); }
+.lh-node[data-ghost='true'] .lh-state { color: var(--lh-ghost); font-weight: 700; }
+.lh-node[data-focused='true'] { outline: 2px solid var(--accent); outline-offset: 1px; }
+.lh-focus-tag {
+  padding: 0 6px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: white;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.lh-voice {
+  margin: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-control);
+  background: #20313a;
+  color: #f4e6c8;
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+}
+.lh-voice[data-ghost='true'] { color: #ffb4a8; }
+
+/* Reach chart and beam */
+.reach-svg { width: 100%; height: auto; display: block; }
+.reach-label { font-size: 12px; fill: var(--ink); }
+.reach-value { font-size: 12px; font-weight: 700; fill: var(--ink); font-variant-numeric: tabular-nums; }
+.reach-track { fill: color-mix(in srgb, var(--ink) 8%, transparent); }
+.reach-bar { transition: width 300ms var(--ease-snap); fill: var(--accent); }
+.reach-bar[data-series='tabbable'] { fill: #3d5a80; }
+.reach-bar[data-series='bounds'] { fill: #b0702a; }
+.reach-bar[data-series='clickable'] { fill: var(--second); }
+.lh-scene-host {
+  height: 240px;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-second);
+  overflow: hidden;
+}
+
+/* --------------------------------------------------------------- trial */
+.lh-trial {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: var(--space-6);
+  align-items: start;
+}
+.lh-trial-build, .lh-trial-view { display: grid; gap: var(--space-3); min-width: 0; }
+.lh-trial .code-tree .ui-chip { color: inherit; }
+.lh-handler-body { display: grid; gap: var(--space-1); }
+.lh-result:empty, .lh-findings:empty { display: none; }
+.tide-preview {
+  padding: var(--space-3);
+  background: #fffaf0;
+  border: var(--line);
+  border-radius: var(--radius-card);
+  box-shadow: var(--lift-3);
+}
+.tide-svg { width: 100%; height: auto; display: block; }
+.tide-wedge { stroke: #fffaf0; stroke-width: 2; }
+.tide-val { font: 700 16px var(--font-body); fill: white; }
+.tide-name { font: 12px var(--font-body); fill: var(--ink); }
+.tide-wedge + .tide-val + .tide-name, .tide-val + .tide-name { fill: white; }
+.tide-track { fill: color-mix(in srgb, var(--ink) 12%, white); }
+.tide-jelly { fill: #ff7313; }
+.tide-readout { font: 700 22px var(--font-display); fill: var(--ink); }
+.tide-ghost { fill: none; stroke: var(--lh-silent); stroke-dasharray: 6 5; }
+.tide-ghost-text { font: italic 12px var(--font-body); fill: var(--lh-silent); }
+
+@media (max-width: 1180px) {
+  .lh-lab, .lh-trial { grid-template-columns: 1fr; }
+}
+@media (max-width: 1500px) {
+  .lh-stage { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 760px) {
+  .lh-stage, .lh-charts { grid-template-columns: 1fr; }
+  .lh-child { width: min(260px, 70vw); }
+}
