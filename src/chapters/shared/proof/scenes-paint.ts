@@ -118,27 +118,33 @@ export const lens: Scene<{ center?: boolean }> = (kit, { center }) => {
     }
     kit.lab.drawElement(right, xr, y);
 
-    // The magnifier: the same spot of both cards, three times larger.
-    const mag = 3;
-    const spot = 34;
-    const sx = 14 + Math.sin(t * 0.6) * 10;
+    // The magnifier: the same spot of both cards, enlarged without smoothing.
+    const mag = 2.6;
+    const spot = { w: 40, h: 24 };
+    const sx = 12 + (Math.sin(t * 0.6) + 1) * 30;
+    const my = height - spot.h * mag - 12;
     ctx.imageSmoothingEnabled = false;
-    const my = height - spot * 0.6 * mag - 14;
-    for (const [x0, bx] of [[xl, half * 0.5 - 51], [xr, half * 1.5 - 51]] as const) {
-      ctx.drawImage(ctx.canvas, (x0 + sx) * s, (y + 6) * s, spot * s, spot * 0.6 * s, bx * s, my * s, spot * mag * s, spot * 0.6 * mag * s);
+    for (const [x0, cx] of [[xl, half * 0.5], [xr, half * 1.5]] as const) {
+      const bx = cx - (spot.w * mag) / 2;
+      ctx.drawImage(ctx.canvas, (x0 + sx) * s, (y + 8) * s, spot.w * s, spot.h * s, bx * s, my * s, spot.w * mag * s, spot.h * mag * s);
       ctx.strokeStyle = kit.color('ink');
       ctx.lineWidth = 1.5 * s;
-      ctx.strokeRect(bx * s, my * s, spot * mag * s, spot * 0.6 * mag * s);
+      ctx.strokeRect(bx * s, my * s, spot.w * mag * s, spot.h * mag * s);
     }
     ctx.imageSmoothingEnabled = true;
     if (center) {
+      // A cross through the middle of each card's half: the card sits on it.
       ctx.strokeStyle = kit.color('accent');
+      ctx.lineWidth = 1 * s;
       ctx.setLineDash([4 * s, 4 * s]);
+      const cy = y + left.offsetHeight / 2;
       ctx.beginPath();
-      ctx.moveTo(half * s, 0);
-      ctx.lineTo(half * s, height * s);
-      ctx.moveTo(0, (height / 2) * s);
-      ctx.lineTo(width * s, (height / 2) * s);
+      for (const cx of [half * 0.5, half * 1.5]) {
+        ctx.moveTo(cx * s, (cy - 50) * s);
+        ctx.lineTo(cx * s, (cy + 50) * s);
+        ctx.moveTo((cx - 110) * s, cy * s);
+        ctx.lineTo((cx + 110) * s, cy * s);
+      }
       ctx.stroke();
       ctx.setLineDash([]);
     }

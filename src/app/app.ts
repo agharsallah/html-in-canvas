@@ -13,7 +13,6 @@ import { mountHud } from '../ui/hud';
 import { mountToasts } from '../ui/toasts';
 import { mountXray } from '../ui/xray';
 import { createSoundToggle } from '../ui/components/sound-toggle';
-import { mountFeedbackFx } from '../ui/fx/feedback-fx';
 import { Hub } from '../world/hub';
 import { Stage } from '../world/stage';
 import { NativeSurfaces } from '../world/surfaces/native-surfaces';
@@ -44,7 +43,9 @@ export async function startApp(): Promise<void> {
   mountHud(ui, { caps, store, onOpenAlbum: () => album.open(), onHome: () => goHome() });
   mountXray(ui, caps);
   ui.querySelector('.hud-status .hud-xray')?.before(createSoundToggle('hud-album'));
-  mountFeedbackFx(ui, store);
+  // Sound and confetti for goals and answers: chapters only, so it loads
+  // after the darkroom instead of in front of it.
+  void import('../ui/fx/feedback-fx').then((m) => m.mountFeedbackFx(ui, store));
 
   mark('ui-ready');
   const stage = new Stage(canvas);

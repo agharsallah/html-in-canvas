@@ -18,7 +18,7 @@ export const vault: Scene<{ variant: 'readback' | 'theme' | 'export' }> = (kit, 
     h('p', {}, 'A link you have visited: ', h('a', { href: location.href.split('#')[0] }, 'this page')),
     h('input', { class: 'ui-field', value: 'teh secrit', spellcheck: 'true', 'aria-label': 'A misspelt field' }),
     variant === 'export' ? exportButton : null));
-  const swatch = h('span', { class: 'proof-swatch' });
+  const swatch = h('span', { class: 'proof-swatch', hidden: true });
   const thumb = h('img', { class: 'proof-export', alt: 'The exported print', hidden: true });
   kit.lab.root.append(swatch, thumb);
   let pointer: { x: number; y: number } | null = null;

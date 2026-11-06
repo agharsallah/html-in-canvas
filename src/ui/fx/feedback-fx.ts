@@ -7,18 +7,25 @@
  *  - a success callout appearing (quiz answers, trials, exercises): arpeggio, burst;
  *  - an error callout appearing: a soft low nudge;
  *  - a frame completed (from the game store): fanfare, big burst.
- * Controls inside chapters tick quietly. Feedback that is merely re-rendered
+ * Labs add their own themed sounds (lab-sfx.ts). Feedback that is merely re-rendered
  * when a frame opens (revisiting a solved exercise) is ignored.
  */
 import type { GameStore } from '../../game/store';
 import type { GameState } from '../../game/state';
-import { mountConfetti, type Palette } from './confetti';
+import type { Confetti, Palette } from './confetti';
 import { play } from './sound';
 
 const QUIET_AFTER_NAVIGATION_MS = 700;
 
 export function mountFeedbackFx(root: HTMLElement, store: GameStore): void {
-  const confetti = mountConfetti();
+  // The confetti overlay is fetched and mounted at the first celebration.
+  let overlay: Promise<Confetti> | null = null;
+  const confetti = {
+    burst(x: number, y: number, power: number, palette: Palette) {
+      overlay ??= import('./confetti').then((m) => m.mountConfetti());
+      void overlay.then((c) => c.burst(x, y, power, palette));
+    },
+  };
   let navigatedAt = performance.now();
   let bigAt = -Infinity;
   window.addEventListener('hashchange', () => (navigatedAt = performance.now()));
@@ -83,13 +90,4 @@ export function mountFeedbackFx(root: HTMLElement, store: GameStore): void {
     }
     frames = next;
   });
-
-  // Controls inside a chapter tick, so a lab feels like a machine.
-  root.addEventListener('click', (event) => {
-    const target = event.target as Element;
-    if (target.closest('.chapter-stage') && target.closest('button, [role="switch"], [role="radio"], [role="tab"]')) play('tick');
-  }, true);
-  root.addEventListener('keydown', (event) => {
-    if (event.key.startsWith('Arrow') && (event.target as Element).closest?.('.chapter-stage [role="slider"]')) play('tick');
-  }, true);
 }

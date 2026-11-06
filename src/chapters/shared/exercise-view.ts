@@ -7,7 +7,7 @@ import { callout } from '../../ui/components/callout';
 import { h, rich } from '../../ui/dom';
 import { createCodeEditor } from '../../ui/editor/code-editor';
 import { evaluate, type Exercise } from './exercise';
-import { createProofPanel, PROOFS, proofReplayButton } from './proof';
+import { createProofPanel, hasProof, proofReplayButton } from './proof';
 
 export interface ExerciseViewOptions {
   exercise: Exercise;
@@ -109,7 +109,7 @@ export function mountExerciseView(host: HTMLElement, o: ExerciseViewOptions): ()
   const solutionButton = button({ label: 'Show the solution', variant: 'ghost', onClick: showSolution });
   const nextButton = o.onNext ? button({ label: 'Next exercise', variant: 'primary', onClick: o.onNext }) : null;
   if (nextButton) nextButton.hidden = !solved;
-  const replay = solved && PROOFS[exercise.id] ? proofReplayButton(() => {
+  const replay = solved && hasProof(exercise.id) ? proofReplayButton(() => {
     proof.open();
     replay!.hidden = true;
   }) : null;
