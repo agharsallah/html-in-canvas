@@ -1,0 +1,153 @@
+/* Roll 10: redacted photocopy. Toner black, copier paper, highlighter, and a pink alarm. */
+.vault-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Figures */
+.figure-vault .vf-box { fill: var(--surface); stroke: var(--ink); stroke-width: 1.5; }
+.figure-vault .vf-secret { fill: color-mix(in srgb, var(--second) 22%, var(--paper)); }
+.figure-vault .vf-text { font: 600 13px var(--font-body); fill: var(--ink); }
+.figure-vault .vf-row { font-weight: 400; }
+.figure-vault .vf-head-text { font: 700 13px var(--font-mono); fill: var(--ink); }
+.figure-vault .vf-arrow { stroke: var(--ink); stroke-width: 1.5; }
+.figure-vault .vf-head { fill: var(--ink); }
+.figure-vault .vf-bar { fill: var(--ink); }
+.figure-vault .vf-shown { fill: var(--glow); stroke: var(--ink); stroke-width: 1; }
+.figure-vault .vf-silent { font: italic 11px var(--font-body); fill: color-mix(in srgb, var(--ink) 55%, transparent); }
+.figure-vault .vf-note { font: 11px var(--font-mono); fill: var(--ink); }
+.vf-legend { display: flex; align-items: center; gap: var(--space-2); font-size: var(--step--1); margin: var(--space-2) 0 0; }
+.vf-key { display: inline-block; width: 22px; height: 10px; border-radius: 2px; border: 1px solid var(--ink); }
+.vf-key-never { background: var(--ink); }
+.vf-key-painted { background: var(--glow); margin-left: var(--space-3); }
+
+/* Lab */
+.vault-lab { display: grid; gap: var(--space-5); min-width: 0; }
+.vault-sides { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); align-items: start; }
+.vault-side { margin: 0; display: grid; gap: var(--space-2); min-width: 0; align-content: start; }
+.vault-side figcaption { font: 700 var(--step--1) var(--font-mono); text-transform: uppercase; letter-spacing: 0.08em; }
+.vault-see {
+  border: var(--line);
+  border-radius: var(--radius-card);
+  padding: 16px;
+  background: color-mix(in srgb, var(--paper) 88%, var(--ink));
+  box-shadow: var(--lift-2);
+  overflow: auto;
+}
+.vault-snap .lab-surface { height: 400px; }
+.vault-dossier {
+  position: relative;
+  width: 300px;
+  box-sizing: border-box;
+  padding: 12px 14px;
+  background: #fbfbf6;
+  color: #121212;
+  border: 1.5px solid #121212;
+  font: 14px var(--font-body);
+  display: grid;
+  gap: 8px;
+}
+.vault-dossier-title { margin: 0; font: 700 18px var(--font-display); }
+.vault-row { display: grid; grid-template-columns: 58px minmax(0, 1fr); align-items: center; gap: 6px; }
+.vault-row-label { font: 11px var(--font-mono); text-transform: uppercase; opacity: 0.7; }
+.vault-row-body { display: block; min-width: 0; }
+.vault-link:link { color: #1d5bd8; }
+.vault-link:visited { color: #9b1fd1; }
+.vault-dossier[data-sim='true'][data-redact='true'] .vault-link { color: #1d5bd8; }
+.vault-note { width: 100%; box-sizing: border-box; resize: none; font: inherit; border: 1px solid #8a8a86; padding: 2px 4px; }
+.vault-frame { width: 100%; height: 34px; border: 1px dashed #121212; display: block; }
+.vault-dossier[data-sim='true'][data-redact='true'][data-origin='cross'] .vault-frame {
+  visibility: hidden;
+}
+.vault-system-btn { background: ButtonFace; color: ButtonText; border: 1px solid ButtonBorder; font: inherit; padding: 3px 10px; }
+.vault-dossier[data-sim='true'][data-redact='true'] .vault-system-btn { background: #e6e6e1; color: #121212; border-color: #8a8a86; }
+.vault-caret-input { width: 100%; box-sizing: border-box; font: inherit; padding: 2px 4px; }
+.vault-focus-btn { font: inherit; padding: 3px 10px; }
+.vault-focus-btn:focus-visible { outline: 3px solid #1d5bd8; outline-offset: 2px; }
+
+.vault-overlay { position: absolute; inset: 0; pointer-events: none; }
+.vault-redact {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 4px;
+  box-sizing: border-box;
+  font: 700 10px var(--font-mono);
+  text-transform: uppercase;
+  color: var(--paper);
+  background: repeating-linear-gradient(135deg, rgb(18 18 18 / 0.78) 0 6px, rgb(18 18 18 / 0.55) 6px 12px);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 420ms var(--ease-snap);
+}
+.vault-redact[data-in='true'] { transform: scaleX(1); }
+.vault-redact[data-leak='true'] { background: none; border: 2px dashed var(--second); color: var(--second); }
+
+.vault-controls { display: grid; gap: var(--space-3); align-content: start; }
+.vault-spy-buttons { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.vault-log { min-height: 8rem; background: #151515; color: #f4f4ee; }
+.vault-log li[data-kind='leak'] { color: #ff8fab; }
+.vault-log li[data-kind='safe'] { color: var(--glow); }
+.vault-meters { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: var(--space-5); align-items: center; }
+.vault-gauge .ui-gauge { width: 190px; }
+
+.leak-bars-plot { position: relative; }
+.leak-bars-svg { width: 100%; height: auto; display: block; }
+.leak-label, .leak-total { font: 12px var(--font-body); fill: var(--ink); }
+.leak-axis { stroke: color-mix(in srgb, var(--ink) 30%, transparent); }
+.leak-seg[data-series='safe'], .leak-bars .legend-item[data-series='safe'] i { fill: #8a8a86; background: #8a8a86; }
+.leak-seg[data-series='leaked'], .leak-bars .legend-item[data-series='leaked'] i { fill: var(--second); background: var(--second); }
+
+/* Trial */
+.vault-phase { margin: 0 0 var(--space-4); font: 700 var(--step-1) var(--font-display); }
+.vault-sort { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: var(--space-5); align-items: start; }
+.vault-copier, .vault-heist { display: grid; gap: var(--space-4); max-width: 40rem; }
+.vault-copier-head { display: flex; justify-content: space-between; align-items: center; gap: var(--space-3); }
+.vault-counter { margin: 0; font: 700 var(--step--1) var(--font-mono); }
+.vault-strikes { display: flex; gap: 6px; }
+.vault-strikes span { width: 18px; height: 18px; border: var(--line); border-radius: 50%; background: var(--surface); }
+.vault-strikes span[data-hit='true'] { background: var(--second); }
+.vault-card {
+  min-height: 7rem;
+  display: grid;
+  align-content: center;
+  padding: var(--space-5);
+  background: var(--surface);
+  border: var(--line);
+  border-radius: var(--radius-paper);
+  box-shadow: var(--lift-3);
+  font: 600 var(--step-1) var(--font-body);
+}
+.vault-card p { margin: 0; }
+.vault-card[data-flash='wrong'] { box-shadow: 6px 6px 0 0 var(--second); }
+.vault-card[data-flash='right'] { box-shadow: 6px 6px 0 0 var(--glow); }
+.vault-plan { font-size: var(--step-0); font-weight: 400; gap: var(--space-2); }
+.vault-plan-who { font: 700 var(--step--1) var(--font-mono); text-transform: uppercase; }
+.vault-stamps { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.vault-feedback:empty { display: none; }
+.vault-trays { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-4); }
+.vault-tray { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; font-size: var(--step--1); min-height: 4rem; }
+.vault-tray li { padding: 4px 8px; border: var(--line-soft); }
+.vault-tray[data-tray='never'] li { background: var(--ink); color: var(--paper); }
+.vault-tray[data-tray='painted'] li { background: color-mix(in srgb, var(--glow) 60%, var(--paper)); }
+.vault-jams { grid-column: 1 / -1; display: grid; gap: var(--space-3); }
+.vault-jams ul { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 22rem), 1fr)); gap: var(--space-3); }
+.vault-jam { padding: var(--space-3); border: 1.5px dashed var(--ink); font-size: var(--step--1); }
+.vault-jam p { margin: 0; }
+.vault-jam-label { font-weight: 700; margin-bottom: var(--space-1) !important; }
+.vault-heist-picks { display: flex; flex-wrap: wrap; gap: var(--space-5); }
+
+@media (max-width: 1080px) {
+  .vault-sides, .vault-sort { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .vault-meters, .vault-trays { grid-template-columns: 1fr; }
+  .vault-dossier { width: 100%; max-width: 300px; }
+  .vault-snap .lab-surface { height: 380px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vault-redact { transition: none; }
+}
