@@ -14,6 +14,7 @@ import { mountDialogue } from '../../ui/dialogue';
 import { h, rich } from '../../ui/dom';
 import { conceptsOf, FRAME_LABELS, type BeatContext, type ChapterModule } from './chapter';
 import { createNotebook } from './notebook';
+import { createSoundToggle } from '../../ui/components/sound-toggle';
 import { mountPractice } from './practice';
 import { createShellNav } from './shell-nav';
 
@@ -70,7 +71,9 @@ export function mountChapterShell(root: HTMLElement, options: ShellOptions): Cha
         h('p', { class: 'chapter-edge' }, `Frame ${roll.frame}`, h('span', {}, roll.process.name)),
         h('h1', { id: 'chapter-title', class: 'chapter-title' }, roll.title)),
       stepper.el,
-      h('div', { class: 'chapter-tools' }, notebook.trigger,
+      h('div', { class: 'chapter-tools' },
+        createSoundToggle('ui-button', { 'data-variant': 'ghost', 'data-size': 'sm' }),
+        notebook.trigger,
         button({ label: 'Leave roll', variant: 'ghost', size: 'sm', onClick: options.onClose }))),
     stage,
     nav.el);

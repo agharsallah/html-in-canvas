@@ -16,6 +16,7 @@ import { createVerso, renderVerso, VERSO_SIZE } from '../ui/print-verso';
 import type { Roll } from '../story/rolls';
 import type { CameraRig } from './camera-rig';
 import { SAFELIGHT } from './darkroom-set';
+import { play } from '../ui/fx/sound';
 import type { Print } from './print';
 import { createPrintMaterial, setPrintTexture } from './print-material';
 import type { SurfaceBackend, SurfaceHandle } from './surfaces/surface';
@@ -97,6 +98,7 @@ export class Inspector {
     this.mesh.visible = true;
     this.develop = 0;
     item.print.turn(true);
+    play('paper');
     for (const other of this.o.items) other.print.dim(other !== item);
     item.card.setAttribute('inert', '');
     this.verso.inert = false;
@@ -117,6 +119,7 @@ export class Inspector {
     if (!item) return;
     this.current = null;
     item.print.turn(false);
+    play('paper');
     item.card.removeAttribute('inert');
     for (const other of this.o.items) other.print.dim(false);
     this.verso.inert = true;

@@ -17,6 +17,7 @@ import './styles/hud.css';
 import './styles/print-card.css';
 import './styles/print-verso.css';
 import './styles/xray.css';
+import './styles/fx.css';
 import './styles/hero.css';
 import './styles/chapter.css';
 import './styles/story.css';

@@ -12,6 +12,8 @@ import { prefersReducedMotion } from '../ui/dom';
 import { mountHud } from '../ui/hud';
 import { mountToasts } from '../ui/toasts';
 import { mountXray } from '../ui/xray';
+import { createSoundToggle } from '../ui/components/sound-toggle';
+import { mountFeedbackFx } from '../ui/fx/feedback-fx';
 import { Hub } from '../world/hub';
 import { Stage } from '../world/stage';
 import { NativeSurfaces } from '../world/surfaces/native-surfaces';
@@ -41,6 +43,8 @@ export async function startApp(): Promise<void> {
   let goHome = () => navigate({ name: 'hub' });
   mountHud(ui, { caps, store, onOpenAlbum: () => album.open(), onHome: () => goHome() });
   mountXray(ui, caps);
+  ui.querySelector('.hud-status .hud-xray')?.before(createSoundToggle('hud-album'));
+  mountFeedbackFx(ui, store);
 
   mark('ui-ready');
   const stage = new Stage(canvas);

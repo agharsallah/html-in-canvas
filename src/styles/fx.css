@@ -1,0 +1,351 @@
+/*
+ * Celebration effects: the confetti overlay and its HTML pieces, the sound
+ * toggle, and the "what your code does" proof panel.
+ */
+.confetti {
+  --cf-a: #ff5a36;
+  --cf-b: #2ee6c0;
+  --cf-c: #ffb547;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 80;
+  pointer-events: none;
+}
+/* The pieces: real HTML, laid out inside the canvas, drawn many times. */
+.cf {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  white-space: nowrap;
+}
+.cf-chip {
+  padding: 2px 7px;
+  border-radius: 4px;
+  font: 600 13px var(--font-mono);
+  color: #fff;
+  background: var(--cf-a);
+  box-shadow: inset 0 -2px 0 rgb(0 0 0 / 0.18);
+}
+.cf-chip:nth-child(2) {
+  background: var(--cf-b);
+  color: #10231f;
+}
+.cf-chip:nth-child(3) {
+  background: #241c2a;
+  color: var(--cf-c);
+}
+.cf-star {
+  font: 22px/1 var(--font-display);
+  color: var(--cf-c);
+}
+.cf-check {
+  display: grid;
+  place-items: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font: 700 13px/1 var(--font-body);
+  color: #fff;
+  background: var(--cf-b);
+}
+.cf-sq {
+  width: 10px;
+  height: 12px;
+  border-radius: 1px;
+}
+.cf-strip {
+  width: 6px;
+  height: 16px;
+  border-radius: 1px;
+}
+.cf-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.cf-a { background: var(--cf-a); }
+.cf-b { background: var(--cf-b); }
+.cf-c { background: var(--cf-c); }
+
+/* The sound toggle: a speaker with sound waves when on, a cross when off. */
+.sound-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45em;
+}
+.sound-toggle .glyph-sound-wave {
+  transition: opacity 0.2s var(--ease-snap);
+}
+.sound-toggle[aria-pressed='false'] .glyph-sound-wave {
+  opacity: 0;
+}
+.sound-toggle[aria-pressed='true'] .glyph-sound-off {
+  opacity: 0;
+}
+
+/* "Your code, running": the live proof under a solved exercise. */
+.proof {
+  margin-top: var(--space-4);
+  padding: var(--space-4);
+  border: var(--line);
+  border-radius: var(--radius-card);
+  background: color-mix(in srgb, var(--paper) 94%, var(--accent));
+  box-shadow: var(--lift-2, 4px 4px 0 var(--ink));
+}
+.proof-head {
+  display: grid;
+  gap: var(--space-1);
+  margin-bottom: var(--space-3);
+}
+.proof-title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  font-size: var(--step-1);
+  color: var(--accent);
+}
+.proof-says {
+  margin: 0;
+  max-width: 62ch;
+}
+.proof-stage .lab-surface {
+  height: 260px;
+  min-height: 0;
+}
+.proof-readout {
+  min-height: 2.6em;
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  line-height: 1.4;
+  color: color-mix(in srgb, var(--ink) 80%, var(--paper));
+  overflow-wrap: anywhere;
+}
+
+/* The HTML the scenes draw. Drawn roots get explicit widths: inside a
+   drawable canvas they lay out like any block, as wide as the canvas. */
+.proof-chip {
+  width: max-content;
+  margin: 0;
+  padding: 3px 9px;
+  border-radius: 99px;
+  font: 600 12px var(--font-mono);
+  background: var(--ink);
+  color: var(--paper);
+}
+.proof-card {
+  width: 240px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 8px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 14px/1.35 var(--font-body);
+  /* Weight at the bottom edge, not an outset shadow: a snapshot only covers
+     the element's border box, so an outer shadow would be cut to a sliver. */
+  border-bottom: 4px solid var(--accent);
+}
+.proof-card p {
+  margin: 0;
+}
+.proof-card .ui-field {
+  width: 100%;
+}
+.proof-card-title {
+  font: 600 18px/1.1 var(--font-display);
+}
+.proof-button,
+.proof-target,
+.proof-wedge-label {
+  justify-self: start;
+  padding: 6px 12px;
+  border: 0;
+  border-radius: 4px;
+  font: 600 13px var(--font-body);
+  background: var(--accent);
+  color: var(--paper);
+  cursor: pointer;
+}
+.proof-button:focus-visible,
+.proof-target:focus-visible,
+.proof-wedge-label:focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+}
+.proof-target {
+  width: max-content;
+  padding: 10px 18px;
+  font-size: 15px;
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--ink) 35%, transparent);
+}
+.proof-wedge-label {
+  width: max-content;
+  background: var(--paper);
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+  font-size: 12px;
+  padding: 3px 8px;
+}
+
+.proof-poem {
+  position: relative;
+  width: 260px;
+  padding: 14px 18px;
+  border: 1.5px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+  font: italic 17px/1.5 var(--font-display);
+}
+.proof-poem p {
+  margin: 0;
+}
+.proof-you {
+  display: inline-block;
+  padding: 0 8px;
+  border-radius: 4px;
+  font-style: normal;
+  font-weight: 600;
+  background: var(--second);
+  color: var(--paper);
+}
+
+.proof-ticket {
+  width: 280px;
+  height: 104px;
+  display: flex;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper);
+  color: var(--ink);
+}
+.proof-ticket-stub {
+  width: 70px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  border-right: 2px dashed var(--ink);
+  background: var(--accent);
+  color: var(--paper);
+  font: 600 12px var(--font-mono);
+}
+.proof-ticket-stub strong {
+  font: 700 20px var(--font-display);
+}
+.proof-ticket-body {
+  padding: 14px 16px;
+  font: 600 17px/1.2 var(--font-display);
+}
+.proof-ticket-body p {
+  margin: 0;
+}
+.proof-ticket-seat {
+  margin-top: 8px !important;
+  font: 12px var(--font-mono);
+}
+
+.proof-lens-card {
+  width: 150px;
+  padding: 10px 12px;
+  border: 1px solid var(--ink);
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--ink);
+  font: 600 18px/1.2 var(--font-display);
+}
+.proof-lens-card p {
+  margin: 0;
+}
+.proof-lens-small {
+  font: 11px var(--font-mono) !important;
+  margin-top: 4px !important;
+}
+.proof-blur {
+  filter: blur(0.7px);
+}
+
+.proof-face {
+  width: 220px;
+  padding: 14px 16px;
+  display: grid;
+  gap: 8px;
+  border: 1.5px solid var(--ink);
+  border-radius: 8px;
+  font: 14px/1.35 var(--font-body);
+}
+.proof-face p {
+  margin: 0;
+}
+.proof-face-front {
+  background: var(--paper);
+  color: var(--ink);
+}
+.proof-face-back {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+.proof-foundry {
+  --heat: var(--accent);
+  border-color: var(--heat);
+}
+.proof-foundry output {
+  font-weight: 600;
+  color: var(--heat);
+}
+.proof-train {
+  width: 120px;
+  padding: 8px 10px;
+  gap: 2px;
+  font-size: 13px;
+}
+.proof-train .proof-card-title {
+  font-size: 13px;
+}
+.proof-train strong {
+  font: 600 16px var(--font-mono);
+}
+.proof-vault {
+  --vault-paper: #f4f4ee;
+  --vault-ink: #121212;
+  --vault-mark: #ff2e63;
+  width: 260px;
+  background: var(--vault-paper);
+  color: var(--vault-ink);
+  border-color: var(--vault-ink);
+  border-bottom-color: var(--vault-mark);
+}
+.proof-vault a {
+  color: #1a5fd6;
+}
+.proof-vault a:visited {
+  color: #8a2be2;
+}
+.proof-swatch {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 26px;
+  height: 26px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.5px #000;
+  pointer-events: none;
+}
+.proof-export {
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
+  width: 120px;
+  border: 1.5px solid var(--ink);
+  border-radius: 4px;
+  background: #fff;
+  box-shadow: 3px 3px 0 var(--accent);
+}
