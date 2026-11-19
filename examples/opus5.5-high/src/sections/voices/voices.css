@@ -1,0 +1,32 @@
+/* Voices: quotes changing through a geometric wipe (WebGPU). */
+.voices-wrap { max-width: 1080px; margin: 0 auto; }
+canvas.voices-stage { height: 480px; }
+.voices-stage:not(canvas) { display: grid; padding: 40px 16px 24px; }
+.voices-stage:not(canvas) .quote { grid-area: 1 / 1; margin: 0 auto; transition: opacity .5s, translate .5s; }
+.voices-stage:not(canvas) .quote:not(.is-current) { opacity: 0; translate: 0 12px; visibility: hidden; }
+html[data-motion="reduce"] .voices-stage:not(canvas) .quote { transition: none; }
+
+.quote {
+  position: relative; box-sizing: border-box; width: min(760px, calc(100% - 48px)); margin: 0;
+  padding: clamp(28px, 4vw, 44px) clamp(24px, 4vw, 52px) clamp(24px, 3vw, 32px);
+  border: 3px solid var(--ink); border-radius: 6px; box-shadow: 12px 12px 0 var(--ink);
+  background: var(--paper); color: var(--ink);
+}
+.quote--red { background: var(--red); color: #fff; }
+.quote--blue { background: var(--blue); color: #fff; }
+.quote--yellow { background: var(--yellow); color: #16130f; }
+.quote-mark {
+  position: absolute; left: 14px; top: -0.42em; font: 800 9rem/1 var(--font-display);
+  color: var(--ink); pointer-events: none;
+}
+.quote--paper .quote-mark { color: var(--red); }
+.quote blockquote { margin: 0; }
+.quote blockquote p { font: 700 clamp(1.35rem, 3vw, 2.15rem)/1.15 var(--font-display); letter-spacing: -0.03em; text-wrap: balance; }
+.quote figcaption { display: flex; align-items: center; gap: 14px; margin-top: 26px; }
+.avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); font: 800 1rem var(--font-display); }
+.quote--paper .avatar { background: var(--yellow); }
+.who { display: grid; }
+.who strong { font-size: 1.05rem; }
+.who span { font: .8rem var(--font-mono); opacity: .85; }
+.voices-controls { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 12px; }
+.voices-count { font: 700 1rem var(--font-mono); min-width: 4ch; text-align: center; }

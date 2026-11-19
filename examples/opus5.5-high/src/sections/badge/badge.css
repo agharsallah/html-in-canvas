@@ -1,0 +1,52 @@
+/* Your badge: a live, exportable name badge. */
+.badge-grid { max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(24px, 4vw, 56px); align-items: center; }
+@media (max-width: 860px) { .badge-grid { grid-template-columns: 1fr; } }
+.badge-form { display: grid; gap: 18px; }
+.field { display: grid; gap: 8px; border: 0; padding: 0; margin: 0; }
+.field > span, .field legend { font: 600 .78rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; padding: 0; }
+.field input, .field select {
+  height: 52px; padding: 0 14px; border: 3px solid var(--ink); border-radius: 12px; background: var(--paper);
+  font-size: 1.05rem; font-weight: 600;
+}
+.swatches { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatches legend { width: 100%; margin-bottom: 8px; }
+.swatch { position: relative; width: 44px; height: 44px; border-radius: 50%; border: 3px solid var(--ink); cursor: pointer; }
+.swatch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.swatch:has(input:checked) { box-shadow: 0 0 0 4px var(--paper), 0 0 0 7px var(--ink); }
+.swatch:has(input:focus-visible) { outline: 3px solid var(--red); outline-offset: 7px; }
+.swatch--red { background: var(--red); } .swatch--blue { background: var(--blue); } .swatch--yellow { background: var(--yellow); } .swatch--ink { background: var(--ink); }
+.badge-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.badge-note { font-size: .9rem; }
+
+.badge-stage { height: clamp(520px, 62vw, 640px); border: 3px solid var(--ink); border-radius: 22px; background: var(--paper); }
+.badge-stage:not(canvas) { display: grid; place-items: center; }
+.badge {
+  position: relative; overflow: hidden; box-sizing: border-box; width: 340px; height: 480px; padding: 64px 28px 24px;
+  border: 3px solid var(--ink); border-radius: 22px; background: var(--paper); color: var(--ink);
+  display: flex; flex-direction: column;
+}
+.badge-stage:not(canvas) .badge { rotate: -3deg; box-shadow: 10px 10px 0 var(--ink); }
+.badge-hole { position: absolute; top: 18px; left: 50%; translate: -50% 0; width: 72px; height: 16px; border-radius: 8px; background: var(--paper); border: 3px solid var(--ink); z-index: 2; }
+.badge-top { display: flex; justify-content: space-between; align-items: baseline; position: relative; z-index: 1; }
+.badge-mark { font: 800 2.4rem/1 var(--font-display); letter-spacing: -0.06em; }
+.badge-year { font: 700 1.2rem var(--font-mono); }
+.badge-role { position: relative; z-index: 1; margin-top: 12px; align-self: flex-start; padding: 6px 12px; border-radius: 999px; background: var(--ink); color: var(--paper); font: 700 .85rem var(--font-mono); text-transform: uppercase; letter-spacing: .1em; }
+.badge-hello { position: relative; z-index: 1; margin-top: auto; font: 600 .8rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
+.badge-name-row { position: relative; z-index: 1; margin: 6px 0 18px; min-height: 2.1em; font: 800 2.7rem/1 var(--font-display); letter-spacing: -0.05em; overflow-wrap: anywhere; }
+/* Nested drawable: drawn on its own, twice, as a misregistered two-colour print. */
+.badge-name { display: inline-block; color: var(--red); }
+.badge--red .badge-name { color: var(--ink); }
+.badge-foot { position: relative; z-index: 1; display: flex; justify-content: space-between; align-items: flex-end; gap: 12px; border-top: 3px solid currentColor; padding-top: 12px; font: 600 .78rem var(--font-mono); }
+.badge-code { display: grid; grid-template-columns: repeat(5, 8px); gap: 2px; }
+.badge-code i { width: 8px; height: 8px; background: transparent; border: 1px solid currentColor; }
+.badge-code i.on { background: currentColor; }
+.badge-art i { position: absolute; display: block; }
+.badge-art i:first-child { width: 260px; height: 260px; border-radius: 50%; right: -120px; top: 40px; background: var(--yellow); }
+.badge-art i:last-child { width: 120px; height: 120px; left: -40px; top: 150px; background: var(--blue); rotate: 20deg; }
+.badge--red { background: var(--red); color: #fff; }
+.badge--blue { background: var(--blue); color: #fff; }
+.badge--yellow { background: var(--yellow); color: #16130f; }
+.badge--ink { background: var(--ink); color: var(--paper); }
+.badge--red .badge-role, .badge--blue .badge-role { background: #fff; color: #16130f; }
+.badge--yellow .badge-art i:first-child { background: var(--red); }
+.badge--ink .badge-role { background: var(--paper); color: var(--ink); }

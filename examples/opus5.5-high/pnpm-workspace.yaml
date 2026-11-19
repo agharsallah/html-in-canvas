@@ -1,0 +1,7 @@
+# Standalone project: this file stops pnpm from walking up into the parent repo.
+packages:
+  - "."
+allowBuilds:
+  esbuild: true
+  workerd: true
+  sharp: false

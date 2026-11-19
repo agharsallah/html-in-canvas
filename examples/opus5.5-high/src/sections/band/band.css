@@ -1,0 +1,32 @@
+/* Lineup tape. Live: drawn by a worker into an OffscreenCanvas. Fallback: static tilted tape. */
+.band { position: relative; border-top: 3px solid var(--ink); background: var(--paper); }
+.band-stage { height: clamp(200px, 26vw, 280px); }
+canvas.band-stage { opacity: 0; transition: opacity .5s; }
+.band[data-ready="true"] canvas.band-stage { opacity: 1; }
+.tape {
+  width: max-content; display: flex; align-items: center; gap: 28px;
+  padding: 16px 28px; white-space: nowrap;
+  border-block: 3px solid var(--ink);
+  font: 800 clamp(1.6rem, 3.4vw, 2.6rem)/1 var(--font-display); text-transform: uppercase; letter-spacing: -0.02em;
+}
+.tape-list { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+.tape-list li { display: flex; align-items: center; gap: 28px; }
+.tape-list li::after { content: "✳"; font-size: .7em; }
+.tape--a { background: var(--red); color: #fff; }
+.tape--b { background: var(--yellow); color: #16130f; font-size: clamp(1rem, 2vw, 1.4rem); padding-block: 12px; }
+.tape-label { font: 600 .8rem/1 var(--font-mono); letter-spacing: .1em; padding: 6px 10px; border: 2px solid currentColor; border-radius: 999px; }
+.tape-link { font: 700 1rem/1 var(--font-body); text-transform: none; letter-spacing: 0; padding: 10px 16px; background: var(--paper); color: var(--ink); border: 3px solid var(--ink); border-radius: 999px; text-decoration: none; }
+.tape-link:hover { background: var(--yellow); color: #16130f; }
+.tape-link:focus-visible { outline: 3px solid var(--ink); outline-offset: -7px; }
+.band-tools {
+  display: flex; gap: 12px; align-items: center; justify-content: flex-end; flex-wrap: wrap;
+  padding: 10px clamp(12px, 3vw, 32px) 14px; border-top: 3px solid var(--ink);
+}
+.band-status { font: .72rem var(--font-mono); opacity: .75; }
+.no-hic .band-tools { display: none; }
+
+/* Fallback: two crossed tapes, clipped to the band. */
+.band-stage:not(canvas) { position: relative; overflow: hidden; display: grid; place-items: center; }
+.band-stage:not(canvas) .tape { position: absolute; left: 50%; top: 50%; translate: -50% -50%; }
+.band-stage:not(canvas) .tape--a { rotate: -4deg; }
+.band-stage:not(canvas) .tape--b { rotate: 3deg; translate: -40% 40%; }

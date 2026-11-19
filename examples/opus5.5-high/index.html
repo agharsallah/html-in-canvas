@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <!--kiosk:head-->
+    <script>
+      // Runs before first paint: pick theme, motion and mode so nothing flashes.
+      (function () {
+        var d = document.documentElement, s = null, m = null;
+        try { s = localStorage.getItem('kiosk-theme'); m = localStorage.getItem('kiosk-motion'); } catch (e) {}
+        d.dataset.theme = s || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        d.dataset.motion = m ? (m === 'reduce' ? 'reduce' : 'full') : (matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduce' : 'full');
+        var c = document.createElement('canvas');
+        c.setAttribute('content', 'drawable');
+        var live = c.content === 'drawable' && !/[?&]fallback/.test(location.search);
+        d.classList.add(live ? 'hic' : 'no-hic');
+      })();
+    </script>
+  </head>
+  <body>
+    <!--kiosk:body-->
+    <noscript><p class="noscript">This page works without JavaScript as plain HTML. Turn JavaScript on to see the posters drawn into canvas.</p></noscript>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

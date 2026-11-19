@@ -1,0 +1,30 @@
+{
+  "name": "kiosk-html-in-canvas-template",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Kiosk: a site template where every poster is live, accessible HTML drawn into canvas (WICG HTML-in-Canvas).",
+  "license": "MIT",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
+    "preview": "vite preview",
+    "typecheck": "tsc --noEmit",
+    "verify": "node scripts/verify.mjs",
+    "deploy": "pnpm build && wrangler deploy",
+    "cf:dev": "pnpm build && wrangler dev",
+    "og": "node scripts/og.mjs"
+  },
+  "dependencies": {
+    "@fontsource-variable/bricolage-grotesque": "^5.3.0",
+    "@fontsource-variable/instrument-sans": "^5.3.0",
+    "@fontsource-variable/jetbrains-mono": "^5.3.0"
+  },
+  "devDependencies": {
+    "@webgpu/types": "^0.1.74",
+    "puppeteer-core": "^25.16.0",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.6",
+    "wrangler": "^4.158.0"
+  }
+}

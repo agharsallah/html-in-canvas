@@ -1,0 +1,93 @@
+name: Deploy kiosk
+
+# examples/opus5.5-high (the Kiosk template) goes live on https://ionloft.com/html-in-canvas-kiosk/ when:
+#   - a GitHub release tagged kiosk-v* is published (`gh release create kiosk-v0.2.0 --generate-notes`), or
+#   - someone runs it by hand: Actions → Deploy kiosk → Run workflow (`gh workflow run deploy-kiosk.yml -f ref=<ref>`).
+#     Deploying an older tag is the rollback.
+# Releases with other tags are ignored. The Cloudflare deploy (`pnpm run deploy` in the example) is separate.
+# The server side (nginx, HTTPS, the deploy user) is managed by Ansible in the vps-contabo repo
+# (roles/static_site, app `html-in-canvas-kiosk`). The deploy key can only upload a release and switch to it.
+# It can also be deployed from that repo: make app-deploy APP=html-in-canvas-kiosk
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: Tag, branch or commit to deploy (an older tag rolls back)
+        required: true
+        default: main
+
+# one deploy at a time, and never cancel one halfway
+concurrency:
+  group: deploy-kiosk
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+defaults:
+  run:
+    working-directory: examples/opus5.5-high
+
+jobs:
+  deploy:
+    # only this example's releases, and never a pre-release
+    if: >-
+      github.event_name != 'release' ||
+      (startsWith(github.event.release.tag_name, 'kiosk-v') && !github.event.release.prerelease)
+    runs-on: ubuntu-latest
+    environment:
+      name: kiosk
+      url: ${{ vars.SITE_URL }}
+    env:
+      SITE_URL: ${{ vars.SITE_URL }}
+      REF: ${{ github.event.release.tag_name || inputs.ref }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: ${{ env.REF }}
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 11.10.0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: pnpm
+          cache-dependency-path: examples/opus5.5-high/pnpm-lock.yaml
+      - run: pnpm install --frozen-lockfile
+      # typecheck + build; the same environment `make app-deploy` builds with (vps-contabo vars.yml)
+      - run: pnpm build
+        env:
+          NODE_ENV: production
+          BASE_PATH: /html-in-canvas-kiosk
+          SITE_ORIGIN: https://ionloft.com
+      - name: Set up the deploy key
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ vars.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -m 700 -d ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy && chmod 600 ~/.ssh/deploy
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+          {
+            echo "DEPLOY_SSH=ssh -i $HOME/.ssh/deploy -p ${{ vars.DEPLOY_PORT }} -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes"
+            echo "DEPLOY_TARGET=deploy@${{ vars.DEPLOY_HOST }}"
+            echo "COMMIT=$(git rev-parse HEAD)"
+          } >> "$GITHUB_ENV"
+      - name: Upload the release
+        run: rsync -rlz --delete -e "$DEPLOY_SSH" dist/ "$DEPLOY_TARGET:$COMMIT/"
+      - name: Go live
+        run: $DEPLOY_SSH "$DEPLOY_TARGET" "activate $COMMIT"
+      - name: Check the live site serves this build (rolls back if not)
+        run: |
+          for attempt in 1 2 3 4 5; do
+            if curl -fsS -H 'Cache-Control: no-cache' "$SITE_URL" | cmp -s - dist/index.html; then
+              echo "### Deployed \`$REF\` ($COMMIT) to $SITE_URL" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            sleep 3
+          done
+          echo "::error::$SITE_URL does not serve this build, rolling back"
+          $DEPLOY_SSH "$DEPLOY_TARGET" rollback
+          exit 1

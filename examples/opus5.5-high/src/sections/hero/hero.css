@@ -1,0 +1,92 @@
+/* Hero: a street poster. Live: drawn into WebGL in 3D. Fallback: CSS 3D. */
+.hero { position: relative; min-height: max(640px, calc(100svh - 58px)); overflow: clip; }
+.hero-stage { height: max(640px, calc(100svh - 58px)); }
+.no-hic .hero-stage, .hero-stage:not(canvas) {
+  display: grid; place-items: center; perspective: 1400px; padding: 24px 16px 72px;
+}
+
+/* Backdrop shapes (fallback only: the live scene draws them in 3D with parallax). */
+.hero-backdrop { position: absolute; inset: 0; pointer-events: none; }
+.hero-backdrop .shape { position: absolute; display: block; }
+.shape--sun { width: 46vmin; aspect-ratio: 1; border-radius: 50%; background: var(--red); right: 6vw; top: 8vh; }
+.shape--half { width: 40vmin; aspect-ratio: 2 / 1; border-radius: 40vmin 40vmin 0 0; background: var(--blue); left: 4vw; bottom: 6vh; }
+.shape--bar { width: 12vmin; height: 70vh; background: var(--yellow); left: 22vw; top: -4vh; transform: rotate(18deg); }
+.hic .hero-backdrop { display: none; }
+
+.poster {
+  position: relative; overflow: hidden;
+  width: min(880px, calc(100% - 32px));
+  padding: clamp(20px, 4vw, 44px);
+  background: var(--paper); color: var(--ink);
+  border: 3px solid var(--ink);
+  display: grid; gap: clamp(12px, 2vw, 20px);
+}
+.no-hic .poster, .hero-stage:not(canvas) .poster {
+  box-shadow: 16px 16px 0 var(--ink);
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform .4s cubic-bezier(.2, .8, .2, 1);
+}
+.poster-art { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.poster-art .pa { position: absolute; display: block; }
+.pa--circle { width: 62%; aspect-ratio: 1; border-radius: 50%; background: var(--yellow); right: -18%; top: -22%; }
+.pa--block { width: 30%; height: 22%; background: var(--blue); left: -4%; bottom: -6%; transform: rotate(-8deg); }
+.pa--stripe { width: 50%; height: 14px; background: var(--red); left: 62%; top: 60%; transform: rotate(-9deg); }
+.poster > :not(.poster-art, .poster-cta) { position: relative; z-index: 1; }
+
+.poster-kicker {
+  font: 600 clamp(.72rem, 1.5vw, .9rem)/1.2 var(--font-mono); text-transform: uppercase; letter-spacing: .08em;
+  padding-bottom: 12px; border-bottom: 3px solid var(--ink); max-width: 60%;
+}
+.poster-title {
+  font-size: clamp(4.2rem, 15vw, 11rem); font-weight: 800; line-height: .82; letter-spacing: -0.06em;
+  text-transform: uppercase; display: grid;
+  font-variation-settings: "wdth" 75, "opsz" 96;
+  mix-blend-mode: multiply;
+}
+[data-theme="dark"] .poster-title { mix-blend-mode: normal; }
+.poster-title span:last-child { color: var(--red); padding-left: .55em; }
+.poster-lede { font-size: clamp(1rem, 1.8vw, 1.25rem); max-width: 36ch; font-weight: 500; text-wrap: pretty; }
+.poster-form { display: grid; gap: 8px; max-width: 520px; }
+.poster-form label { font: 600 .78rem var(--font-mono); text-transform: uppercase; letter-spacing: .08em; }
+.poster-row { display: flex; gap: 0; }
+.poster-row input {
+  flex: 1; min-width: 0; height: 52px; padding: 0 16px; border: 3px solid var(--ink); border-right: 0;
+  background: var(--paper); border-radius: 0; font-size: 1rem;
+}
+.poster-row input::placeholder { color: color-mix(in srgb, var(--ink) 55%, transparent); }
+.poster-row input:focus-visible { outline: 3px solid var(--red); outline-offset: -6px; }
+.poster-row button {
+  height: 52px; padding: 0 20px; border: 3px solid var(--ink); background: var(--ink); color: var(--paper);
+  font-weight: 700; cursor: pointer;
+}
+.poster-row button:hover { background: var(--red); color: #fff; }
+.poster-row button:focus-visible { outline: 3px solid var(--red); outline-offset: -8px; }
+.poster-note { font-size: .85rem; }
+.poster-note.is-ok { font-weight: 700; color: var(--red); }
+
+/* The sticker: a nested drawable. Live, it floats in front of the poster in 3D. */
+.poster-cta {
+  position: absolute; z-index: 2; right: clamp(16px, 4vw, 40px); top: clamp(60px, 9vw, 96px);
+  width: clamp(112px, 16vw, 168px); aspect-ratio: 1; border-radius: 50%;
+  display: grid; place-items: center; text-align: center; padding: 14px;
+  background: var(--red); color: #fff; border: 3px solid var(--ink);
+  box-shadow: 6px 6px 0 var(--ink);
+  font: 800 clamp(1rem, 2vw, 1.35rem)/1 var(--font-display); text-transform: uppercase; letter-spacing: -0.02em;
+  text-decoration: none;
+}
+.poster-cta:hover { background: var(--blue); }
+.poster-cta:focus-visible { outline: 4px solid var(--yellow); outline-offset: -10px; }
+.no-hic .poster-cta, .hero-stage:not(canvas) .poster-cta { transform: rotate(-12deg) translateZ(40px); }
+
+.hero-hint {
+  position: absolute; left: 0; right: 0; bottom: 18px; text-align: center;
+  font: 500 .75rem var(--font-mono); text-transform: uppercase; letter-spacing: .1em; opacity: .7;
+}
+@media (max-width: 640px) {
+  .poster-kicker { max-width: 100%; }
+  .poster-row { flex-direction: column; gap: 8px; }
+  .poster-row input { border-right: 3px solid var(--ink); }
+}
+@media (forced-colors: active) {
+  .poster-art, .badge-art { display: none; }
+}

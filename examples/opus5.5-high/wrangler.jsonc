@@ -1,0 +1,10 @@
+{
+  // Static site on Cloudflare: Workers with static assets, no server code.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kiosk-html-in-canvas",
+  "compatibility_date": "2026-11-01",
+  "assets": {
+    "directory": "./dist",
+    "not_found_handling": "404-page"
+  }
+}

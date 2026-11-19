@@ -1,0 +1,34 @@
+/* Programme: a timetable under a loupe. */
+.prog-tabs { max-width: 980px; margin: 0 auto 18px; display: flex; gap: 10px; }
+.prog-tab {
+  border: 3px solid var(--ink); background: var(--paper); border-radius: 14px; padding: 10px 18px; cursor: pointer;
+  font: 800 1.3rem/1 var(--font-display); letter-spacing: -0.02em; display: inline-flex; align-items: baseline; gap: 8px;
+}
+.prog-tab small { font: 600 .8rem var(--font-mono); }
+.prog-tab[aria-selected="true"] { background: var(--ink); color: var(--paper); box-shadow: 4px 4px 0 var(--red); }
+.prog-stage { max-width: 980px; margin: 0 auto; }
+canvas.prog-stage { height: 640px; }
+.prog-list { list-style: none; margin: 0; padding: 0; background: var(--paper); color: var(--ink); border-bottom: 3px solid var(--ink); }
+canvas .prog-list { width: calc(100% - 48px); }
+.sess {
+  display: grid; grid-template-columns: 6.5rem 1fr auto; gap: 18px; align-items: center;
+  padding: 18px 12px; border-top: 3px solid var(--ink);
+  transition: background .2s;
+}
+.sess-time { font: 700 1.5rem/1 var(--font-mono); letter-spacing: -0.04em; }
+.sess-title { font-size: clamp(1.1rem, 2.4vw, 1.5rem); font-weight: 750; letter-spacing: -0.025em; line-height: 1.1; }
+.sess-meta { font-size: .92rem; margin-top: 4px; opacity: .8; }
+.sess-add {
+  border: 2.5px solid var(--ink); background: var(--paper); border-radius: 999px; padding: 8px 14px;
+  font: 600 .82rem var(--font-mono); cursor: pointer; white-space: nowrap;
+}
+.sess-add:hover { background: var(--yellow); color: #16130f; }
+.sess-add:focus-visible { outline: 3px solid var(--red); outline-offset: 2px; }
+/* Set from inside the paint event: the row under the loupe. Lands one frame later. */
+.sess[data-lensed] { background: color-mix(in srgb, var(--yellow) 45%, var(--paper)); }
+.sess[data-lensed] .sess-time { color: var(--red); }
+@media (max-width: 640px) {
+  .sess { grid-template-columns: 4.6rem 1fr; }
+  .sess-add { grid-column: 2; justify-self: start; }
+  .sess-time { font-size: 1.15rem; }
+}
