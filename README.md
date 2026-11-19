@@ -228,6 +228,10 @@ Tests check steps 3 and 4 for you. For 2D labs, use `createLabCanvas()` from `sr
 | Runtime | Paste `perf/probe.js` into DevTools: idle time, frame times, long frames, DOM mutations |
 | Layout | `perf/overflow-scan.js` walks all 52 chapter frames and reports any text escaping its box |
 
+## Deploy
+
+The course is on Vercel (https://htmlincanvas.vercel.app) and on ionloft.com (https://ionloft.com/learn-html-in-canvas/, by GitHub releases tagged `learn-v*`). How to release, roll back and change the build: [DEPLOY.md](DEPLOY.md).
+
 ## Further reading
 
 - [`docs/CONCEPTS.md`](docs/CONCEPTS.md): the story, chapter map, gamification, design system, darkroom features, architecture and accessibility.
@@ -237,7 +241,7 @@ Tests check steps 3 and 4 for you. For 2D labs, use `createLabCanvas()` from `sr
 
 ## Privacy
 
-Progress, exercise drafts and your sound preference stay in your browser's `localStorage`. The production build includes cookieless Vercel Web Analytics and Speed Insights; both are off in development and do nothing when the site is served elsewhere.
+Progress, exercise drafts and your sound preference stay in your browser's `localStorage`. The production build includes cookieless Vercel Web Analytics and Speed Insights; both are off in development and load only on `*.vercel.app`, so the ionloft.com copy requests nothing from them.
 
 <div align="center">
 <br>
