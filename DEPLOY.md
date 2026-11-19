@@ -39,7 +39,10 @@ example) is ignored by this workflow. Pre-releases are not deployed.
 `.github/workflows/deploy-learn.yml`:
 
 1. `pnpm install --frozen-lockfile`.
-2. `pnpm test`: a failing test stops the deploy.
+2. The tests: a failing test stops the deploy. Two test files are skipped,
+   `tests/epilogue-rules.test.ts` and `tests/vault-rules.test.ts`: they read
+   `docs-llm/html-in-canvas-blogs/concepts.md`, and `docs-llm/` is git-ignored, so they can only
+   run on a machine that has it. Run the full `pnpm test` locally before releasing.
 3. `pnpm typecheck && pnpm exec vite build`, the same build as Vercel's `buildCommand`, with
    `BASE_PATH=/learn-html-in-canvas` and `SITE_ORIGIN=https://ionloft.com`.
 4. Uploads `dist/` to the server as a new release named by its commit, and makes it live.
@@ -113,3 +116,6 @@ both:
 - `.github/workflows/deploy-learn.yml`, and
 - the `learn-html-in-canvas` entry in `vps-contabo`'s `vars.yml` (`test_cmd`, `build_cmd`,
   `build_env`, `dist_dir`).
+
+A new test that reads a git-ignored file has to be added to the skipped ones in both places, or
+every deploy fails.

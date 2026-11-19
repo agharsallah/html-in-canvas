@@ -52,7 +52,8 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm test
+      # the tests that run from a clean checkout: epilogue-rules and vault-rules read docs-llm/, which is git-ignored
+      - run: pnpm exec vitest run --exclude tests/epilogue-rules.test.ts --exclude tests/vault-rules.test.ts
       # the same build as Vercel (vercel.json) and `make app-deploy` (vps-contabo vars.yml), under the path
       - run: pnpm typecheck && pnpm exec vite build
         env:
